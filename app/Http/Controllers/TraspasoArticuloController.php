@@ -16,13 +16,13 @@ class TraspasoArticuloController extends Controller
         $traspaso->articulos()->attach($articulo->id, ["cantidad"=>$request->cantidad, "cantidad_defectuosos"=>0]);
         $traspaso->increment("cantidad", $request->cantidad);
         $origen=Almacen::find($traspaso->almacen_origen_id);
+        $origen->decrement("cantidad",$request->cantidad);
+        
         $destino=Almacen::find($traspaso->almacen_destino_id);
         $destino->increment("cantidad",$request->cantidad);
-
-        
-        $almacenArticuloOrigen = $origen->articulos()->where('articulo_id', $articulo->id)->first();
     
-        $almacenArticuloOrigen = $destino->articulos()->where('articulo_id', $articulo->id)->first();
+        $almacenArticuloOrigen = $origen->articulos()->where('articulo_id', $articulo->id)->first();
+
         if ($almacenArticuloOrigen) {
             $almacenArticuloOrigen->pivot->decrement("cantidad", $request->cantidad);
         } 

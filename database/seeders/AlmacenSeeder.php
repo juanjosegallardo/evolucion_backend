@@ -14,13 +14,13 @@ class AlmacenSeeder extends Seeder
     public function run(): void
     {
         $almacenes = [
-            ['nombre' => 'Almacén Principal'],
-            ['nombre' => 'Almacén Camilo y Jorge'],
-            ['nombre' => 'Almacén Santos'],
-            ['nombre' => 'Almacén Zabdiel'],
-            ['nombre' => 'Almacén Agustín'],
-            ['nombre' => 'Almacén Ramón'],
-            ['nombre' => 'Almacén Carlos'],
+            ['nombre' => 'Principal'],
+            ['nombre' => 'Camilo'],
+            ['nombre' => 'Santos'],
+            ['nombre' => 'Zabdiel'],
+            ['nombre' => 'Agustín'],
+            ['nombre' => 'Ramón'],
+            ['nombre' => 'Carlos'],
 
         ];
 
