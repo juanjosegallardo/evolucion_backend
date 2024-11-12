@@ -37,9 +37,11 @@ class AlmacenController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Almacen $almacen)
+    public function show($id)
     {
-        //
+        return Almacen::with(["articulos"=>function($q){
+            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo");
+        }])->find($id);
     }
 
     /**
