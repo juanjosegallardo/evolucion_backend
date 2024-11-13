@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Almacen::class)->constrained();
             $table->integer("cantidad");
+            $table->integer("operacion")->nullable();
             $table->timestamps();
         });
     }

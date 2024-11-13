@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer("dia");
             $table->decimal('total', 8, 2); 
+            $table->integer("operacion")->nullable();
             $table->timestamps();
         });
     }

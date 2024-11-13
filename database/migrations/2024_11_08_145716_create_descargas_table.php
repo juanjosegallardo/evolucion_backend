@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('descargas', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Almacen::class)->constrained();
+            $table->integer("operacion")->nullable();
             $table->timestamps();
         });
     }

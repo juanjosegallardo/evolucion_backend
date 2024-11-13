@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(Articulo::class)->constrained();
             $table->integer("cantidad");
             $table->integer("cantidad_defectuosos");
+            $table->integer("operacion")->nullable();
         });
     }
 
