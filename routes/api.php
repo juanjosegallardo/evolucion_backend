@@ -9,6 +9,7 @@ use App\Http\Controllers\VendedorController;
 use App\Http\Controllers\CargaArticuloController;
 use App\Http\Controllers\TraspasoController;
 use App\Http\Controllers\TraspasoArticuloController;
+use App\Http\Controllers\VentaController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -19,6 +20,7 @@ Route::resource("/articulos", ArticuloController::class );
 Route::resource("/cargas", CargaController::class );
 Route::resource("/vendedores", VendedorController::class );
 Route::resource("/traspasos", TraspasoController::class );
+Route::resource("/ventas", VentaController::class );
 
 Route::resource("/cargas/{id}/articulos", CargaArticuloController::class);
 Route::delete("/carga_articulo/{id}", [CargaArticuloController::class,"destroy"]);

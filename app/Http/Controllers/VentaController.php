@@ -5,15 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Venta;
 use App\Http\Requests\StoreVentaRequest;
 use App\Http\Requests\UpdateVentaRequest;
+use App\Services\VentaService;
+use Illuminate\Http\Request;
+
 
 class VentaController extends Controller
 {
+    protected $ventaService;
+
+    public function __construct(VentaService $ventaService)
+    {
+        $this->ventaService= $ventaService;
+
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return Venta::with("vendedor")->with("almacen")->get();
     }
 
     /**
@@ -27,9 +37,16 @@ class VentaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreVentaRequest $request)
+    public function store(Request $request)
     {
-        //
+        $venta = new Venta();
+        $venta->almacen_id = $request->almacen_id;
+        $venta->vendedor_id =$request->vendedor_id;
+        $venta->total = $request->total;
+        $venta->enganche = $request->enganche;
+        $venta->tipo = $request->tipo;
+        $this->ventaService->calcularComision($venta);
+        $venta->save();
     }
 
     /**
