@@ -8,6 +8,7 @@ use App\Models\Almacen;
 
 class Venta extends Model
 {
+    protected $attributes = ["cantidad"=>0];
     public function vendedor()
     {
         return $this->belongsTo(Vendedor::class);

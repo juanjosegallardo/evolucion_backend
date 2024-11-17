@@ -47,6 +47,8 @@ class VentaController extends Controller
         $venta->tipo = $request->tipo;
         $this->ventaService->calcularComision($venta);
         $venta->save();
+
+        return $venta->with("almacen")->with("vendedor")->find($venta->id);
     }
 
     /**
