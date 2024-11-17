@@ -23,7 +23,7 @@ class VentaController extends Controller
      */
     public function index()
     {
-        return Venta::with("vendedor")->with("almacen")->get();
+        return Venta::with("vendedor")->with("almacen")->with("articulos")->get();
     }
 
     /**
@@ -56,7 +56,11 @@ class VentaController extends Controller
      */
     public function show($id)
     {
-        return Venta::with("almacen")->with("vendedor")->with("articulos")->find($id);
+
+        return Venta::with(["articulos"=>function($q){
+            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo");
+        }])->with("almacen")->with("vendedor")->find($id);
+
     }
 
     /**
