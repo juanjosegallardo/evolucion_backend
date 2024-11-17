@@ -54,9 +54,9 @@ class VentaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Venta $venta)
+    public function show($id)
     {
-        //
+        return Venta::with("almacen")->with("vendedor")->with("articulos")->find($id);
     }
 
     /**

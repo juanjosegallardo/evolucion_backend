@@ -18,4 +18,9 @@ class Venta extends Model
     {
         return $this->belongsTo(Almacen::class);
     }
+
+    public function articulos()
+    {
+        return $this->belongsToMany(Articulo::class, 'venta_articulo');
+    }
 }
