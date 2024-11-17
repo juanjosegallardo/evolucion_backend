@@ -29,11 +29,10 @@ class VentaArticuloService
             $almacen->decrement("cantidad",$cantidad);
             $articulo->decrement("cantidad",$cantidad);
             
-            $almacenArticulo = $almacen->articulos()->where('articulo_id', $articulo->id)->first();
+            $almacenArticulo = $almacen->articulos()->where('articulo_id',"=", $articulo->id)->first();
             if ($almacenArticulo) 
             {
                 $almacenArticulo->pivot->decrement("cantidad", $cantidad);
-                $almacenArticulo->pivot->save();
             } 
             else
             {

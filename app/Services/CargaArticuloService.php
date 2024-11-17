@@ -33,7 +33,6 @@ class CargaArticuloService
             if ($almacenArticulo) 
             {
                 $almacenArticulo->pivot->increment("cantidad", $cantidad);
-                $almacenArticulo->pivot->save();
             } 
             else
             {
