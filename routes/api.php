@@ -13,9 +13,6 @@ use App\Http\Controllers\TipoArticuloController;
 use App\Http\Controllers\VentaArticuloController;
 use App\Http\Controllers\VentaController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
 
 
 
