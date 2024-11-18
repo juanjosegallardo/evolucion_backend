@@ -45,6 +45,7 @@ class VentaController extends Controller
         $venta->total = $request->total;
         $venta->enganche = $request->enganche;
         $venta->tipo = $request->tipo;
+        $venta->fecha = $request->fecha;
         $this->ventaService->calcularComision($venta);
         $venta->save();
 
@@ -82,8 +83,9 @@ class VentaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Venta $venta)
+    public function destroy($id)
     {
-        //
+        $venta= Venta::find($id);
+        $venta->delete();
     }
 }

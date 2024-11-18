@@ -36,7 +36,7 @@ class VentaArticuloService
             } 
             else
             {
-                $almacen->articulos()->attach($articulo->id, ["cantidad"=>$cantidad, "cantidad_defectuosos"=>0]);
+                $almacen->articulos()->attach($articulo->id, ["cantidad"=>-$cantidad, "cantidad_defectuosos"=>0]);
             }
         });
     }
@@ -49,14 +49,14 @@ class VentaArticuloService
             $articulo=Articulo::find($venta_articulo->articulo_id);
             $articulo->increment("cantidad",$venta_articulo->cantidad);
             $venta = Venta::find($venta_articulo->venta_id);
-            $venta->increment("cantidad", $venta_articulo->cantidad);
+            $venta->decrement("cantidad", $venta_articulo->cantidad);
             $almacen=Almacen::find($venta->almacen_id);
             $almacen->increment("cantidad",$venta_articulo->cantidad);
 
             $almacenArticulo = $almacen->articulos()->where('articulo_id', $articulo->id)->first();
 
             if ($almacenArticulo) {
-                $almacenArticulo->pivot->increment("cantidad", $carga_articulo->cantidad);
+                $almacenArticulo->pivot->increment("cantidad", $venta_articulo->cantidad);
                 $almacenArticulo->pivot->save();
             } 
             else

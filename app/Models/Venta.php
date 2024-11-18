@@ -9,6 +9,7 @@ use App\Models\Almacen;
 class Venta extends Model
 {
     protected $attributes = ["cantidad"=>0];
+    protected $dates = ["fecha"];
     public function vendedor()
     {
         return $this->belongsTo(Vendedor::class);

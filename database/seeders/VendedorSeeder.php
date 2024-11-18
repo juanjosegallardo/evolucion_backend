@@ -15,8 +15,12 @@ class VendedorSeeder extends Seeder
     {
         $vendedores = [
             ["nombre"=>"Camilo"],
+            ["nombre"=>"Santos"],
             ["nombre"=>"Zabdiel"],
-            ["nombre"=>"Jorge Ortiz"]
+            ["nombre"=>"Agustin"],
+            ["nombre"=>"Ramón"],
+            ["nombre"=>"Camilo"],
+            ["nombre"=>"Trino"], 
         ];
 
         foreach($vendedores as $vendedor)

@@ -6,6 +6,8 @@ use App\Models\Articulo;
 use App\Http\Requests\StoreArticuloRequest;
 use App\Http\Requests\UpdateArticuloRequest;
 
+use Illuminate\Http\Request;
+
 class ArticuloController extends Controller
 {
     /**
@@ -13,7 +15,7 @@ class ArticuloController extends Controller
      */
     public function index()
     {
-        return Articulo::with("tipoArticulo")->get();
+        return Articulo::with("tipoArticulo")->orderBy("nombre", "asc")->get();
     }
 
     /**
@@ -27,11 +29,12 @@ class ArticuloController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $id)
+    public function store(Request $request)
     {
         $articulo = new Articulo();
         $articulo->codigo = $request->codigo;
-        $articulo->tipo_articulo_id=$id;
+        $articulo->tipo_articulo_id=$request->tipo_articulo_id;
+        $articulo->nombre = $request->nombre;
         $articulo->save();
     }
 
