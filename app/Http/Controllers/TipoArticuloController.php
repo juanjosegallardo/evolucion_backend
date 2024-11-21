@@ -13,7 +13,7 @@ class TipoArticuloController extends Controller
      */
     public function index()
     {
-        return TipoArticulo::all();
+        return TipoArticulo::orderBy("nombre", "asc")->get();
     }
 
     /**
