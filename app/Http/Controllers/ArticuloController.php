@@ -15,7 +15,7 @@ class ArticuloController extends Controller
      */
     public function index()
     {
-        return Articulo::leftJoin("tipo_articulos","articulos.tipo_articulo_id","=","tipo_articulos.id")->with("tipoArticulo")->orderBy("tipo_articulos.nombre", "asc")->get();
+        return Articulo::with("tipoArticulo")->orderBy("nombre", "asc")->get();
     }
 
     /**
