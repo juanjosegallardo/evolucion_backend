@@ -15,9 +15,13 @@ class ArticuloController extends Controller
      */
     public function index()
     {
-        return Articulo::with("tipoArticulo")->orderBy("nombre", "asc")->get();
+        return Articulo::with("tipoArticulo")
+            ->select('articulos.*', 'tipo_articulos.nombre as tipo_nombre') // Renombra el campo 'nombre' de tipo_articulos
+            ->join('tipo_articulos', 'tipo_articulos.id', '=', 'articulos.tipo_articulo_id')
+            ->orderBy('tipo_articulos.nombre', 'asc')
+            ->get();
     }
-
+    
     /**
      * Show the form for creating a new resource.
      */
