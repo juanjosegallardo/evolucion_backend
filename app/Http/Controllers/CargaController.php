@@ -14,9 +14,7 @@ class CargaController extends Controller
      */
     public function index()
     {
-        return Carga::with("almacen")->with(["articulos"=>function($q){
-            $q->orderByPivot("id","desc");
-        }])->orderBy("created_at", "desc")->get();
+        return Carga::with("almacen")->with("articulos")->orderBy("created_at", "desc")->get();
     }
 
     /**
@@ -46,7 +44,7 @@ class CargaController extends Controller
     public function show($id)
     {
         return Carga::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo");
+            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
         }])->with("almacen")->find($id);
     }
 
