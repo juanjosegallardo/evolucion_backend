@@ -24,7 +24,7 @@ class CargaArticuloController extends Controller
     {
         $this->cargaArticuloService->agregar($id, $request->codigo, $request->cantidad);
         return Carga::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo")->orderByPivot("id","asc");
+            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
         }])->find($id);
     }
 
@@ -33,7 +33,7 @@ class CargaArticuloController extends Controller
         $carga_articulo = CargaArticulo::find($id);
         $this->cargaArticuloService->quitar($id);
         return Carga::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo")->orderByPivot("id","asc");
+            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
         }])->find($carga_articulo->carga_id);
     }
 }
