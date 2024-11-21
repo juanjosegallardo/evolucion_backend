@@ -14,7 +14,9 @@ class CargaController extends Controller
      */
     public function index()
     {
-        return Carga::with("almacen")->with("articulos")->orderBy("created_at", "desc")->get();
+        return Carga::with("almacen")->with(["articulos"=>function($q){
+            $q->orderByPivot("id","desc");
+        }])->orderBy("created_at", "desc")->get();
     }
 
     /**
