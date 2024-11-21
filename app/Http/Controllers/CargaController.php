@@ -32,6 +32,7 @@ class CargaController extends Controller
     {
         $carga = new Carga();
         $carga->almacen_id = $request->almacen_id;
+        $carga->notas = $request-notas;
         $carga->save();
 
         return Carga::with("almacen")->find($carga->id);//hay que regresar with articulos

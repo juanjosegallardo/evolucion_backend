@@ -35,6 +35,7 @@ class TraspasoController extends Controller
         $traspaso = new Traspaso();
         $traspaso->almacen_origen_id = $request->almacen_origen_id;
         $traspaso->almacen_destino_id = $request->almacen_destino_id;
+        $traspaso->notas = $request->notas;
         $traspaso->save();
         return Traspaso::with("origen")->with("destino")->find($traspaso->id);
     }
