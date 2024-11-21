@@ -69,8 +69,9 @@ class TraspasoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Traspaso $traspaso)
+    public function destroy($id)
     {
-        //
+        $traspaso = Traspaso::find($id);
+        $traspaso->delete();
     }
 }
