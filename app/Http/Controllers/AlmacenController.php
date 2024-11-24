@@ -41,7 +41,7 @@ class AlmacenController extends Controller
     {
         return Almacen::with(["articulos"=>function($q){
             $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with(["tipoArticulo" => function($q) {
-                $q->orderBy('nombre', 'desc'); 
+                $q->orderBy('tipo_articulos.nombre', 'desc'); 
             }]);
         }])->find($id);
     }
