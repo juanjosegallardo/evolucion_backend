@@ -1,3 +1,5 @@
+{{$vendedor["nombre"]}}
+<br>
 <table border="1">
     <tr>
         <th>
