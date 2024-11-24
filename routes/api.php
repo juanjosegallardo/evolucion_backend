@@ -15,23 +15,34 @@ use App\Http\Controllers\VentaController;
 use App\Http\Controllers\ReporteLibretaController;
 
 
+// Rutas para Carga Artículos
+Route::prefix('cargas/{id}')->group(function () {
+    Route::resource('articulos', CargaArticuloController::class);
+    Route::delete('articulo/{articuloId}', [CargaArticuloController::class, 'destroy']);
+});
 
+// Rutas para Traspaso Artículos
+Route::prefix('traspasos/{id}')->group(function () {
+    Route::resource('articulos', TraspasoArticuloController::class);
+    Route::delete('articulo/{articuloId}', [TraspasoArticuloController::class, 'destroy']);
+});
 
-Route::resource("cargas/{id}/articulos", CargaArticuloController::class);
-Route::delete("carga_articulo/{id}", [CargaArticuloController::class,"destroy"]);
+// Rutas para Venta Artículos
+Route::prefix('ventas/{id}')->group(function () {
+    Route::resource('articulos', VentaArticuloController::class);
+    Route::delete('articulo/{articuloId}', [VentaArticuloController::class, 'destroy']);
+});
 
-Route::resource("traspasos/{id}/articulos", TraspasoArticuloController::class);
-Route::delete("traspaso_articulo/{id}", [TraspasoArticuloController::class,"destroy"]);
+// Rutas para reportes
+Route::get('reportes/vendedores/{id}/libreta', [ReporteLibretaController::class, 'reporteVendedores']);
 
-Route::resource("ventas/{id}/articulos", VentaArticuloController::class);
-Route::delete("venta_articulo/{id}", [VentaArticuloController::class,"destroy"]);
-
-Route::get("reportes/vendedores/{id}/libreta", [ReporteLibretaController::class, "reporteVendedores"]);
-
-Route::resource("almacenes", AlmacenController::class );
-Route::resource("articulos", ArticuloController::class );
-Route::resource("cargas", CargaController::class );
-Route::resource("vendedores", VendedorController::class );
-Route::resource("traspasos", TraspasoController::class );
-Route::resource("ventas", VentaController::class );
-Route::resource("tipos_articulos", TipoArticuloController::class );
+// Rutas principales
+Route::resources([
+    'almacenes' => AlmacenController::class,
+    'articulos' => ArticuloController::class,
+    'cargas' => CargaController::class,
+    'vendedores' => VendedorController::class,
+    'traspasos' => TraspasoController::class,
+    'ventas' => VentaController::class,
+    'tipos_articulos' => TipoArticuloController::class,
+]);
