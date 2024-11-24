@@ -16,7 +16,7 @@ use App\Http\Controllers\ReporteLibretaController;
 
 
 // Carga Artículos
-Route::prefix('cargas/{id}/articulos')->group(function () {
+Route::prefix('carga_articulo')->group(function () {
     Route::get('/', [CargaArticuloController::class, 'index'])->name('cargas.articulos.index');
     Route::post('/', [CargaArticuloController::class, 'store'])->name('cargas.articulos.store');
     Route::get('/{articuloId}', [CargaArticuloController::class, 'show'])->name('cargas.articulos.show');
@@ -25,7 +25,7 @@ Route::prefix('cargas/{id}/articulos')->group(function () {
 });
 
 // Traspaso Artículos
-Route::prefix('traspasos/{id}/articulos')->group(function () {
+Route::prefix('traspaso_articulo')->group(function () {
     Route::get('/', [TraspasoArticuloController::class, 'index'])->name('traspasos.articulos.index');
     Route::post('/', [TraspasoArticuloController::class, 'store'])->name('traspasos.articulos.store');
     Route::get('/{articuloId}', [TraspasoArticuloController::class, 'show'])->name('traspasos.articulos.show');
@@ -34,7 +34,7 @@ Route::prefix('traspasos/{id}/articulos')->group(function () {
 });
 
 // Venta Artículos
-Route::prefix('ventas/{id}/articulos')->group(function () {
+Route::prefix('ventas_articulos')->group(function () {
     Route::get('/', [VentaArticuloController::class, 'index'])->name('ventas.articulos.index');
     Route::post('/', [VentaArticuloController::class, 'store'])->name('ventas.articulos.store');
     Route::get('/{articuloId}', [VentaArticuloController::class, 'show'])->name('ventas.articulos.show');
