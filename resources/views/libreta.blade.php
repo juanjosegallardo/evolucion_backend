@@ -23,7 +23,7 @@
     <tr>
         <td>
             @foreach($venta["articulos"] as $articulo)
-                {{$articulo["cantidad"]}} {{$articulo["tipo_articulo"]["nombre"]}} 
+                {{$articulo["cantidad"]}} {{$articulo["tipoArticulo"]["nombre"]}} 
             @endforeach
         </th>
         <th>

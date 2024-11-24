@@ -11,7 +11,7 @@ class ReporteLibretaController extends Controller
         $data["ventas"]=  Venta::with("vendedor")->with(["articulos"=>function($q){
             $q->with("tipoArticulo");
         }])->where("vendedor_id","=",$id)->get();
-        //return $data;
+       // return $data;
         return view("libreta", $data);
     }
 }
