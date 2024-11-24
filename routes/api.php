@@ -34,7 +34,7 @@ Route::prefix('traspaso_articulo')->group(function () {
 });
 
 // Venta Artículos
-Route::prefix('ventas_articulo')->group(function () {
+Route::prefix('venta_articulo')->group(function () {
     Route::get('/', [VentaArticuloController::class, 'index'])->name('ventas.articulos.index');
     Route::post('/', [VentaArticuloController::class, 'store'])->name('ventas.articulos.store');
     Route::get('/{articuloId}', [VentaArticuloController::class, 'show'])->name('ventas.articulos.show');
