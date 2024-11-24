@@ -12,6 +12,6 @@ class ReporteLibretaController extends Controller
             $q->with("tipo_archivo");
         }])->get();
         //return $data;
-         return view("libreta", $data);
+        //return view("libreta", $data);
     }
 }
