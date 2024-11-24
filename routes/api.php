@@ -15,33 +15,42 @@ use App\Http\Controllers\VentaController;
 use App\Http\Controllers\ReporteLibretaController;
 
 
+
 // Carga Artículos
-Route::prefix('carga_articulo')->group(function () {
+Route::prefix('cargas/{id}/articulos')->group(function () {
     Route::get('/', [CargaArticuloController::class, 'index'])->name('cargas.articulos.index');
     Route::post('/', [CargaArticuloController::class, 'store'])->name('cargas.articulos.store');
+});
+
+Route::prefix('carga_articulo')->group(function () {
     Route::get('/{articuloId}', [CargaArticuloController::class, 'show'])->name('cargas.articulos.show');
     Route::put('/{articuloId}', [CargaArticuloController::class, 'update'])->name('cargas.articulos.update');
     Route::delete('/{articuloId}', [CargaArticuloController::class, 'destroy'])->name('cargas.articulos.destroy');
 });
 
 // Traspaso Artículos
-Route::prefix('traspaso_articulo')->group(function () {
+Route::prefix('traspasos/{id}/articulos')->group(function () {
     Route::get('/', [TraspasoArticuloController::class, 'index'])->name('traspasos.articulos.index');
     Route::post('/', [TraspasoArticuloController::class, 'store'])->name('traspasos.articulos.store');
+});
+
+Route::prefix('traspaso_articulo')->group(function () {
     Route::get('/{articuloId}', [TraspasoArticuloController::class, 'show'])->name('traspasos.articulos.show');
     Route::put('/{articuloId}', [TraspasoArticuloController::class, 'update'])->name('traspasos.articulos.update');
     Route::delete('/{articuloId}', [TraspasoArticuloController::class, 'destroy'])->name('traspasos.articulos.destroy');
 });
 
 // Venta Artículos
-Route::prefix('venta_articulo')->group(function () {
+Route::prefix('ventas/{id}/articulos')->group(function () {
     Route::get('/', [VentaArticuloController::class, 'index'])->name('ventas.articulos.index');
     Route::post('/', [VentaArticuloController::class, 'store'])->name('ventas.articulos.store');
+});
+
+Route::prefix('venta_articulo')->group(function () {
     Route::get('/{articuloId}', [VentaArticuloController::class, 'show'])->name('ventas.articulos.show');
     Route::put('/{articuloId}', [VentaArticuloController::class, 'update'])->name('ventas.articulos.update');
     Route::delete('/{articuloId}', [VentaArticuloController::class, 'destroy'])->name('ventas.articulos.destroy');
 });
-
 // Reportes
 Route::get('reportes/vendedores/{id}/libreta', [ReporteLibretaController::class, 'reporteVendedores'])
     ->name('reportes.vendedores.libreta');
