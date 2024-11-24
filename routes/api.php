@@ -12,6 +12,7 @@ use App\Http\Controllers\TraspasoArticuloController;
 use App\Http\Controllers\TipoArticuloController;
 use App\Http\Controllers\VentaArticuloController;
 use App\Http\Controllers\VentaController;
+use App\Http\Controllers\ReporteLibretaController;
 
 
 
@@ -24,6 +25,8 @@ Route::delete("traspaso_articulo/{id}", [TraspasoArticuloController::class,"dest
 
 Route::resource("ventas/{id}/articulos", VentaArticuloController::class);
 Route::delete("venta_articulo/{id}", [VentaArticuloController::class,"destroy"]);
+
+Route::get("reportes/vendedores/{id}/libreta", [ReporteLibretaController::class, "reporteVendedores"]);
 
 Route::resource("almacenes", AlmacenController::class );
 Route::resource("articulos", ArticuloController::class );
