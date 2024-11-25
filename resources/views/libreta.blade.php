@@ -17,6 +17,10 @@
         
         @php
             $fechaAnterior = null;  // Variable para almacenar la fecha anterior
+            $total_precio = 0;
+            $total_comision = 0;
+            $total_a_pagar =0 ;
+            $total_enganche =0;
         @endphp
         @foreach ($ventas as $venta)
 
@@ -66,33 +70,46 @@
                     @foreach($venta["articulos"] as $articulo)
                         {{$articulo["pivot"]["cantidad"]}} {{$articulo["tipoArticulo"]["nombre"]}} <br>
                     @endforeach
-                </th>
-                <th>
+                </td>
+                <td>
                     {{$venta["total"]}}
-                </th>
-                <th>
+                </td>
+                <td>
                     {{$venta["porcentaje"]}}
-                </th>
-                <th>
+                </td>
+                <td>
                     {{$venta["comision"]}}
-                </th>
-                <th>
+                </td>
+                <td>
                     {{$venta["enganche"]}}
-                </th>
-                <th>
+                </td>
+                <td>
                     {{$venta["a_pagar"]}}
-                </th>
+                </td>
             </tr>
             <tr>
                 <td colspan="7">
                     <hr>
                 </td>
             </tr>
+            
             @php
                 $fechaAnterior = $fechaVenta;  // Actualiza la fecha anterior
+                $total_comision += $venta["comision"];
+                $total_a_pagar += $venta["a_pagar"];
+                $total_enganche += $venta["enganche"];
+                $total_precio =  $venta["total"];
             @endphp
         @endforeach
-
+            <tr>
+                <td></td>
+                <td></td>
+                <td>{{$total_precio}}</td>
+                <td></td>
+                <td>{{$total_comision}}</td>
+                <td>{{$total_enganche}}</td>
+                <td>{{$total_a_pagar}}</td>
+            </tr>
         </table>
     </body>
 </html>
