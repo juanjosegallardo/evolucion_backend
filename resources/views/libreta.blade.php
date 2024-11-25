@@ -1,16 +1,16 @@
 <html>
     <head>
         <style>
-            body{
+            body, *{
 
-                font: arial;
+                font-family: Arial, Helvetica, sans-serif;
                 font-size: 10px;
             }
         </style>
     </head>
     <body>
         
-        {{$vendedor["nombre"]}}
+        <h1>{{$vendedor["nombre"]}}</h1>
         <br>
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
         
@@ -28,7 +28,7 @@
                 <!-- Mostrar un encabezado con la fecha solo cuando cambie -->
                 <tr>
                     <th colspan="7" class="text-center" style="font-weight: bold;">
-                        <h1>Fecha: {{ $fechaVenta }}</h1>
+                        <h2>Fecha: {{ $fechaVenta }}</h2>
                     </th>
                 </tr>
                 <tr>
@@ -82,6 +82,11 @@
                 <th>
                     {{$venta["a_pagar"]}}
                 </th>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <hr>
+                </td>
             </tr>
             @php
                 $fechaAnterior = $fechaVenta;  // Actualiza la fecha anterior
