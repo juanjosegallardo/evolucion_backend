@@ -71,19 +71,19 @@
                         {{$articulo["pivot"]["cantidad"]}} {{$articulo["tipoArticulo"]["nombre"]}} <br>
                     @endforeach
                 </td>
-                <td>
+                <td align="right">
                     {{$venta["total"]}}
                 </td>
-                <td>
+                <td align="right">
                     {{$venta["porcentaje"]}}
                 </td>
-                <td>
+                <td align="right">
                     {{$venta["comision"]}}
                 </td>
-                <td>
+                <td align="right">
                     {{$venta["enganche"]}}
                 </td>
-                <td>
+                <td align="right">
                     {{$venta["a_pagar"]}}
                 </td>
             </tr>
@@ -104,11 +104,11 @@
             <tr>
                 <td></td>
                 <td></td>
-                <td>{{$total_precio}}</td>
+                <td  align="right">{{$total_precio}}</td>
                 <td></td>
-                <td>{{$total_comision}}</td>
-                <td>{{$total_enganche}}</td>
-                <td>{{$total_a_pagar}}</td>
+                <td align="right">{{$total_comision}}</td>
+                <td align="right">{{$total_enganche}}</td>
+                <td align="right">{{$total_a_pagar}}</td>
             </tr>
         </table>
     </body>
