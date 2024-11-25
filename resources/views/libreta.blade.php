@@ -73,19 +73,19 @@
                 </td>
                 <td align="right">
                     
-                    {{ number_format($venta["total"], 2, ',', '.') }}
+                    ${{ number_format($venta["total"], 2, '.', ',') }}
                 </td>
                 <td align="right">
-                    {{$venta["porcentaje"]}}
+                    ${{$venta["porcentaje"]}}
                 </td>
                 <td align="right">
-                    {{ number_format($venta["comision"], 2, ',', '.') }}
+                    ${{ number_format($venta["comision"], 2, '.', ',') }}
                 </td>
                 <td align="right">
-                    {{ number_format($venta["enganche"], 2, ',', '.') }}
+                    ${{ number_format($venta["enganche"], 2, '.', ',') }}
                 </td>
                 <td align="right">
-                    {{ number_format($venta["a_pagar"], 2, ',', '.') }}
+                    ${{ number_format($venta["a_pagar"], 2, '.', ',') }}
                 </td>
             </tr>
             <tr>
@@ -105,11 +105,11 @@
             <tr>
                 <td></td>
                 <td></td>
-                <td  align="right">     {{ number_format($total_precio, 2, ',', '.') }}</td>
+                <td  align="right">${{ number_format($total_precio, 2, '.', ',') }}</td>
                 <td></td>
-                <td align="right"> {{ number_format($total_comision, 2, ',', '.') }}</td>
-                <td align="right"> {{ number_format($total_enganche, 2, ',', '.') }}</td>
-                <td align="right"> {{ number_format($total_a_pagar, 2, ',', '.') }}</td>
+                <td align="right">${{ number_format($total_comision, 2, '.', ',') }}</td>
+                <td align="right">${{ number_format($total_enganche, 2, '.', ',') }}</td>
+                <td align="right">${{ number_format($total_a_pagar, 2, '.', ',') }}</td>
             </tr>
         </table>
     </body>
