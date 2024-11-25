@@ -1,31 +1,7 @@
 {{$vendedor["nombre"]}}
 <br>
 <table border="1" width="100%" cellspacing="0" cellpadding="0">
-    <tr>
-        <th>
-            Fecha
-        </th>
-        <th>
-            Articulos
-        </th>
-        
-        <th>
-            Precio
-        </th>
-        <th>
-            %
-        </th>
-        <th>
-            Comisión
-        </th>
-        <th>
-            Enganche
-        </th>
-        <th>
-            A Pagar
-        </th>
-    </tr>
-
+   
    
 @php
     $fechaAnterior = null;  // Variable para almacenar la fecha anterior
@@ -33,7 +9,7 @@
 @foreach ($ventas as $venta)
 
     @php
-        $fechaVenta = \Carbon\Carbon::parse($venta->created_at)->format('d/m/Y');  // Formato de la fecha
+        $fechaVenta = \Carbon\Carbon::parse($venta->fecha)->format('d/m/Y');  // Formato de la fecha
     @endphp
     
     @if ($fechaVenta != $fechaAnterior)
@@ -43,6 +19,31 @@
                 Fecha: {{ $fechaVenta }}
             </th>
         </tr>
+        <tr>
+            <th>
+                Fecha
+            </th>
+            <th>
+                Articulos
+            </th>
+            
+            <th>
+                Precio
+            </th>
+            <th>
+                %
+            </th>
+            <th>
+                Comisión
+            </th>
+            <th>
+                Enganche
+            </th>
+            <th>
+                A Pagar
+            </th>
+        </tr>
+    
     @endif
 
     <tr>
