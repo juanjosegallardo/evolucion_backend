@@ -16,8 +16,8 @@ class ReporteLibretaController extends Controller
 
         $data["vendedor"]= Vendedor::find($id);
         $pdf = PDF::loadView("libreta", $data);
-        return $pdf->download("libreta.pdf");
-        //return $pdf->stream("libreta.pdf");
+        return $pdf->stream("libreta.pdf");
+        //return $pdf->download("libreta.pdf");
         //return $data;
         //return view("libreta", $data);
     }
