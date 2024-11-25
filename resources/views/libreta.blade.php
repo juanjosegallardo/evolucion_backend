@@ -98,7 +98,7 @@
                 $total_comision += $venta["comision"];
                 $total_a_pagar += $venta["a_pagar"];
                 $total_enganche += $venta["enganche"];
-                $total_precio =  $venta["total"];
+                $total_precio +=  $venta["total"];
             @endphp
         @endforeach
             <tr>
