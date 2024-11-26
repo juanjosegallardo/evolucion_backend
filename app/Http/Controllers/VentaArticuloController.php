@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Services\VentaArticuloService;
 use App\Models\VentaArticulo;
 use App\Models\Venta;
+use Illuminate\Support\Facades\DB;
+
 
 class VentaArticuloController extends Controller
 {
@@ -20,7 +22,10 @@ class VentaArticuloController extends Controller
 
     public function store(Request $request, $id)
     {
-        $this->ventaArticuloService->agregar($id, $request->codigo, $request->cantidad);
+        DB::transaction(function() use($request,$id) {
+            $this->ventaArticuloService->agregar($id, $request->codigo, $request->cantidad);
+
+        });
         return Venta::with(["articulos"=>function($q){
             $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo");
         }])->find($id);
