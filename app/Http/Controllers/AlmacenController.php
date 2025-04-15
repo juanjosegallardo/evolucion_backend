@@ -13,7 +13,7 @@ class AlmacenController extends Controller
      */
     public function index()
     {
-        throw new Exception("Test Exception");
+       // throw new Exception("Test Exception");
         return Almacen::all();
     }
 
