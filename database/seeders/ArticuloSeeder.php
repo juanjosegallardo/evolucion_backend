@@ -5,6 +5,9 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Articulo;
+use App\Models\TipoArticulo;
+use Illuminate\Support\Str;
+
 class ArticuloSeeder extends Seeder
 {
     /**
@@ -12,18 +15,25 @@ class ArticuloSeeder extends Seeder
      */
     public function run(): void
     {
-        $articulos = [
-            ["codigo"=>"23423423434", "nombre"=>"Alaciadora de plastico","tipo_articulo_id"=>1, "cantidad"=>0, "cantidad_defectuosos"=>1],
-            ["codigo"=>"33242342344", "nombre"=>"Alaciadora de metal",  "tipo_articulo_id"=>1, "cantidad"=>0, "cantidad_defectuosos"=>3],
-            ["codigo"=>"33242342344", "nombre"=>"Marmol 12 color negra",  "tipo_articulo_id"=>2, "cantidad"=>0, "cantidad_defectuosos"=>3],
-            ["codigo"=>"34234234234", "nombre"=>"Marmol 12 color rosa", "tipo_articulo_id"=>2, "cantidad"=>0, "cantidad_defectuosos"=>5],
+$tipos = TipoArticulo::all();
 
-        ];
+        foreach ($tipos as $tipo) {
 
-        foreach ($articulos as $articulo) {
-            Articulo::create($articulo);
+            // Evitar duplicados si ya existe un GENERICO para ese tipo
+            $existe = Articulo::where('tipo_articulo_id', $tipo->id)
+                ->where('nombre', 'GENERICO')
+                ->exists();
+
+            if (!$existe) {
+                Articulo::create([
+                    'codigo' => Str::upper(Str::random(10)), // código aleatorio
+                    'nombre' => 'GENERICO',
+                    'tipo_articulo_id' => $tipo->id,
+                    'cantidad' => 0,
+                    'cantidad_defectuosos' => 0,
+                ]);
+            }
         }
-
 
     }
 }

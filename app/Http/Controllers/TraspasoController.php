@@ -46,7 +46,7 @@ class TraspasoController extends Controller
     public function show($id)
     {
         return Traspaso::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo");
+            $q->withPivot(["id","cantidad", "defectuosos"])->with("tipoArticulo");
         }])->with("origen")->with("destino")->find($id);
     }
 

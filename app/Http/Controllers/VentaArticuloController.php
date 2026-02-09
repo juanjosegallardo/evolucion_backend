@@ -23,20 +23,24 @@ class VentaArticuloController extends Controller
     public function store(Request $request, $id)
     {
         DB::transaction(function() use($request,$id) {
-            $this->ventaArticuloService->agregar($id, $request->codigo, $request->cantidad);
+            $venta = Venta::find($id);
+            $articulo=Articulo::where("codigo","=",$request->codigo)->first();
+            $venta->articulos()->attach($articulo->id, ["cantidad"=>$request->cantidad, "defectuosos"=>$request->defectuosos]);
+            $venta->increment("cantidad", $request->cantidad);
 
         });
         return Venta::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo");
+            $q->withPivot(["id","cantidad", "defectuosos"])->with("tipoArticulo");
         }])->find($id);
     }
 
     public function destroy( $id)
     {
         $venta_articulo = VentaArticulo::find($id);
-        $this->ventaArticuloService->quitar($id);
+        $venta = Venta::find($venta_articulo->venta_id);
+        $venta->decrement("cantidad", $venta_articulo->cantidad);
         return Venta::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo");
+            $q->withPivot(["id","cantidad", "defectuosos"])->with("tipoArticulo");
         }])->find($venta_articulo->venta_id);
     }
 }

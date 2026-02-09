@@ -45,7 +45,7 @@ class CargaController extends Controller
     public function show($id)
     {
         return Carga::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
+            $q->withPivot(["id","cantidad", "defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
         }])->with("almacen")->find($id);
     }
 

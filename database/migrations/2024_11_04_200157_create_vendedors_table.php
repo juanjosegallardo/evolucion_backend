@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\User;
 
 return new class extends Migration
 {
@@ -14,6 +15,7 @@ return new class extends Migration
         Schema::create('vendedores', function (Blueprint $table) {
             $table->id();
             $table->string("nombre");
+            $table->foreignIdFor(User::class)->constrained();
             $table->softDeletes();
             $table->timestamps();
         });

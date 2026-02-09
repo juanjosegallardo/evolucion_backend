@@ -22,10 +22,16 @@ return new class extends Migration
             $table->decimal('a_pagar',8,2 );
             $table->integer("operacion")->nullable(); //para relacionar con el otro sistema
             $table->integer("cantidad");
-            $table->date("fecha");
+            $table->date("fecha");//para saber el dia de la semana que vendio
             $table->string("tipo");
             $table->foreignIdFor(Almacen::class)->constrained();
             $table->foreignIdFor(Vendedor::class)->constrained();
+            $table->enum('estado', [
+                'en_captura',
+                'solicitado',     // creado, pendiente de aprobación
+                'validado',       // aprobado
+                'rechazado'
+            ])->default('en_captura');
             $table->timestamps();
         });
     }

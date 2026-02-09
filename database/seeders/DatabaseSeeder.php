@@ -23,8 +23,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AlmacenSeeder::class,
             TipoArticuloSeeder::class,
-            //ArticuloSeeder::class,dd
+            ArticuloSeeder::class,
            // CargaSeeder::class,
+            UsuarioSeeder::class,
             VendedorSeeder::class
         ]);
     }

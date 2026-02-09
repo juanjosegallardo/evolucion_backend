@@ -19,6 +19,12 @@ return new class extends Migration
             $table->foreignIdFor(Almacen::class, 'almacen_destino_id')->constrained()->onDelete('cascade');
             $table->integer("cantidad");
             $table->integer("operacion")->nullable();
+            $table->enum('estado', [
+                'en_captura',
+                'solicitado',     // creado, pendiente de aprobación
+                'validado',       // aprobado
+                'rechazado'
+            ])->default('en_captura');
             $table->timestamps();
         });
     }

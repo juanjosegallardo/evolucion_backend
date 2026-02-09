@@ -25,19 +25,20 @@ class CargaArticuloController extends Controller
     public function store(Request $request, $id)
     {
         DB::transaction(function() use($request,$id) {
-            $this->cargaArticuloService->agregar($id, $request->codigo, $request->cantidad);
+            $carga = Carga::find($id);
+            $articulo=Articulo::where("codigo","=",$request->codigo)->first();
+            $carga->articulos()->attach($articulo->id, ["cantidad"=>$request->cantidad, "defectuoso"=>$request->defectuosos]);
         });
         return Carga::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
+            $q->withPivot(["id","cantidad", "defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
         }])->find($id);
     }
 
     public function destroy( $id)
     {
         $carga_articulo = CargaArticulo::find($id);
-        $this->cargaArticuloService->quitar($id);
         return Carga::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
+            $q->withPivot(["id","cantidad", "defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
         }])->find($carga_articulo->carga_id);
     }
 }

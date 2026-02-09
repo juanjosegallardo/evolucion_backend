@@ -14,12 +14,12 @@ class VendedorSeeder extends Seeder
     public function run(): void
     {
         $vendedores = [
-            ["nombre"=>"Camilo"],
-            ["nombre"=>"Santos"],
-            ["nombre"=>"Zabdiel"],
-            ["nombre"=>"Agustin"],
-            ["nombre"=>"Ramón"],
-            ["nombre"=>"Carlos"]
+            ["nombre"=>"Camilo", "user_id" =>1],
+            ["nombre"=>"Santos", "user_id" =>1],
+            ["nombre"=>"Zabdiel", "user_id" =>1],
+            ["nombre"=>"Agustin", "user_id" =>1],
+            ["nombre"=>"Ramón", "user_id" =>1],
+            ["nombre"=>"Carlos", "user_id" =>1]
         ];
 
         foreach($vendedores as $vendedor)
