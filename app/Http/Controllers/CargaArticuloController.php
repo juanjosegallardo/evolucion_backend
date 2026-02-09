@@ -27,11 +27,16 @@ class CargaArticuloController extends Controller
         DB::transaction(function() use($request,$id) {
             $carga = Carga::find($id);
             $articulo=Articulo::where("codigo","=",$request->codigo)->first();
-            $carga->articulos()->attach($articulo->id, ["cantidad"=>$request->cantidad, "defectuosos"=>$request->defectuosos]);
+            if($request->defectuosos){
+                $carga->articulos()->attach($articulo->id, ["cantidad"=>0, "cantidad_defectuosos"=>$request->cantidad]);
+          
+            } else {
+                $carga->articulos()->attach($articulo->id, ["cantidad"=>$request->cantidad, "cantidad_defectuosos"=>0]);
+            }
             $carga->increment("cantidad", $request->cantidad);
         });
         return Carga::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
+            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
         }])->find($id);
     }
 

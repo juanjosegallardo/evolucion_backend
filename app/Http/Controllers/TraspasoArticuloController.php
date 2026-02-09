@@ -15,12 +15,18 @@ class TraspasoArticuloController extends Controller
         DB::transaction(function() use($request,$id) {
 
             $traspaso = Traspaso::find($id);
-            $traspaso->articulos()->attach($articulo->id, ["cantidad"=>$request->cantidad,"defectuosos"=>$request->defectuosos]);
+            if($request->defectuosos){
+                $traspaso->articulos()->attach($request->articulo_id, ["cantidad"=>0, "cantidad_defectuosos"=>$request->cantidad]);
+          
+            } else {
+                $traspaso->articulos()->attach($request->articulo_id, ["cantidad"=>$request->cantidad, "defectuosos"=>0]);
+            }
+
             $traspaso->increment("cantidad", $request->cantidad);
            
         });
         return Traspaso::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "defectuosos"])->with("tipoArticulo");
+            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo");
         }])->find($id);
     }
 

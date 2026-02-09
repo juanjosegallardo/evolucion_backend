@@ -26,12 +26,17 @@ class VentaArticuloController extends Controller
         DB::transaction(function() use($request,$id) {
             $venta = Venta::find($id);
             $articulo=Articulo::where("codigo","=",$request->codigo)->first();
-            $venta->articulos()->attach($articulo->id, ["cantidad"=>$request->cantidad, "defectuosos"=>$request->defectuosos]);
+            if($request->defectuosos){
+                $venta->articulos()->attach($articulo->id, ["cantidad"=>0, "cantidad_defectuosos"=>$request->cantidad]);
+          
+            } else {
+                $venta->articulos()->attach($articulo->id, ["cantidad"=>$request->cantidad, "cantidad_defectuosos"=>0]);
+            }
             $venta->increment("cantidad", $request->cantidad);
 
         });
         return Venta::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "defectuosos"])->with("tipoArticulo");
+            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo");
         }])->find($id);
     }
 

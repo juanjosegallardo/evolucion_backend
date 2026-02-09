@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(Carga::class)->constrained();
             $table->foreignIdFor(Articulo::class)->constrained();
             $table->integer("cantidad");
-            $table->boolean("defectuosos");
+            $table->boolean("cantidad_defectuosos");
             $table->timestamps();
         });
     }
