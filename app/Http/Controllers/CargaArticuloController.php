@@ -29,11 +29,11 @@ class CargaArticuloController extends Controller
             $articulo=Articulo::where("codigo","=",$request->codigo)->first();
             if($request->defectuosos){
                 $carga->articulos()->attach($articulo->id, ["cantidad"=>0, "cantidad_defectuosos"=>$request->cantidad]);
+                $carga->increment("cantidad_defectuosos", $request->cantidad);
           
             } else {
                 $carga->articulos()->attach($articulo->id, ["cantidad"=>$request->cantidad, "cantidad_defectuosos"=>0]);
-            }
-            $carga->increment("cantidad", $request->cantidad);
+                $carga->increment("cantidad", $request->cantidad);}
         });
         return Carga::with(["articulos"=>function($q){
             $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
@@ -45,9 +45,10 @@ class CargaArticuloController extends Controller
         $carga_articulo = CargaArticulo::find($id);
         $carga = Carga::find($carga_articulo->carga_id);
         $carga->decrement("cantidad", $carga_articulo->cantidad);
+        $carga->decrement("cantidad_defectuosos", $carga_articulo->cantidad_defectuosos);
         $carga_articulo->delete();
         return Carga::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
+            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
         }])->find($carga_articulo->carga_id);
     }
 }

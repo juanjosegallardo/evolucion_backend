@@ -34,7 +34,6 @@ class CargaController extends Controller
         $carga->almacen_id = $request->almacen_id;
         $carga->notas = $request->notas;
         $carga->save();
-
         return Carga::with("almacen")->find($carga->id);//hay que regresar with articulos
 
     }
@@ -45,7 +44,7 @@ class CargaController extends Controller
     public function show($id)
     {
         return Carga::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
+            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
         }])->with("almacen")->find($id);
     }
 

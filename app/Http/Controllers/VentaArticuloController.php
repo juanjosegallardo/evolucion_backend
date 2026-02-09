@@ -27,12 +27,13 @@ class VentaArticuloController extends Controller
             $venta = Venta::find($id);
             $articulo=Articulo::where("codigo","=",$request->codigo)->first();
             if($request->defectuosos){
+                $venta->increment("cantidad_defectuosos", $request->cantidad);
                 $venta->articulos()->attach($articulo->id, ["cantidad"=>0, "cantidad_defectuosos"=>$request->cantidad]);
           
             } else {
+                $venta->increment("cantidad", $request->cantidad);
                 $venta->articulos()->attach($articulo->id, ["cantidad"=>$request->cantidad, "cantidad_defectuosos"=>0]);
             }
-            $venta->increment("cantidad", $request->cantidad);
 
         });
         return Venta::with(["articulos"=>function($q){
@@ -45,9 +46,10 @@ class VentaArticuloController extends Controller
         $venta_articulo = VentaArticulo::find($id);
         $venta = Venta::find($venta_articulo->venta_id);
         $venta->decrement("cantidad", $venta_articulo->cantidad);
+        $venta->decrement("cantidad_defectuosos", $venta_articulo->cantidad_defectuosos);
         $venta_articulo->delete();
         return Venta::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "defectuosos"])->with("tipoArticulo");
+            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo");
         }])->find($venta_articulo->venta_id);
     }
 }

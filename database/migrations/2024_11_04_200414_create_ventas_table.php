@@ -21,7 +21,8 @@ return new class extends Migration
             $table->decimal('comision',8,2 );
             $table->decimal('a_pagar',8,2 );
             $table->integer("operacion")->nullable(); //para relacionar con el otro sistema
-            $table->integer("cantidad");
+            $table->integer("cantidad")->default(0);
+            $table->integer("cantidad_defectuosos")->default(0);
             $table->date("fecha");//para saber el dia de la semana que vendio
             $table->string("tipo");
             $table->foreignIdFor(Almacen::class)->constrained();

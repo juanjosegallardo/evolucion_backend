@@ -11,18 +11,17 @@ use Illuminate\Support\Facades\DB;
 class TraspasoArticuloController extends Controller
 {
     public function store(Request $request, $id)
-    {
-        DB::transaction(function() use($request,$id) {
-
+    {  
+        DB::transaction(function() use($request,$id) {;
             $traspaso = Traspaso::find($id);
+            $articulo=Articulo::where("codigo","=",$request->codigo)->first();
             if($request->defectuosos){
-                $traspaso->articulos()->attach($request->articulo_id, ["cantidad"=>0, "cantidad_defectuosos"=>$request->cantidad]);
-          
+                $traspaso->articulos()->attach($articulo->id, ["cantidad"=>0, "cantidad_defectuosos"=>$request->cantidad]);
+                $traspaso->increment("cantidad_defectuosos", $request->cantidad);
             } else {
-                $traspaso->articulos()->attach($request->articulo_id, ["cantidad"=>$request->cantidad, "defectuosos"=>0]);
+                $traspaso->articulos()->attach($articulo->id, ["cantidad"=>$request->cantidad, "cantidad_defectuosos"=>0]);
+                $traspaso->increment("cantidad", $request->cantidad);
             }
-
-            $traspaso->increment("cantidad", $request->cantidad);
            
         });
         return Traspaso::with(["articulos"=>function($q){
@@ -35,11 +34,12 @@ class TraspasoArticuloController extends Controller
         $traspaso_articulo = TraspasoArticulo::find($id);
 
         $traspaso = Traspaso::find($traspaso_articulo->traspaso_id);
-        $traspaso->decrement("cantidad", $traspaso->cantidad);
+        $traspaso->decrement("cantidad", $traspaso_articulo->cantidad);
+        $traspaso->decrement("cantidad_defectuosos", $traspaso_articulo->cantidad_defectuosos);
         $traspaso_articulo->delete();
         
         return Traspaso::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "defectuosos"])->with("tipoArticulo");
+            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo");
         }])->find($traspaso->id);
     }
 }

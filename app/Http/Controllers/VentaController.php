@@ -60,7 +60,7 @@ class VentaController extends Controller
     {
 
         return Venta::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "defectuosos"])->with("tipoArticulo");
+            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo");
         }])->with("almacen")->with("vendedor")->find($id);
 
     }

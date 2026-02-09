@@ -17,7 +17,8 @@ return new class extends Migration
 
             $table->foreignIdFor(Almacen::class, 'almacen_origen_id')->constrained()->onDelete('cascade');
             $table->foreignIdFor(Almacen::class, 'almacen_destino_id')->constrained()->onDelete('cascade');
-            $table->integer("cantidad");
+            $table->integer("cantidad")->default(0);
+            $table->integer("cantidad_defectuosos")->default(0);
             $table->integer("operacion")->nullable();
             $table->enum('estado', [
                 'en_captura',

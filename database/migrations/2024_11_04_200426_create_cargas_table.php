@@ -15,7 +15,8 @@ return new class extends Migration
         Schema::create('cargas', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Almacen::class)->constrained();
-            $table->integer("cantidad");
+            $table->integer("cantidad")->default(0);
+            $table->integer("cantidad_defectuosos")->default(0);
             $table->integer("operacion")->nullable();
             $table->timestamps();
         });
