@@ -27,7 +27,8 @@ class CargaArticuloController extends Controller
         DB::transaction(function() use($request,$id) {
             $carga = Carga::find($id);
             $articulo=Articulo::where("codigo","=",$request->codigo)->first();
-            $carga->articulos()->attach($articulo->id, ["cantidad"=>$request->cantidad, "defectuoso"=>$request->defectuosos]);
+            $carga->articulos()->attach($articulo->id, ["cantidad"=>$request->cantidad, "defectuosos"=>$request->defectuosos]);
+            $carga->increment("cantidad", $request->cantidad);
         });
         return Carga::with(["articulos"=>function($q){
             $q->withPivot(["id","cantidad", "defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
@@ -37,6 +38,9 @@ class CargaArticuloController extends Controller
     public function destroy( $id)
     {
         $carga_articulo = CargaArticulo::find($id);
+        $carga = Carga::find($carga_articulo->carga_id);
+        $carga->decrement("cantidad", $carga_articulo->cantidad);
+        $carga_articulo->delete();
         return Carga::with(["articulos"=>function($q){
             $q->withPivot(["id","cantidad", "defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
         }])->find($carga_articulo->carga_id);

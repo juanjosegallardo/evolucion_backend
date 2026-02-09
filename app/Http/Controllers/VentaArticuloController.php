@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\VentaArticuloService;
 use App\Models\VentaArticulo;
 use App\Models\Venta;
+use App\Models\Articulo;
 use Illuminate\Support\Facades\DB;
 
 
@@ -39,6 +40,7 @@ class VentaArticuloController extends Controller
         $venta_articulo = VentaArticulo::find($id);
         $venta = Venta::find($venta_articulo->venta_id);
         $venta->decrement("cantidad", $venta_articulo->cantidad);
+        $venta_articulo->delete();
         return Venta::with(["articulos"=>function($q){
             $q->withPivot(["id","cantidad", "defectuosos"])->with("tipoArticulo");
         }])->find($venta_articulo->venta_id);
