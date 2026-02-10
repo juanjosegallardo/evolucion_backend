@@ -20,19 +20,18 @@ return new class extends Migration
             $table->decimal('enganche', 8, 2);
             $table->decimal('comision',8,2 );
             $table->decimal('a_pagar',8,2 );
-            $table->integer("operacion")->nullable(); //para relacionar con el otro sistema
-            $table->integer("cantidad")->default(0);
-            $table->integer("cantidad_defectuosos")->default(0);
+            $table->unsignedInteger("cantidad")->default(0);
+            $table->unsignedInteger("cantidad_defectuosos")->default(0);
             $table->date("fecha");//para saber el dia de la semana que vendio
             $table->string("tipo");
             $table->foreignIdFor(Almacen::class)->constrained();
             $table->foreignIdFor(Vendedor::class)->constrained();
             $table->enum('estado', [
-                'en_captura',
-                'solicitado',     // creado, pendiente de aprobación
-                'validado',       // aprobado
-                'rechazado'
-            ])->default('en_captura');
+                'EN_CAPTURA',     // en proceso de creación
+                'SOLICITADO',     // creado, pendiente de aprobación
+                'VALIDADO',       // aprobado
+                'RECHAZADO'
+            ])->default('EN_CAPTURA');
             $table->timestamps();
         });
     }

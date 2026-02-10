@@ -18,8 +18,8 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Descarga::class)->constrained();
             $table->foreignIdFor(Articulo::class)->constrained();
-            $table->integer("cantidad");
-            $table->boolean("defectuosos");
+            $table->unsignedInteger("cantidad");
+            $table->unsignedInteger("defectuosos");
         });
     }
 

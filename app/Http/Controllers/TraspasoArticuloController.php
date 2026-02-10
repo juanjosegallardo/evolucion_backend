@@ -42,4 +42,29 @@ class TraspasoArticuloController extends Controller
             $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo");
         }])->find($traspaso->id);
     }
+
+    public function solicitarValidacion($id)
+    {
+        $traspaso = Traspaso::find($id);
+        $traspaso->estado = "SOLICITADO";
+        $traspaso->save();
+        return $traspaso;
+    }   
+
+    public function validar($id)
+    {
+        $traspaso = Traspaso::find($id);
+        $traspaso->estado = "VALIDADO";
+        $traspaso->save();
+        return $traspaso;
+    }
+
+    public function rechazar($id)
+    {
+        $traspaso = Traspaso::find($id);
+        $traspaso->estado = "RECHAZADO";
+        $traspaso->save();
+        return $traspaso;
+    }
+
 }

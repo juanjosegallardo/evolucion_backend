@@ -80,6 +80,9 @@ Route::prefix('cargas')->group(function () {
     Route::get('/{id}', [CargaController::class, 'show'])->name('cargas.show');
     Route::put('/{id}', [CargaController::class, 'update'])->name('cargas.update');
     Route::delete('/{id}', [CargaController::class, 'destroy'])->name('cargas.destroy');
+    Route::post('/{id}/solicitar-validacion', [CargaController::class, 'solicitarValidacion'])->name('cargas.solicitar_validacion');   
+    Route::post('/{id}/validar', [CargaController::class, 'validar'])->name('cargas.validar');
+    Route::post('/{id}/rechazar', [CargaController::class, 'rechazar'])->name('cargas.rechazar');
 });
 
 // Vendedores
@@ -98,6 +101,9 @@ Route::prefix('traspasos')->group(function () {
     Route::get('/{id}', [TraspasoController::class, 'show'])->name('traspasos.show');
     Route::put('/{id}', [TraspasoController::class, 'update'])->name('traspasos.update');
     Route::delete('/{id}', [TraspasoController::class, 'destroy'])->name('traspasos.destroy');
+    Route::post('/{id}/solicitar-validacion', [TraspasoArticuloController::class, 'solicitarValidacion'])->name('traspasos.solicitar_validacion');
+    Route::post('/{id}/validar', [TraspasoArticuloController::class, 'validar'])->name('traspasos.validar');
+    Route::post('/{id}/rechazar', [TraspasoArticuloController::class, 'rechazar'])->name('traspasos.rechazar');
 });
 
 // Ventas
@@ -107,6 +113,9 @@ Route::prefix('ventas')->group(function () {
     Route::get('/{id}', [VentaController::class, 'show'])->name('ventas.show');
     Route::put('/{id}', [VentaController::class, 'update'])->name('ventas.update');
     Route::delete('/{id}', [VentaController::class, 'destroy'])->name('ventas.destroy');
+    Route::post('/{id}/solicitar-validacion', [VentaController::class, 'solicitarValidacion'])->name('ventas.solicitar_validacion');
+    Route::post('/{id}/validar', [VentaController::class, 'validar'])->name('ventas.validar');
+    Route::post('/{id}/rechazar', [VentaController::class, 'rechazar'])->name('ventas.rechazar');
 });
 
 // Tipos de Artículos

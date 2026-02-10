@@ -15,9 +15,14 @@ return new class extends Migration
         Schema::create('cargas', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Almacen::class)->constrained();
-            $table->integer("cantidad")->default(0);
-            $table->integer("cantidad_defectuosos")->default(0);
-            $table->integer("operacion")->nullable();
+            $table->unsignedInteger("cantidad")->default(0);
+            $table->unsignedInteger("cantidad_defectuosos")->default(0);
+            $table->enum('estado', [
+                'EN_CAPTURA',     // en proceso de creación
+                'SOLICITADO',     // creado, pendiente de aprobación
+                'VALIDADO',       // aprobado
+                'RECHAZADO'
+            ])->default('EN_CAPTURA');
             $table->timestamps();
         });
     }

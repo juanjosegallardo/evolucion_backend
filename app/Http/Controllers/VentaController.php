@@ -89,4 +89,29 @@ class VentaController extends Controller
         $venta= Venta::find($id);
         $venta->delete();
     }
+
+    public function solicitarValidacion($id)
+    {
+        $venta = Venta::find($id);
+        $venta->estado = "SOLICITADO";
+        $venta->save();
+        return $venta;
+    }   
+
+    public function validar($id)
+    {
+        $venta = Venta::find($id);
+        $venta->estado = "VALIDADO";
+        $venta->save();
+        return $venta;
+    }
+
+    public function rechazar($id)
+    {
+        $venta = Venta::find($id);
+        $venta->estado = "RECHAZADO";
+        $venta->save();
+        return $venta;
+    }
 }
+

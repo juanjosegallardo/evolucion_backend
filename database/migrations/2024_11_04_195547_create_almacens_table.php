@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('almacenes', function (Blueprint $table) {
             $table->id();
             $table->string("nombre");
-            $table->integer("cantidad");
+            $table->integer("cantidad")->default(0);
+            $table->integer("cantidad_defectuosos")->default(0);
             $table->softDeletes();
             $table->timestamps();
         });
