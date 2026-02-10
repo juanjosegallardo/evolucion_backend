@@ -20,11 +20,11 @@ return new class extends Migration
             $table->unsignedInteger("cantidad")->default(0);
             $table->unsignedInteger("cantidad_defectuosos")->default(0);
             $table->enum('estado', [
-                'en_captura',
-                'solicitado',     // creado, pendiente de aprobación
-                'validado',       // aprobado
-                'rechazado'
-            ])->default('en_captura');
+                'EN_CAPTURA',     // en proceso de creación
+                'SOLICITADO',     // creado, pendiente de aprobación
+                'VALIDADO',       // aprobado
+                'RECHAZADO'
+            ])->default('EN_CAPTURA');
             $table->timestamps();
         });
     }

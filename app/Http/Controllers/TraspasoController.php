@@ -74,4 +74,29 @@ class TraspasoController extends Controller
         $traspaso = Traspaso::find($id);
         $traspaso->delete();
     }
+
+    
+    public function solicitarValidacion($id)
+    {
+        $traspaso = Traspaso::find($id);
+        $traspaso->estado = "SOLICITADO";
+        $traspaso->save();
+        return $traspaso;
+    }   
+
+    public function validar($id)
+    {
+        $traspaso = Traspaso::find($id);
+        $traspaso->estado = "VALIDADO";
+        $traspaso->save();
+        return $traspaso;
+    }
+
+    public function rechazar($id)
+    {
+        $traspaso = Traspaso::find($id);
+        $traspaso->estado = "RECHAZADO";
+        $traspaso->save();
+        return $traspaso;
+    }
 }

@@ -82,18 +82,18 @@ class CargaController extends Controller
         return Carga::with("almacen")->find($id);
     }
 
-    public function validarCarga($id)
+    public function validar($id)
     {
         $carga = Carga::findOrFail($id);
-        $carga->estado = 'VALIDADA';
+        $carga->estado = 'VALIDADO';
         $carga->save();
         return Carga::with("almacen")->find($id);
     }
 
-    public function rechazarCarga($id)
+    public function rechazar($id)
     {
         $carga = Carga::findOrFail($id);
-        $carga->estatus = 'RECHAZADA';
+        $carga->estado = 'RECHAZADO';
         $carga->save();
         return Carga::with("almacen")->find($id);
     }
