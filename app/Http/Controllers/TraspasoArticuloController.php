@@ -43,28 +43,5 @@ class TraspasoArticuloController extends Controller
         }])->find($traspaso->id);
     }
 
-    public function solicitarValidacion($id)
-    {
-        $traspaso = Traspaso::find($id);
-        $traspaso->estado = "SOLICITADO";
-        $traspaso->save();
-        return $traspaso;
-    }   
-
-    public function validar($id)
-    {
-        $traspaso = Traspaso::find($id);
-        $traspaso->estado = "VALIDADO";
-        $traspaso->save();
-        return $traspaso;
-    }
-
-    public function rechazar($id)
-    {
-        $traspaso = Traspaso::find($id);
-        $traspaso->estado = "RECHAZADO";
-        $traspaso->save();
-        return $traspaso;
-    }
 
 }

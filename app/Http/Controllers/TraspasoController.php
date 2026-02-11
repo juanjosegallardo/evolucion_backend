@@ -81,7 +81,7 @@ class TraspasoController extends Controller
         $traspaso = Traspaso::find($id);
         $traspaso->estado = "SOLICITADO";
         $traspaso->save();
-        return $traspaso;
+        return Traspaso::with("origen")->with("destino")->find($id);
     }   
 
     public function validar($id)
@@ -89,7 +89,7 @@ class TraspasoController extends Controller
         $traspaso = Traspaso::find($id);
         $traspaso->estado = "VALIDADO";
         $traspaso->save();
-        return $traspaso;
+        return Traspaso::with("origen")->with("destino")->find($id);
     }
 
     public function rechazar($id)
@@ -97,6 +97,6 @@ class TraspasoController extends Controller
         $traspaso = Traspaso::find($id);
         $traspaso->estado = "RECHAZADO";
         $traspaso->save();
-        return $traspaso;
+        return Traspaso::with("origen")->with("destino")->find($id);
     }
 }

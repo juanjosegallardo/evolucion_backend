@@ -101,9 +101,9 @@ Route::prefix('traspasos')->group(function () {
     Route::get('/{id}', [TraspasoController::class, 'show'])->name('traspasos.show');
     Route::put('/{id}', [TraspasoController::class, 'update'])->name('traspasos.update');
     Route::delete('/{id}', [TraspasoController::class, 'destroy'])->name('traspasos.destroy');
-    Route::post('/{id}/solicitar-validacion', [TraspasoArticuloController::class, 'solicitarValidacion'])->name('traspasos.solicitar_validacion');
-    Route::post('/{id}/validar', [TraspasoArticuloController::class, 'validar'])->name('traspasos.validar');
-    Route::post('/{id}/rechazar', [TraspasoArticuloController::class, 'rechazar'])->name('traspasos.rechazar');
+    Route::post('/{id}/solicitar-validacion', [TraspasoController::class, 'solicitarValidacion'])->name('traspasos.solicitar_validacion');
+    Route::post('/{id}/validar', [TraspasoController::class, 'validar'])->name('traspasos.validar');
+    Route::post('/{id}/rechazar', [TraspasoController::class, 'rechazar'])->name('traspasos.rechazar');
 });
 
 // Ventas
