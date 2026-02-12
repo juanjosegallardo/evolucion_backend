@@ -6,12 +6,21 @@ use App\Models\Carga;
 use App\Http\Requests\StoreCargaRequest;
 use App\Http\Requests\UpdateCargaRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Services\CargaService;
 
 class CargaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    protected $cargaService;
+
+    public function __construct(CargaService $cargaService)
+    {
+        $this->cargaService = $cargaService;
+    }   
+    
     public function index()
     {
         return Carga::with("almacen")->with("articulos")->orderBy("created_at", "desc")->get();
@@ -84,9 +93,8 @@ class CargaController extends Controller
 
     public function validar($id)
     {
-        $carga = Carga::findOrFail($id);
-        $carga->estado = 'VALIDADO';
-        $carga->save();
+        $this->cargaService->validarCarga($id);
+    
         return Carga::with("almacen")->find($id);
     }
 

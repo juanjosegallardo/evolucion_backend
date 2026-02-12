@@ -7,19 +7,12 @@ use App\Models\Almacen;
 use App\Models\Articulo;
 use App\Models\Carga;
 use App\Models\CargaArticulo;
-use App\Services\CargaArticuloService;
 use Illuminate\Support\Facades\DB;
 
 
 class CargaArticuloController extends Controller
 {
-    protected $cargaArticuloService;
 
-    public function __construct(CargaArticuloService $cargaArticuloService)
-    {
-        $this->cargaArticuloService = $cargaArticuloService;
-
-    }
 
 
     public function store(Request $request, $id)
