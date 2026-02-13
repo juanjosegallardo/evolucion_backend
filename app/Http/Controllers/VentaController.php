@@ -47,7 +47,7 @@ class VentaController extends Controller
         $venta->tipo = $request->tipo;
         $venta->fecha = $request->fecha;
         $venta->notas= $request->notas;
-        $this->ventaService->calcularComision($venta);
+        $venta->calcularComision();
         $venta->save();
 
         return $venta->with("almacen")->with("vendedor")->find($venta->id);

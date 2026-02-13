@@ -76,7 +76,7 @@ class TraspasoController extends Controller
     }
 
     
-    public function solicitarValidacion($id)
+    public function solicitar($id)
     {
         $traspaso = Traspaso::find($id);
         $traspaso->estado = "SOLICITADO";
