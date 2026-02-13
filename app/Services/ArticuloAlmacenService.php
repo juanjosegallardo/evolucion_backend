@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\AlmacenArticulo;
 use App\Models\Articulo;
 use App\Models\Almacen;
+use Illuminate\Support\Facades\DB;
 
 class ArticuloAlmacenService
 {
@@ -71,57 +72,51 @@ class ArticuloAlmacenService
     int $cantidadDefectuosos = 0
 ): void {
 
-    if ($cantidad < 0 || $cantidadDefectuosos < 0) {
-        throw new \Exception("Las cantidades no pueden ser negativas");
-    }
+        if ($cantidad < 0 || $cantidadDefectuosos < 0) {
+            throw new \Exception("Las cantidades no pueden ser negativas");
+        }
 
-    DB::transaction(function () use (
-        $articuloId,
-        $almacenId,
-        $cantidad,
-        $cantidadDefectuosos)   
-        {
 
-            // 1️⃣ Descontar del pivot (almacen_articulo)
-            $pivotUpdated = AlmacenArticulo::where('articulo_id', $articuloId)
-                ->where('almacen_id', $almacenId)
-                ->where('cantidad', '>=', $cantidad)
-                ->where('cantidad_defectuosos', '>=', $cantidadDefectuosos)
-                ->update([
-                    'cantidad' => DB::raw("cantidad - {$cantidad}"),
-                    'cantidad_defectuosos' => DB::raw("cantidad_defectuosos - {$cantidadDefectuosos}")
-                ]);
+        // 1️⃣ Descontar del pivot (almacen_articulo)
+        $pivotUpdated = AlmacenArticulo::where('articulo_id', $articuloId)
+            ->where('almacen_id', $almacenId)
+            ->where('cantidad', '>=', $cantidad)
+            ->where('cantidad_defectuosos', '>=', $cantidadDefectuosos)
+            ->update([
+                'cantidad' => DB::raw("cantidad - {$cantidad}"),
+                'cantidad_defectuosos' => DB::raw("cantidad_defectuosos - {$cantidadDefectuosos}")
+            ]);
 
-            if (!$pivotUpdated) {
-                throw new \Exception("Stock insuficiente en almacén para este artículo");
-            }
+        if (!$pivotUpdated) {
+            throw new \Exception("Stock insuficiente en almacén para este artículo");
+        }
 
-            // 2️⃣ Descontar del artículo global
-            $articuloUpdated = Articulo::where('id', $articuloId)
-                ->where('cantidad', '>=', $cantidad)
-                ->where('cantidad_defectuosos', '>=', $cantidadDefectuosos)
-                ->update([
-                    'cantidad' => DB::raw("cantidad - {$cantidad}"),
-                    'cantidad_defectuosos' => DB::raw("cantidad_defectuosos - {$cantidadDefectuosos}")
-                ]);
+        // 2️⃣ Descontar del artículo global
+        $articuloUpdated = Articulo::where('id', $articuloId)
+            ->where('cantidad', '>=', $cantidad)
+            ->where('cantidad_defectuosos', '>=', $cantidadDefectuosos)
+            ->update([
+                'cantidad' => DB::raw("cantidad - {$cantidad}"),
+                'cantidad_defectuosos' => DB::raw("cantidad_defectuosos - {$cantidadDefectuosos}")
+            ]);
 
-            if (!$articuloUpdated) {
-                throw new \Exception("Stock global del artículo insuficiente");
-            }
+        if (!$articuloUpdated) {
+            throw new \Exception("Stock global del artículo insuficiente");
+        }
 
-            // 3️⃣ Descontar del almacén global
-            $almacenUpdated = Almacen::where('id', $almacenId)
-                ->where('cantidad', '>=', $cantidad)
-                ->where('cantidad_defectuosos', '>=', $cantidadDefectuosos)
-                ->update([
-                    'cantidad' => DB::raw("cantidad - {$cantidad}"),
-                    'cantidad_defectuosos' => DB::raw("cantidad_defectuosos - {$cantidadDefectuosos}")
-                ]);
+        // 3️⃣ Descontar del almacén global
+        $almacenUpdated = Almacen::where('id', $almacenId)
+            ->where('cantidad', '>=', $cantidad)
+            ->where('cantidad_defectuosos', '>=', $cantidadDefectuosos)
+            ->update([
+                'cantidad' => DB::raw("cantidad - {$cantidad}"),
+                'cantidad_defectuosos' => DB::raw("cantidad_defectuosos - {$cantidadDefectuosos}")
+            ]);
 
-            if (!$almacenUpdated) {
-                throw new \Exception("Stock total del almacén insuficiente");
-            }
+        if (!$almacenUpdated) {
+            throw new \Exception("Stock total del almacén insuficiente");
+        }
 
-        });
+
     }
 }

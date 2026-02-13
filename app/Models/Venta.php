@@ -8,6 +8,8 @@ use App\Models\Almacen;
 
 class Venta extends Model
 {
+    use EstadoMovimientoAlmacenTrait;
+    
     protected $attributes = ["cantidad"=>0];
     protected $dates = ["fecha"];
     public function vendedor()

@@ -7,7 +7,7 @@ use App\Http\Requests\StoreVentaRequest;
 use App\Http\Requests\UpdateVentaRequest;
 use App\Services\VentaService;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 
 class VentaController extends Controller
 {
@@ -92,26 +92,20 @@ class VentaController extends Controller
 
     public function solicitarValidacion($id)
     {
-        $venta = Venta::find($id);
-        $venta->estado = "SOLICITADO";
-        $venta->save();
-        return $venta;
+        $this->ventaService->solicitar($id);
+        return Venta::with("vendedor")->with("almacen")->find($id);
     }   
 
     public function validar($id)
     {
-        $venta = Venta::find($id);
-        $venta->estado = "VALIDADO";
-        $venta->save();
-        return $venta;
+        $this->ventaService->validar($id);   
+        return Venta::with("vendedor")->with("almacen")->find($id);
     }
 
     public function rechazar($id)
     {
-        $venta = Venta::find($id);
-        $venta->estado = "RECHAZADO";
-        $venta->save();
-        return $venta;
+        $this->ventaService->rechazar($id);
+        return Venta::with("vendedor")->with("almacen")->find($id);
     }
 }
 

@@ -6,6 +6,8 @@ use App\Models\Traspaso;
 use App\Http\Requests\StoreTraspasoRequest;
 use App\Http\Requests\UpdateTraspasoRequest;
 use Illuminate\Http\Request;
+use App\Services\TraspasoService;
+use Illuminate\Support\Facades\DB;
 
 
 class TraspasoController extends Controller
@@ -13,6 +15,12 @@ class TraspasoController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct(TraspasoService $traspasoService)
+    {
+        $this->traspasoService = $traspasoService;
+    }
+
+
     public function index()
     {
         return Traspaso::with("origen")->with("destino")->with("articulos")->orderBy("created_at", "desc")->get();
@@ -76,27 +84,21 @@ class TraspasoController extends Controller
     }
 
     
-    public function solicitar($id)
+    public function solicitarValidacion($id)
     {
-        $traspaso = Traspaso::find($id);
-        $traspaso->estado = "SOLICITADO";
-        $traspaso->save();
+        $this->traspasoService->solicitar($id);
         return Traspaso::with("origen")->with("destino")->find($id);
     }   
 
     public function validar($id)
     {
-        $traspaso = Traspaso::find($id);
-        $traspaso->estado = "VALIDADO";
-        $traspaso->save();
+        $this->traspasoService->validar($id);
         return Traspaso::with("origen")->with("destino")->find($id);
     }
 
     public function rechazar($id)
     {
-        $traspaso = Traspaso::find($id);
-        $traspaso->estado = "RECHAZADO";
-        $traspaso->save();
+        $traspasoService->rechazar($id);
         return Traspaso::with("origen")->with("destino")->find($id);
     }
 }
