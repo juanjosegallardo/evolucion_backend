@@ -24,4 +24,6 @@ trait EstadoMovimientoAlmacenTrait
     {
         return $this->estado === EstadoMovimientoAlmacen::SOLICITADO->value ;
     }
+
+    
 }

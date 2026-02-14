@@ -49,9 +49,9 @@ class CargaService
     {
         $carga = Carga::findOrFail($carga_id);
 
-        if (!$carga->estaEnCaptura()) {
+        if (!$carga->estaSolicitado()) {
             throw ValidationException::withMessages([
-                'estado' => 'La carga no está en en captura y no puede ser rechazada.',
+                'estado' => 'La carga no está solicitada y no puede ser rechazada.',
             ]);
         }
         

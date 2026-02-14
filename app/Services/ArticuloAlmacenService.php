@@ -28,7 +28,7 @@ class ArticuloAlmacenService
             ->first();
 
 
-        $articulo =  Articulo::find($articuloId);;
+        $articulo =  Articulo::find($articuloId);
         
         if (!$articulo) {
             throw new \Exception("Artículo no encontrado");
@@ -77,6 +77,8 @@ class ArticuloAlmacenService
         }
 
 
+        $articulo =  Articulo::find($articuloId)->with("tipoArticulo")->first();
+
         // 1️⃣ Descontar del pivot (almacen_articulo)
         $pivotUpdated = AlmacenArticulo::where('articulo_id', $articuloId)
             ->where('almacen_id', $almacenId)
@@ -88,7 +90,22 @@ class ArticuloAlmacenService
             ]);
 
         if (!$pivotUpdated) {
-            throw new \Exception("Stock insuficiente en almacén para este artículo");
+
+            $almacenArticulo = AlmacenArticulo::where('articulo_id', $articuloId)
+                ->where('almacen_id', $almacenId)
+                ->first();
+
+            $disponiblesBuenos = $almacenArticulo ? $almacenArticulo->cantidad : 0;
+            $disponiblesDefectuosos = $almacenArticulo ? $almacenArticulo->cantidad_defectuosos : 0;
+
+            
+            throw new \Exception(
+                "Stock insuficiente en el almacén del artículo {$articulo->tipoArticulo->nombre} {$articulo->nombre}. 
+                Requeridos: {$cantidad} buenos y {$cantidadDefectuosos} defectuosos. 
+                Disponibles: {$disponiblesBuenos} buenos y {$disponiblesDefectuosos} defectuosos."
+            );
+
+
         }
 
         // 2️⃣ Descontar del artículo global

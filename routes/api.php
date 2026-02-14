@@ -118,6 +118,18 @@ Route::prefix('ventas')->group(function () {
     Route::post('/{id}/rechazar', [VentaController::class, 'rechazar'])->name('ventas.rechazar');
 });
 
+//Devoluciones
+Route::prefix('devoluciones')->group(function () {
+    Route::get('/', [DevolucionController::class, 'index'])->name('devoluciones.index');
+    Route::post('/', [DevolucionController::class, 'store'])->name('devoluciones.store');
+    Route::get('/{id}', [DevolucionController::class, 'show'])->name('devoluciones.show');
+    Route::put('/{id}', [DevolucionController::class, 'update'])->name('devoluciones.update');          
+    Route::delete('/{id}', [DevolucionController::class, 'destroy'])->name('devoluciones.destroy');
+    Route::post('/{id}/solicitar-validacion', [DevolucionController::class, 'solicitarValidacion'])->name('devoluciones.solicitar_validacion');
+    Route::post('/{id}/validar', [DevolucionController::class, 'validar'])->name('devoluciones.validar');
+    Route::post('/{id}/ rechazar', [DevolucionController::class, 'rechazar'])->name('devoluciones.rechazar');
+});
+
 // Tipos de Artículos
 Route::prefix('tipos_articulos')->group(function () {
     Route::get('/', [TipoArticuloController::class, 'index'])->name('tipos_articulos.index');

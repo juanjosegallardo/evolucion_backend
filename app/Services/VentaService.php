@@ -23,16 +23,22 @@ class VentaService
         $this->articuloAlmacenService = $articuloAlmacenService;
     } 
 
-    public function validar(int $venta_id): Venta
+    public function validar(int $venta_id): void
     {
         DB::transaction(function() use ($venta_id) {
             $venta = Venta::findOrFail($venta_id);
-            if (!$venta->estaEnCaptura()) {
+            if (!$venta->estaSolicitado()) {
                 throw ValidationException::withMessages([
-                    'estado' => 'La venta no está en en captura y no puede ser validada.',
+                    'estado' => 'La venta no está solicitada y no puede ser validada.',
                 ]);
             }
-            $this->articuloAlmacenService->descontar($venta->articulo_id, $venta->almacen_id, $venta->cantidad, $venta->cantidad_defectuosos);
+            
+            $venta_articulos = VentaArticulo::where("venta_id", $venta_id)->get();
+
+            foreach($venta_articulos as $venta_articulo){
+                $this->articuloAlmacenService->descontar($venta_articulo->articulo_id, $venta->almacen_id, $venta_articulo->cantidad, $venta_articulo->cantidad_defectuosos);
+            }
+
             $venta->estado = EstadoMovimientoAlmacen::VALIDADO->value;
             $venta->save();
         });
@@ -44,9 +50,9 @@ class VentaService
         DB::transaction(function() use ($venta_id) {
             $venta = Venta::findOrFail($venta_id);
 
-            if (!$venta->estaEnCaptura()) {
+            if (!$venta->estaSolicitado()) {
                 throw ValidationException::withMessages([
-                    'estado' => 'La venta no está en captura y no puede ser rechazada.',
+                    'estado' => 'La venta no está solicitada y no puede ser rechazada.',
                 ]);
             }
             $venta->estado = EstadoMovimientoAlmacen::RECHAZADO->value;

@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Vendedor;
 use App\Models\Almacen;
+use App\Traits\EstadoMovimientoAlmacenTrait;
 
 class Venta extends Model
 {
     use EstadoMovimientoAlmacenTrait;
-    
+
     protected $attributes = ["cantidad"=>0];
     protected $dates = ["fecha"];
     public function vendedor()

@@ -52,7 +52,7 @@ class TraspasoService
         DB::transaction(function() use ($traspaso_id) {
             $traspaso = Traspaso::findOrFail($traspaso_id);
 
-            if (!$traspaso->estaEnCaptura()) {
+            if (!$traspaso->estaSolicitado()) {
                 throw ValidationException::withMessages([
                     'estado' => 'El traspaso no está solicitado y no puede ser rechazado.',
                 ]);

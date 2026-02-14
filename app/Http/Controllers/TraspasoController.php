@@ -98,7 +98,7 @@ class TraspasoController extends Controller
 
     public function rechazar($id)
     {
-        $traspasoService->rechazar($id);
+        $this->traspasoService->rechazar($id);
         return Traspaso::with("origen")->with("destino")->find($id);
     }
 }
