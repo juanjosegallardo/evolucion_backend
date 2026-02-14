@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -13,10 +13,14 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
+                
+    
+
         $credentials = $request->validate([
             'usuario' => 'required|string',
             'password' => 'required|string',
         ]);
+        
 
         if (!$token = Auth::guard('api')->attempt($credentials)) {
             return response()->json([

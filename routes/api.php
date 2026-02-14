@@ -13,6 +13,8 @@ use App\Http\Controllers\TipoArticuloController;
 use App\Http\Controllers\VentaArticuloController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\ReporteLibretaController;
+use App\Http\Controllers\DevolucionController;
+use App\Http\Controllers\AuthController;
 
 
 
@@ -138,3 +140,12 @@ Route::prefix('tipos_articulos')->group(function () {
     Route::put('/{id}', [TipoArticuloController::class, 'update'])->name('tipos_articulos.update');
     Route::delete('/{id}', [TipoArticuloController::class, 'destroy'])->name('tipos_articulos.destroy');
 });
+
+
+Route::post("/login",[AuthController::class, "login"])->name("login");
+
+Route::middleware('auth:api')->group(function () {
+    Route::post("/logout",[AuthController::class, "logout"])->name("logout");  
+    Route::post("/refresh",[AuthController::class, "refresh"])->name("refresh");
+});
+
