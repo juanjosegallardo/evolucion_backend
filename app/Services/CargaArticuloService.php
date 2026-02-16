@@ -25,8 +25,8 @@ class CargaArticuloService
         DB::transaction(function() use($request,$id) {
             $carga = Carga::find($id);
 
-            if(! $carga->estaEnCaptura()){
-                throw new \Exception("La carga no está en captura y no se pueden agregar artículos.");
+            if(! $carga->estaEnCaptura() && !$carga->estaRechazado()){
+                throw new \Exception("No se pueden agregar artículos en este momento de la carga");
             }
 
             $articulo=Articulo::where("codigo","=",$request->codigo)->first();
@@ -53,8 +53,8 @@ class CargaArticuloService
         DB::transaction(function() use($id) {
             $carga_articulo = CargaArticulo::find($id);
             $carga = Carga::find($carga_articulo->carga_id);
-            if(! $carga->estaEnCaptura()){
-                throw new \Exception("La carga no está en captura y no se pueden quitar artículos.");
+            if(! $carga->estaEnCaptura() && !$carga->estaRechazado()){
+                throw new \Exception("No se pueden quitar artículos en este momento de la carga");
             }
 
             $updated = Carga::where('id', $carga->id)

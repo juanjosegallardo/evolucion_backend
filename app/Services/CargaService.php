@@ -29,9 +29,9 @@ class CargaService
 
             $carga = Carga::findOrFail($carga_id);
             
-            if (!$carga->estaEnCaptura()) {
+            if (!$carga->estaEnCaptura() && !$carga->estaRechazado()) {
                 throw ValidationException::withMessages([
-                    'estado' => 'La carga no está en captura y no puede ser eliminada.',
+                    'estado' => 'La carga no puede ser eliminada en el estado actual.',
                 ]);
             }
             $carga->delete();
@@ -79,9 +79,9 @@ class CargaService
     {
         $carga = Carga::findOrFail($carga_id);
 
-        if (!$carga->estaEnCaptura()) {
+        if (!$carga->estaEnCaptura()&& !$carga->estaRechazado() ) {
             throw ValidationException::withMessages([
-                'estado' => 'La carga no está en en captura y no puede ser solicitada.',
+                'estado' => 'La carga no puede ser solicitada en este momento de la carga',
             ]);
         }
         

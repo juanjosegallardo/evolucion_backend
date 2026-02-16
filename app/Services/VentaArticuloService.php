@@ -25,8 +25,9 @@ class VentaArticuloService
         DB::transaction(function() use($request,$id) {
             $venta = Venta::find($id);
 
-            if(! $venta->estaEnCaptura()){
-                throw new \Exception("La venta no está en captura y no se pueden agregar artículos.");
+            
+            if(! $venta->estaEnCaptura() && !$venta->estaRechazado()){
+                throw new \Exception("No se pueden agregar artículos en este momento de la venta");
             }
 
             $articulo=Articulo::where("codigo","=",$request->codigo)->first();
@@ -52,8 +53,9 @@ class VentaArticuloService
         DB::transaction(function() use($id) {
             $venta_articulo = VentaArticulo::find($id);
             $venta = Venta::find($venta_articulo->venta_id);
-            if(! $venta->estaEnCaptura()){
-                throw new \Exception("La venta no está en captura y no se pueden quitar artículos.");
+            
+            if(! $venta->estaEnCaptura() && !$venta->estaRechazado()){
+                throw new \Exception("No se pueden quitar artículos de la venta en este momento de la venta");
             }
 
             $updated = Venta::where('id', $venta->id)

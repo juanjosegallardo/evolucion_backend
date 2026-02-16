@@ -25,8 +25,8 @@ class TraspasoArticuloService
         DB::transaction(function() use($request,$id) {
             $traspaso = Traspaso::find($id);
 
-            if(! $traspaso->estaEnCaptura()){
-                throw new \Exception("El traspaso no está en captura y no se pueden agregar artículos.");
+            if(! $traspaso->estaEnCaptura() && !$traspaso->estaRechazado()){
+                throw new \Exception("No se pueden agregar artículos en este momento del traspaso");
             }
 
             $articulo=Articulo::where("codigo","=",$request->codigo)->first();
@@ -53,8 +53,8 @@ class TraspasoArticuloService
         DB::transaction(function() use($id) {
             $traspaso_articulo = TraspasoArticulo::find($id);
             $traspaso = Traspaso::find($traspaso_articulo->traspaso_id);
-            if(! $traspaso->estaEnCaptura()){
-                throw new \Exception("El traspaso no está en captura y no se pueden quitar artículos.");
+            if(! $traspaso->estaEnCaptura() && !$traspaso->estaRechazado()){
+                throw new \Exception("No se pueden quitar artículos del traspaso en este momento del traspaso");
             }
 
             $updated = Traspaso::where('id', $traspaso->id)

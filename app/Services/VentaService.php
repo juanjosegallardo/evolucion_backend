@@ -30,9 +30,9 @@ class VentaService
 
             $venta = Venta::findOrFail($venta_id);
             
-            if (!$venta->estaEnCaptura()) {
+            if (!$venta->estaEnCaptura() && !$venta->estaRechazado() ) {
                 throw ValidationException::withMessages([
-                    'estado' => 'La venta no está en captura y no  puede ser eliminada.',
+                    'estado' => 'La venta no puede ser eliminada en el estado actual.',
                 ]);
             }
             

@@ -16,136 +16,132 @@ use App\Http\Controllers\ReporteLibretaController;
 use App\Http\Controllers\DevolucionController;
 use App\Http\Controllers\AuthController;
 
-
-
-// Carga Artículos
-Route::prefix('cargas/{id}/articulos')->group(function () {
-    Route::get('/', [CargaArticuloController::class, 'index'])->name('cargas.articulos.index');
-    Route::post('/', [CargaArticuloController::class, 'store'])->name('cargas.articulos.store');
-});
-
-Route::prefix('carga_articulo')->group(function () {
-    Route::get('/{articuloId}', [CargaArticuloController::class, 'show'])->name('cargas.articulos.show');
-    Route::put('/{articuloId}', [CargaArticuloController::class, 'update'])->name('cargas.articulos.update');
-    Route::delete('/{articuloId}', [CargaArticuloController::class, 'destroy'])->name('cargas.articulos.destroy');
-});
-
-// Traspaso Artículos
-Route::prefix('traspasos/{id}/articulos')->group(function () {
-    Route::get('/', [TraspasoArticuloController::class, 'index'])->name('traspasos.articulos.index');
-    Route::post('/', [TraspasoArticuloController::class, 'store'])->name('traspasos.articulos.store');
-});
-
-Route::prefix('traspaso_articulo')->group(function () {
-    Route::get('/{articuloId}', [TraspasoArticuloController::class, 'show'])->name('traspasos.articulos.show');
-    Route::put('/{articuloId}', [TraspasoArticuloController::class, 'update'])->name('traspasos.articulos.update');
-    Route::delete('/{articuloId}', [TraspasoArticuloController::class, 'destroy'])->name('traspasos.articulos.destroy');
-});
-
-// Venta Artículos
-Route::prefix('ventas/{id}/articulos')->group(function () {
-    Route::get('/', [VentaArticuloController::class, 'index'])->name('ventas.articulos.index');
-    Route::post('/', [VentaArticuloController::class, 'store'])->name('ventas.articulos.store');
-});
-
-Route::prefix('venta_articulo')->group(function () {
-    Route::get('/{articuloId}', [VentaArticuloController::class, 'show'])->name('ventas.articulos.show');
-    Route::put('/{articuloId}', [VentaArticuloController::class, 'update'])->name('ventas.articulos.update');
-    Route::delete('/{articuloId}', [VentaArticuloController::class, 'destroy'])->name('ventas.articulos.destroy');
-});
-// Reportes
-Route::get('reportes/vendedores/{id}/libreta', [ReporteLibretaController::class, 'reporteVendedores'])
-    ->name('reportes.vendedores.libreta');
-
-// Almacenes
-Route::prefix('almacenes')->group(function () {
-    Route::get('/', [AlmacenController::class, 'index'])->name('almacenes.index');
-    Route::post('/', [AlmacenController::class, 'store'])->name('almacenes.store');
-    Route::get('/{id}', [AlmacenController::class, 'show'])->name('almacenes.show');
-    Route::put('/{id}', [AlmacenController::class, 'update'])->name('almacenes.update');
-    Route::delete('/{id}', [AlmacenController::class, 'destroy'])->name('almacenes.destroy');
-});
-
-// Artículos
-Route::prefix('articulos')->group(function () {
-    Route::get('/', [ArticuloController::class, 'index'])->name('articulos.index');
-    Route::post('/', [ArticuloController::class, 'store'])->name('articulos.store');
-    Route::get('/{id}', [ArticuloController::class, 'show'])->name('articulos.show');
-    Route::put('/{id}', [ArticuloController::class, 'update'])->name('articulos.update');
-    Route::delete('/{id}', [ArticuloController::class, 'destroy'])->name('articulos.destroy');
-});
-
-// Cargas
-Route::prefix('cargas')->group(function () {
-    Route::get('/', [CargaController::class, 'index'])->name('cargas.index');
-    Route::post('/', [CargaController::class, 'store'])->name('cargas.store');
-    Route::get('/{id}', [CargaController::class, 'show'])->name('cargas.show');
-    Route::put('/{id}', [CargaController::class, 'update'])->name('cargas.update');
-    Route::delete('/{id}', [CargaController::class, 'destroy'])->name('cargas.destroy');
-    Route::post('/{id}/solicitar-validacion', [CargaController::class, 'solicitarValidacion'])->name('cargas.solicitar_validacion');   
-    Route::post('/{id}/validar', [CargaController::class, 'validar'])->name('cargas.validar');
-    Route::post('/{id}/rechazar', [CargaController::class, 'rechazar'])->name('cargas.rechazar');
-});
-
-// Usuarios
-Route::prefix('users')->group(function () {
-    Route::get('/', [UserController::class, 'index'])->name('users.index');
-    Route::post('/', [UserController::class, 'store'])->name('users.store');
-    Route::get('/{id}', [UserController::class, 'show'])->name('users.show');
-    Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
-});
-
-// Traspasos
-Route::prefix('traspasos')->group(function () {
-    Route::get('/', [TraspasoController::class, 'index'])->name('traspasos.index');
-    Route::post('/', [TraspasoController::class, 'store'])->name('traspasos.store');
-    Route::get('/{id}', [TraspasoController::class, 'show'])->name('traspasos.show');
-    Route::put('/{id}', [TraspasoController::class, 'update'])->name('traspasos.update');
-    Route::delete('/{id}', [TraspasoController::class, 'destroy'])->name('traspasos.destroy');
-    Route::post('/{id}/solicitar-validacion', [TraspasoController::class, 'solicitarValidacion'])->name('traspasos.solicitar_validacion');
-    Route::post('/{id}/validar', [TraspasoController::class, 'validar'])->name('traspasos.validar');
-    Route::post('/{id}/rechazar', [TraspasoController::class, 'rechazar'])->name('traspasos.rechazar');
-});
-
-// Ventas
-Route::prefix('ventas')->group(function () {
-    Route::get('/', [VentaController::class, 'index'])->name('ventas.index');
-    Route::post('/', [VentaController::class, 'store'])->name('ventas.store');
-    Route::get('/{id}', [VentaController::class, 'show'])->name('ventas.show');
-    Route::put('/{id}', [VentaController::class, 'update'])->name('ventas.update');
-    Route::delete('/{id}', [VentaController::class, 'destroy'])->name('ventas.destroy');
-    Route::post('/{id}/solicitar-validacion', [VentaController::class, 'solicitarValidacion'])->name('ventas.solicitar_validacion');
-    Route::post('/{id}/validar', [VentaController::class, 'validar'])->name('ventas.validar');
-    Route::post('/{id}/rechazar', [VentaController::class, 'rechazar'])->name('ventas.rechazar');
-});
-
-//Devoluciones
-Route::prefix('devoluciones')->group(function () {
-    Route::get('/', [DevolucionController::class, 'index'])->name('devoluciones.index');
-    Route::post('/', [DevolucionController::class, 'store'])->name('devoluciones.store');
-    Route::get('/{id}', [DevolucionController::class, 'show'])->name('devoluciones.show');
-    Route::put('/{id}', [DevolucionController::class, 'update'])->name('devoluciones.update');          
-    Route::delete('/{id}', [DevolucionController::class, 'destroy'])->name('devoluciones.destroy');
-    Route::post('/{id}/solicitar-validacion', [DevolucionController::class, 'solicitarValidacion'])->name('devoluciones.solicitar_validacion');
-    Route::post('/{id}/validar', [DevolucionController::class, 'validar'])->name('devoluciones.validar');
-    Route::post('/{id}/ rechazar', [DevolucionController::class, 'rechazar'])->name('devoluciones.rechazar');
-});
-
-// Tipos de Artículos
-Route::prefix('tipos_articulos')->group(function () {
-    Route::get('/', [TipoArticuloController::class, 'index'])->name('tipos_articulos.index');
-    Route::post('/', [TipoArticuloController::class, 'store'])->name('tipos_articulos.store');
-    Route::get('/{id}', [TipoArticuloController::class, 'show'])->name('tipos_articulos.show');
-    Route::put('/{id}', [TipoArticuloController::class, 'update'])->name('tipos_articulos.update');
-    Route::delete('/{id}', [TipoArticuloController::class, 'destroy'])->name('tipos_articulos.destroy');
-});
-
-
-Route::post("/login",[AuthController::class, "login"])->name("login");
-
 Route::middleware('auth:api')->group(function () {
+
+
+    // Carga Artículos
+    Route::prefix('cargas')->group(function () {
+        Route::get('/', [CargaController::class, 'index'])->name('cargas.index');
+        Route::post('/', [CargaController::class, 'store'])->name('cargas.store');
+        Route::get('/{id}', [CargaController::class, 'show'])->name('cargas.show');
+        Route::put('/{id}', [CargaController::class, 'update'])->name('cargas.update');
+        Route::delete('/{id}', [CargaController::class, 'destroy'])->name('cargas.destroy');
+        Route::post('/{id}/solicitar-validacion', [CargaController::class, 'solicitarValidacion'])->name('cargas.solicitar_validacion');   
+        Route::post('/{id}/validar', [CargaController::class, 'validar'])->name('cargas.validar');
+        Route::post('/{id}/rechazar', [CargaController::class, 'rechazar'])->name('cargas.rechazar');
+    });
+
+
+    Route::prefix('carga_articulo')->group(function () {
+        Route::get('/{articuloId}', [CargaArticuloController::class, 'show'])->name('cargas.articulos.show');
+        Route::put('/{articuloId}', [CargaArticuloController::class, 'update'])->name('cargas.articulos.update');
+        Route::delete('/{articuloId}', [CargaArticuloController::class, 'destroy'])->name('cargas.articulos.destroy');
+    });
+
+    // Traspaso Artículos
+    Route::prefix('traspasos/{id}/articulos')->group(function () {
+        Route::get('/', [TraspasoArticuloController::class, 'index'])->name('traspasos.articulos.index');
+        Route::post('/', [TraspasoArticuloController::class, 'store'])->name('traspasos.articulos.store');
+    });
+
+    Route::prefix('traspaso_articulo')->group(function () {
+        Route::get('/{articuloId}', [TraspasoArticuloController::class, 'show'])->name('traspasos.articulos.show');
+        Route::put('/{articuloId}', [TraspasoArticuloController::class, 'update'])->name('traspasos.articulos.update');
+        Route::delete('/{articuloId}', [TraspasoArticuloController::class, 'destroy'])->name('traspasos.articulos.destroy');
+    });
+
+    // Venta Artículos
+    Route::prefix('ventas/{id}/articulos')->group(function () {
+        Route::get('/', [VentaArticuloController::class, 'index'])->name('ventas.articulos.index');
+        Route::post('/', [VentaArticuloController::class, 'store'])->name('ventas.articulos.store');
+    });
+
+    Route::prefix('venta_articulo')->group(function () {
+        Route::get('/{articuloId}', [VentaArticuloController::class, 'show'])->name('ventas.articulos.show');
+        Route::put('/{articuloId}', [VentaArticuloController::class, 'update'])->name('ventas.articulos.update');
+        Route::delete('/{articuloId}', [VentaArticuloController::class, 'destroy'])->name('ventas.articulos.destroy');
+    });
+    // Reportes
+    Route::get('reportes/vendedores/{id}/libreta', [ReporteLibretaController::class, 'reporteVendedores'])
+        ->name('reportes.vendedores.libreta');
+
+    // Almacenes
+    Route::prefix('almacenes')->group(function () {
+        Route::get('/', [AlmacenController::class, 'index'])->name('almacenes.index');
+        Route::post('/', [AlmacenController::class, 'store'])->name('almacenes.store');
+        Route::get('/{id}', [AlmacenController::class, 'show'])->name('almacenes.show');
+        Route::put('/{id}', [AlmacenController::class, 'update'])->name('almacenes.update');
+        Route::delete('/{id}', [AlmacenController::class, 'destroy'])->name('almacenes.destroy');
+    });
+
+    // Artículos
+    Route::prefix('articulos')->group(function () {
+        Route::get('/', [ArticuloController::class, 'index'])->name('articulos.index');
+        Route::post('/', [ArticuloController::class, 'store'])->name('articulos.store');
+        Route::get('/{id}', [ArticuloController::class, 'show'])->name('articulos.show');
+        Route::put('/{id}', [ArticuloController::class, 'update'])->name('articulos.update');
+        Route::delete('/{id}', [ArticuloController::class, 'destroy'])->name('articulos.destroy');
+    });
+
+
+    // Usuarios
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('users.index');
+        Route::post('/', [UserController::class, 'store'])->name('users.store');
+        Route::get('/{id}', [UserController::class, 'show'])->name('users.show');
+        Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    });
+
+    // Traspasos
+    Route::prefix('traspasos')->group(function () {
+        Route::get('/', [TraspasoController::class, 'index'])->name('traspasos.index');
+        Route::post('/', [TraspasoController::class, 'store'])->name('traspasos.store');
+        Route::get('/{id}', [TraspasoController::class, 'show'])->name('traspasos.show');
+        Route::put('/{id}', [TraspasoController::class, 'update'])->name('traspasos.update');
+        Route::delete('/{id}', [TraspasoController::class, 'destroy'])->name('traspasos.destroy');
+        Route::post('/{id}/solicitar-validacion', [TraspasoController::class, 'solicitarValidacion'])->name('traspasos.solicitar_validacion');
+        Route::post('/{id}/validar', [TraspasoController::class, 'validar'])->name('traspasos.validar');
+        Route::post('/{id}/rechazar', [TraspasoController::class, 'rechazar'])->name('traspasos.rechazar');
+    });
+
+    // Ventas
+    Route::prefix('ventas')->group(function () {
+        Route::get('/', [VentaController::class, 'index'])->name('ventas.index');
+        Route::post('/', [VentaController::class, 'store'])->name('ventas.store');
+        Route::get('/{id}', [VentaController::class, 'show'])->name('ventas.show');
+        Route::put('/{id}', [VentaController::class, 'update'])->name('ventas.update');
+        Route::delete('/{id}', [VentaController::class, 'destroy'])->name('ventas.destroy');
+        Route::post('/{id}/solicitar-validacion', [VentaController::class, 'solicitarValidacion'])->name('ventas.solicitar_validacion');
+        Route::post('/{id}/validar', [VentaController::class, 'validar'])->name('ventas.validar');
+        Route::post('/{id}/rechazar', [VentaController::class, 'rechazar'])->name('ventas.rechazar');
+    });
+
+    //Devoluciones
+    Route::prefix('devoluciones')->group(function () {
+        Route::get('/', [DevolucionController::class, 'index'])->name('devoluciones.index');
+        Route::post('/', [DevolucionController::class, 'store'])->name('devoluciones.store');
+        Route::get('/{id}', [DevolucionController::class, 'show'])->name('devoluciones.show');
+        Route::put('/{id}', [DevolucionController::class, 'update'])->name('devoluciones.update');          
+        Route::delete('/{id}', [DevolucionController::class, 'destroy'])->name('devoluciones.destroy');
+        Route::post('/{id}/solicitar-validacion', [DevolucionController::class, 'solicitarValidacion'])->name('devoluciones.solicitar_validacion');
+        Route::post('/{id}/validar', [DevolucionController::class, 'validar'])->name('devoluciones.validar');
+        Route::post('/{id}/ rechazar', [DevolucionController::class, 'rechazar'])->name('devoluciones.rechazar');
+    });
+
+    // Tipos de Artículos
+    Route::prefix('tipos_articulos')->group(function () {
+        Route::get('/', [TipoArticuloController::class, 'index'])->name('tipos_articulos.index');
+        Route::post('/', [TipoArticuloController::class, 'store'])->name('tipos_articulos.store');
+        Route::get('/{id}', [TipoArticuloController::class, 'show'])->name('tipos_articulos.show');
+        Route::put('/{id}', [TipoArticuloController::class, 'update'])->name('tipos_articulos.update');
+        Route::delete('/{id}', [TipoArticuloController::class, 'destroy'])->name('tipos_articulos.destroy');
+    });
+
     Route::post("/logout",[AuthController::class, "logout"])->name("logout");  
     Route::post("/refresh",[AuthController::class, "refresh"])->name("refresh");
 });
 
+
+
+Route::post("/login",[AuthController::class, "login"])->name("login");
