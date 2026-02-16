@@ -31,9 +31,8 @@ class CargaArticuloController extends Controller
 
     public function destroy( $id)
     {   
-        $this->cargaArticuloService->eliminar($id);
-
         $carga_articulo = CargaArticulo::find($id);
+        $this->cargaArticuloService->eliminar($id);
         return Carga::with(["articulos"=>function($q){
             $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
         }])->find($carga_articulo->carga_id);

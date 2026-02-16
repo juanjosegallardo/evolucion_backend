@@ -27,12 +27,11 @@ class TraspasoArticuloController extends Controller
 
     public function destroy( $id)
     {
-        
+        $traspaso_articulo = TraspasoArticulo::find($id);     
         $this->traspasoArticuloService->eliminar($id);
-        
         return Traspaso::with(["articulos"=>function($q){
             $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo");
-        }])->find($id);
+        }])->find($traspaso_articulo->traspaso_id);
     }
 
 
