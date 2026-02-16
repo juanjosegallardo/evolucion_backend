@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('tipo_articulos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre')->nullable();
+            $table->integer("cantidad")->default(0);
+            $table->integer("cantidad_defectuosos")->default(0);
             $table->decimal('precio_contado', 8, 2); 
             $table->decimal('precio_credito', 8, 2); 
             $table->timestamps();

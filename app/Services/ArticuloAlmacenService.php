@@ -44,6 +44,10 @@ class ArticuloAlmacenService
 
         $articulo->increment('cantidad', $cantidad);
         $articulo->increment('cantidad_defectuosos', $cantidadDefectuosos);
+
+        $tipo_articulo = $articulo->tipoArticulo;
+        $tipo_articulo->increment('cantidad', $cantidad);
+        $tipo_articulo->increment('cantidad_defectuosos', $cantidadDefectuosos);
         
         if ($registro) {
 
@@ -117,8 +121,21 @@ class ArticuloAlmacenService
                 'cantidad_defectuosos' => DB::raw("cantidad_defectuosos - {$cantidadDefectuosos}")
             ]);
 
+
+        $tipoArticuloUpdated = $articulo->tipoArticulo()->where('id', $articulo->tipo_articulo_id)
+            ->where('cantidad', '>=', $cantidad)
+            ->where('cantidad_defectuosos', '>=', $cantidadDefectuosos)
+            ->update([
+                'cantidad' => DB::raw("cantidad - {$cantidad}"),
+                'cantidad_defectuosos' => DB::raw("cantidad_defectuosos - {$cantidadDefectuosos}")
+            ]);
+        
         if (!$articuloUpdated) {
             throw new \Exception("Stock global del artículo insuficiente");
+        }
+
+        if (!$tipoArticuloUpdated) {
+            throw new \Exception("Stock global del tipo de artículo insuficiente");
         }
 
         // 3️⃣ Descontar del almacén global

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -13,9 +14,6 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-                
-    
-
         $credentials = $request->validate([
             'usuario' => 'required|string',
             'password' => 'required|string',
@@ -23,9 +21,9 @@ class AuthController extends Controller
         
 
         if (!$token = Auth::guard('api')->attempt($credentials)) {
-            return response()->json([
-                'error' => 'Credenciales incorrectas'
-            ], 401);
+            throw ValidationException::withMessages([
+                'estado' => 'Usuario o password incorrectos.',
+            ]);
         }
 
         return $this->respondWithToken($token);

@@ -7,23 +7,19 @@ use App\Models\Traspaso;
 use App\Models\TraspasoArticulo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\TraspasoArticuloService;
 
 class TraspasoArticuloController extends Controller
 {
+    public function __construct(TraspasoArticuloService $traspasoArticuloService)
+    {
+        $this->traspasoArticuloService = $traspasoArticuloService;
+    }   
+
     public function store(Request $request, $id)
     {  
-        DB::transaction(function() use($request,$id) {;
-            $traspaso = Traspaso::find($id);
-            $articulo=Articulo::where("codigo","=",$request->codigo)->first();
-            if($request->defectuosos){
-                $traspaso->articulos()->attach($articulo->id, ["cantidad"=>0, "cantidad_defectuosos"=>$request->cantidad]);
-                $traspaso->increment("cantidad_defectuosos", $request->cantidad);
-            } else {
-                $traspaso->articulos()->attach($articulo->id, ["cantidad"=>$request->cantidad, "cantidad_defectuosos"=>0]);
-                $traspaso->increment("cantidad", $request->cantidad);
-            }
-           
-        });
+        $this->traspasoArticuloService->guardar($request, $id);
+        
         return Traspaso::with(["articulos"=>function($q){
             $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo");
         }])->find($id);
@@ -31,16 +27,12 @@ class TraspasoArticuloController extends Controller
 
     public function destroy( $id)
     {
-        $traspaso_articulo = TraspasoArticulo::find($id);
-
-        $traspaso = Traspaso::find($traspaso_articulo->traspaso_id);
-        $traspaso->decrement("cantidad", $traspaso_articulo->cantidad);
-        $traspaso->decrement("cantidad_defectuosos", $traspaso_articulo->cantidad_defectuosos);
-        $traspaso_articulo->delete();
+        
+        $this->traspasoArticuloService->eliminar($id);
         
         return Traspaso::with(["articulos"=>function($q){
             $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo");
-        }])->find($traspaso->id);
+        }])->find($id);
     }
 
 

@@ -9,7 +9,6 @@ use App\Models\Venta;
 use App\Models\Articulo;
 use Illuminate\Support\Facades\DB;
 
-
 class VentaArticuloController extends Controller
 {
     protected $ventaArticuloService;
@@ -20,22 +19,10 @@ class VentaArticuloController extends Controller
 
     }
 
-
     public function store(Request $request, $id)
     {
-        DB::transaction(function() use($request,$id) {
-            $venta = Venta::find($id);
-            $articulo=Articulo::where("codigo","=",$request->codigo)->first();
-            if($request->defectuosos){
-                $venta->increment("cantidad_defectuosos", $request->cantidad);
-                $venta->articulos()->attach($articulo->id, ["cantidad"=>0, "cantidad_defectuosos"=>$request->cantidad]);
-          
-            } else {
-                $venta->increment("cantidad", $request->cantidad);
-                $venta->articulos()->attach($articulo->id, ["cantidad"=>$request->cantidad, "cantidad_defectuosos"=>0]);
-            }
 
-        });
+        $this->ventaArticuloService->guardar($request, $id);
         return Venta::with(["articulos"=>function($q){
             $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo");
         }])->find($id);
@@ -44,10 +31,7 @@ class VentaArticuloController extends Controller
     public function destroy( $id)
     {
         $venta_articulo = VentaArticulo::find($id);
-        $venta = Venta::find($venta_articulo->venta_id);
-        $venta->decrement("cantidad", $venta_articulo->cantidad);
-        $venta->decrement("cantidad_defectuosos", $venta_articulo->cantidad_defectuosos);
-        $venta_articulo->delete();
+        $this->ventaArticuloService->eliminar($id);
         return Venta::with(["articulos"=>function($q){
             $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo");
         }])->find($venta_articulo->venta_id);
