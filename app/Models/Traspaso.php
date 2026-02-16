@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\EstadoMovimientoAlmacenTrait;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Traspaso extends Model
 {
     use EstadoMovimientoAlmacenTrait;
-
+    use SoftDeletes;
     protected $attributes = ["cantidad"=>0];
     public function origen()
     {

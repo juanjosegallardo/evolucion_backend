@@ -3,19 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Vendedor;
+use App\Models\User;
 use App\Models\Almacen;
 use App\Traits\EstadoMovimientoAlmacenTrait;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Venta extends Model
 {
     use EstadoMovimientoAlmacenTrait;
 
     protected $attributes = ["cantidad"=>0];
     protected $dates = ["fecha"];
+    use SoftDeletes;
+
     public function vendedor()
     {
-        return $this->belongsTo(Vendedor::class);
+        return $this->belongsTo(User::class, 'user_vendedor_id');
     }
 
     public function almacen()

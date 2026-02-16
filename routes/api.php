@@ -5,13 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\ArticuloController;
 use App\Http\Controllers\CargaController;
-use App\Http\Controllers\VendedorController;
 use App\Http\Controllers\CargaArticuloController;
 use App\Http\Controllers\TraspasoController;
 use App\Http\Controllers\TraspasoArticuloController;
 use App\Http\Controllers\TipoArticuloController;
 use App\Http\Controllers\VentaArticuloController;
 use App\Http\Controllers\VentaController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReporteLibretaController;
 use App\Http\Controllers\DevolucionController;
 use App\Http\Controllers\AuthController;
@@ -87,13 +87,13 @@ Route::prefix('cargas')->group(function () {
     Route::post('/{id}/rechazar', [CargaController::class, 'rechazar'])->name('cargas.rechazar');
 });
 
-// Vendedores
-Route::prefix('vendedores')->group(function () {
-    Route::get('/', [VendedorController::class, 'index'])->name('vendedores.index');
-    Route::post('/', [VendedorController::class, 'store'])->name('vendedores.store');
-    Route::get('/{id}', [VendedorController::class, 'show'])->name('vendedores.show');
-    Route::put('/{id}', [VendedorController::class, 'update'])->name('vendedores.update');
-    Route::delete('/{id}', [VendedorController::class, 'destroy'])->name('vendedores.destroy');
+// Usuarios
+Route::prefix('users')->group(function () {
+    Route::get('/', [UserController::class, 'index'])->name('users.index');
+    Route::post('/', [UserController::class, 'store'])->name('users.store');
+    Route::get('/{id}', [UserController::class, 'show'])->name('users.show');
+    Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 });
 
 // Traspasos

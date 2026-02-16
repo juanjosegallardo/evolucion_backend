@@ -78,8 +78,7 @@ class CargaController extends Controller
      */
     public function destroy($id)
     {
-        $carga = Carga::findOrFail($id);
-        $carga->delete();
+        $this->cargaService->eliminar($id);
     }
 
 

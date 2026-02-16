@@ -14,7 +14,7 @@ class UsuarioSeeder extends Seeder
     public function run(): void
     {
         $usuarios = [
-            ["id"=>1, "nombre"=>"Juan Jose Gallardo Mendoza", "usuario"=>"juan", "password"=>bcrypt(12345)],
+            ["id"=>1, "nombre"=>"Juan Jose Gallardo Mendoza", "usuario"=>"juan", "password"=>bcrypt(12345), "role"=>"admin"],
         ];
 
         foreach ($usuarios as $usuario) {

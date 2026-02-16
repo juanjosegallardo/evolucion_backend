@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer("cantidad_defectuosos");
             $table->foreignIdFor(TipoArticulo::class)->constrained();
             $table->string("codigo");
+            $table->softDeletes();
             $table->timestamps();
         });
     }

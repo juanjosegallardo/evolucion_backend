@@ -4,17 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\EstadoMovimientoAlmacenTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Devolucion extends Model
 {
     use EstadoMovimientoAlmacenTrait;
+    use SoftDeletes;
 
     protected $attributes = ["cantidad"=>0];
     protected $table = "devoluciones";
 
     public function vendedor()
     {
-        return $this->belongsTo(Vendedor::class);
+        return $this->belongsTo(User::class, 'usuario_vendedor_id');
     }
 
     public function almacen()

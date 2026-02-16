@@ -23,6 +23,22 @@ class CargaService
         $this->articuloAlmacenService = $articuloAlmacenService;
     }   
 
+    public function eliminar($carga_id)
+    {
+        DB::transaction(function() use ($carga_id) {
+
+            $carga = Carga::findOrFail($carga_id);
+            
+            if (!$carga->estaEnCaptura()) {
+                throw ValidationException::withMessages([
+                    'estado' => 'La carga no está en captura y no puede ser eliminada.',
+                ]);
+            }
+            $carga->delete();
+          
+        });
+    }
+
     public function validar($carga_id)
     {
         DB::transaction(function() use ($carga_id) {

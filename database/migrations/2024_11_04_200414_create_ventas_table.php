@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Vendedor;
 use App\Models\Almacen;
 
 return new class extends Migration
@@ -25,13 +24,14 @@ return new class extends Migration
             $table->date("fecha");//para saber el dia de la semana que vendio
             $table->string("tipo");
             $table->foreignIdFor(Almacen::class)->constrained();
-            $table->foreignIdFor(Vendedor::class)->constrained();
+            $table->foreignId('user_vendedor_id')->constrained('users');
             $table->enum('estado', [
                 'EN_CAPTURA',     // en proceso de creación
                 'SOLICITADO',     // creado, pendiente de aprobación
                 'VALIDADO',       // aprobado
                 'RECHAZADO'
             ])->default('EN_CAPTURA');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

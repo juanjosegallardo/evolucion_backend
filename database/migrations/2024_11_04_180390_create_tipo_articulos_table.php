@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer("cantidad_defectuosos")->default(0);
             $table->decimal('precio_contado', 8, 2); 
             $table->decimal('precio_credito', 8, 2); 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

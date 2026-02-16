@@ -24,6 +24,23 @@ class TraspasoService
     }   
 
 
+    public function eliminar($traspaso_id)
+    {
+        DB::transaction(function() use ($traspaso_id) {
+
+            $traspaso = Traspaso::findOrFail($traspaso_id);
+            
+            if (!$traspaso->estaEnCaptura()) {
+                throw ValidationException::withMessages([
+                    'estado' => 'El traspaso no está en captura y no puede ser eliminado.',
+                ]);
+            }
+
+            $traspaso->delete();
+          
+        });
+    }
+
     public function validar($traspaso_id)
     {
         DB::transaction(function() use ($traspaso_id) {

@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\User;
+use App\Models\Almacen;
 
 return new class extends Migration
 {
@@ -12,12 +13,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vendedores', function (Blueprint $table) {
+        Schema::create('almacen_user', function (Blueprint $table) {
             $table->id();
-            $table->string("nombre");
+            $table->foreignIdFor(Almacen::class)->constrained();
             $table->foreignIdFor(User::class)->constrained();
-            $table->softDeletes();
             $table->timestamps();
+            $table->unique(['almacen_id', 'user_id']);
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vendedores');
+        Schema::dropIfExists('almacen_user');
     }
 };

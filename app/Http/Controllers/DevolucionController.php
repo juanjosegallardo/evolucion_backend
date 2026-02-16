@@ -41,7 +41,7 @@ class DevolucionController  extends Controller
     {
         $devolucion = new Devolucion();
         $devolucion->almacen_id = $request->almacen_id;
-        $devolucion->vendedor_id =$request->vendedor_id;
+        $devolucion->usuario_vendedor_id =$request->vendedor_id;
         $devolucion->saldo_restante  = $request->saldo_restante;
         $devolucion->notas= $request->notas;
         $devolucion->save();    

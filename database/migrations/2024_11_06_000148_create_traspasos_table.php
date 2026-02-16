@@ -25,6 +25,7 @@ return new class extends Migration
                 'VALIDADO',       // aprobado
                 'RECHAZADO'
             ])->default('EN_CAPTURA');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

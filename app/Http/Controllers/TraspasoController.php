@@ -79,8 +79,7 @@ class TraspasoController extends Controller
      */
     public function destroy($id)
     {
-        $traspaso = Traspaso::find($id);
-        $traspaso->delete();
+        $this->ventaService->eliminar($id);
     }
 
     

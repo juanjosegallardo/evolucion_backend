@@ -23,6 +23,24 @@ class VentaService
         $this->articuloAlmacenService = $articuloAlmacenService;
     } 
 
+
+    public function eliminar($venta_id)
+    {
+        DB::transaction(function() use ($venta_id) {
+
+            $venta = Venta::findOrFail($venta_id);
+            
+            if (!$venta->estaEnCaptura()) {
+                throw ValidationException::withMessages([
+                    'estado' => 'La venta no está en captura y no  puede ser eliminada.',
+                ]);
+            }
+            
+            $venta->delete();
+          
+        });
+    }
+
     public function validar(int $venta_id): void
     {
         DB::transaction(function() use ($venta_id) {

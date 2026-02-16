@@ -41,7 +41,7 @@ class VentaController extends Controller
     {
         $venta = new Venta();
         $venta->almacen_id = $request->almacen_id;
-        $venta->vendedor_id =$request->vendedor_id;
+        $venta->user_vendedor_id =$request->user_vendedor_id;
         $venta->total = $request->total;
         $venta->enganche = $request->enganche;
         $venta->tipo = $request->tipo;
@@ -86,8 +86,7 @@ class VentaController extends Controller
      */
     public function destroy($id)
     {
-        $venta= Venta::find($id);
-        $venta->delete();
+        $this->ventaService->eliminar($id);
     }
 
     public function solicitarValidacion($id)

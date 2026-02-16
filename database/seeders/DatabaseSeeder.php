@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             ArticuloSeeder::class,
            // CargaSeeder::class,
             UsuarioSeeder::class,
-            VendedorSeeder::class
+
         ]);
     }
 }

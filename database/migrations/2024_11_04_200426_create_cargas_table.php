@@ -10,6 +10,8 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
+    
     public function up(): void
     {
         Schema::create('cargas', function (Blueprint $table) {
@@ -23,6 +25,7 @@ return new class extends Migration
                 'VALIDADO',       // aprobado
                 'RECHAZADO'
             ])->default('EN_CAPTURA');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

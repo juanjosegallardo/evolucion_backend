@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string("nombre");
             $table->integer("cantidad")->default(0);
             $table->integer("cantidad_defectuosos")->default(0);
+            $table->foreignId('responsable_id')
+                ->nullable()
+                ->constrained('users')
+                ->nullOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });

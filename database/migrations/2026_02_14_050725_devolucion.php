@@ -6,15 +6,17 @@ use Illuminate\Support\Facades\Schema;
 use App\Models\Almacen;
 use App\Models\Vendedor;
 
+
 return new class extends Migration
 {
 
     public function up(): void
     {
-        Schema::create('devoluciones', function (Blueprint $table) {
+        Schema::create('devoluciones', function (Blueprint $table) 
+        {
             $table->id();
             $table->foreignIdFor(Almacen::class)->constrained();
-            $table->foreignIdFor(Vendedor::class)->constrained();
+            $table->foreignId('usuario_vendedor_id')->constrained('users');
             $table->string("notas")->nullable();
             $table->decimal('saldo_restante', 8, 2);
             $table->unsignedInteger("cantidad")->default(0);
@@ -25,6 +27,7 @@ return new class extends Migration
                 'VALIDADO',       // aprobado
                 'RECHAZADO'
             ])->default('EN_CAPTURA');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
