@@ -31,6 +31,11 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{id}/rechazar', [CargaController::class, 'rechazar'])->name('cargas.rechazar');
     });
 
+        // Venta Artículos
+    Route::prefix('cargas/{id}/articulos')->group(function () {
+        Route::get('/', [CargaArticuloController::class, 'index'])->name('cargas.articulos.index');
+        Route::post('/', [CargaArticuloController::class, 'store'])->name('cargas.articulos.store');
+    });
 
     Route::prefix('carga_articulo')->group(function () {
         Route::get('/{articuloId}', [CargaArticuloController::class, 'show'])->name('cargas.articulos.show');
@@ -68,6 +73,7 @@ Route::middleware('auth:api')->group(function () {
     // Almacenes
     Route::prefix('almacenes')->group(function () {
         Route::get('/', [AlmacenController::class, 'index'])->name('almacenes.index');
+        Route::get('/todos', [AlmacenController::class, 'mostrarTodos'])->name('almacenes.todos');
         Route::post('/', [AlmacenController::class, 'store'])->name('almacenes.store');
         Route::get('/{id}', [AlmacenController::class, 'show'])->name('almacenes.show');
         Route::put('/{id}', [AlmacenController::class, 'update'])->name('almacenes.update');
@@ -140,9 +146,10 @@ Route::middleware('auth:api')->group(function () {
     });
 
     Route::post("/logout",[AuthController::class, "logout"])->name("logout");  
-    Route::post("/refresh",[AuthController::class, "refresh"])->name("refresh");
+
 });
 
 
 
 Route::post("/login",[AuthController::class, "login"])->name("login");
+Route::post("/refresh",[AuthController::class, "refresh"])->name("refresh");

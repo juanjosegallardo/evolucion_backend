@@ -23,7 +23,7 @@ class VentaController extends Controller
      */
     public function index()
     {
-        return Venta::with("vendedor")->with("almacen")->with("articulos")->orderBy("created_at","desc")->get();
+        return Venta::visiblePara(auth()->user())->with("vendedor")->with("almacen")->with("articulos")->orderBy("created_at","desc")->get();
     }
 
     /**

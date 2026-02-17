@@ -23,4 +23,15 @@ class Carga extends Model
     {
         return $this->belongsToMany(Articulo::class, 'carga_articulo');
     }
+    
+    public function scopeVisiblePara($query, User $user)
+    {
+        if ($user->esAdmin()) {
+            return $query;
+        }
+
+        return $query->whereHas('almacen', function ($q) use ($user) {
+            $q->where('user_responsable_id', $user->id);
+        });
+    }
 }

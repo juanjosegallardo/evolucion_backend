@@ -26,5 +26,15 @@ class Traspaso extends Model
         return $this->belongsToMany(Articulo::class, 'traspaso_articulo');
     }
 
-    
+    public function scopeVisiblePara($query, User $user)
+    {
+        if ($user->esAdmin()) {
+            return $query;
+        }
+        return $query->whereHas('origen', function ($q) use ($user) {
+            $q->where('user_responsable_id', $user->id);
+        })->orWhereHas('destino', function ($q) use ($user) {
+            $q->where('user_responsable_id', $user->id);
+        });
+    }
 }

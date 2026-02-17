@@ -18,16 +18,24 @@ class Venta extends Model
 
     public function actualizarTotalReal()
     {
+        $columnaPrecio = $this->esCredito()
+            ? 'tipo_articulos.precio_credito'
+            : 'tipo_articulos.precio_contado';
+
         $total = $this->articulos()
             ->join('tipo_articulos', 'articulos.tipo_articulo_id', '=', 'tipo_articulos.id')
-            ->selectRaw('SUM((venta_articulo.cantidad + venta_articulo.cantidad_defectuosos) * tipo_articulos.precio_credito) as total')
+            ->selectRaw("
+                SUM(
+                    (venta_articulo.cantidad + venta_articulo.cantidad_defectuosos)
+                    * {$columnaPrecio}
+                ) as total
+            ")
             ->value('total') ?? 0;
 
         $this->updateQuietly([
             'total_real' => $total
         ]);
     }
-
     public function vendedor()
     {
         return $this->belongsTo(User::class, 'user_vendedor_id');
@@ -58,5 +66,26 @@ class Venta extends Model
             $this->comision = 0;
             $this->a_pagar = 0;
         }
+    }
+
+    public function esCredito()
+    {
+        return $this->tipo==='CREDITO';
+    }
+
+    public function esContado()
+    {
+        return $this->tipo =='CONTADO'; 
+    }
+
+    public function scopeVisiblePara($query, User $user)
+    {
+        if ($user->esAdmin()) {
+            return $query;
+        }
+
+        return $query->whereHas('almacen', function ($q) use ($user) {
+            $q->where('user_responsable_id', $user->id);
+        });
     }
 }

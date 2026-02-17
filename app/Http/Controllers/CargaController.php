@@ -8,9 +8,11 @@ use App\Http\Requests\UpdateCargaRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\CargaService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CargaController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
@@ -23,7 +25,7 @@ class CargaController extends Controller
     
     public function index()
     {
-        return Carga::with("almacen")->with("articulos")->orderBy("created_at", "desc")->get();
+        return Carga::visiblePara(auth()->user())->with("almacen")->with("articulos")->orderBy("created_at", "desc")->get();
     }
 
     /**
@@ -78,24 +80,32 @@ class CargaController extends Controller
      */
     public function destroy($id)
     {
+        $carga = Carga::findOrFail($id);
+        $this->authorize("destroy",$carga); 
         $this->cargaService->eliminar($id);
     }
 
 
     public function solicitarValidacion($id)
     {
+        $carga = Carga::findOrFail($id);
+        $this->authorize("solicitar",$carga);
         $this->cargaService->solicitar($id);
         return Carga::with("almacen")->find($id);
     }
 
     public function validar($id)
     {
+        $carga = Carga::findOrFail($id);
+        $this->authorize("validar",$carga);
         $this->cargaService->validar($id);
         return Carga::with("almacen")->find($id);
     }
 
     public function rechazar($id)
     {
+        $carga = Carga::findOrFail($id);
+        $this->authorize("rechazar",$carga);
         $this->cargaService->rechazar($id);
         return Carga::with("almacen")->find($id);
     }
