@@ -62,4 +62,24 @@ class User extends Authenticatable implements JWTSubject
             'rol' => $this->rol,
         ];
     }
+    
+
+    public function esAdmin()
+    {
+        return $this->role ==="admin";
+    }
+
+    public function scopeVisiblePara($query, User $user)
+    {
+        if ($user->esAdmin()) {
+            return $query;
+        }
+
+        return $query->where('id', $user->id);
+    }
+
+    public function almacenes()
+    {
+        return $this->hasMany(Almacen::class, 'user_responsable_id');
+    }
 }

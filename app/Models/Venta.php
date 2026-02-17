@@ -13,7 +13,20 @@ class Venta extends Model
 
     protected $attributes = ["cantidad"=>0];
     protected $dates = ["fecha"];
+    protected $fillable = ["total_real"];
     use SoftDeletes;
+
+    public function actualizarTotalReal()
+    {
+        $total = $this->articulos()
+            ->join('tipo_articulos', 'articulos.tipo_articulo_id', '=', 'tipo_articulos.id')
+            ->selectRaw('SUM((venta_articulo.cantidad + venta_articulo.cantidad_defectuosos) * tipo_articulos.precio_credito) as total')
+            ->value('total') ?? 0;
+
+        $this->updateQuietly([
+            'total_real' => $total
+        ]);
+    }
 
     public function vendedor()
     {

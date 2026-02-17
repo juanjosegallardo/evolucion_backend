@@ -6,15 +6,18 @@ use App\Models\Almacen;
 use App\Http\Requests\StoreAlmacenRequest;
 use App\Http\Requests\UpdateAlmacenRequest;
 
+
 class AlmacenController extends Controller
 {
+
+
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-       // throw new Exception("Test Exception");
-        return Almacen::all();
+        return Almacen::visiblePara(auth()->user())->with("responsable")->get();
     }
 
     /**

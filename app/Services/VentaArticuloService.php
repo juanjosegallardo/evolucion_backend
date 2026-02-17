@@ -18,6 +18,8 @@ class VentaArticuloService
         //
     }
 
+
+
     public function guardar(Request $request, $id)
     {
 
@@ -45,6 +47,7 @@ class VentaArticuloService
                 $venta->articulos()->attach($articulo->id, ["cantidad"=>$request->cantidad, "cantidad_defectuosos"=>0]);
             }
 
+            $venta->actualizarTotalReal();
         });
     }   
 
@@ -69,9 +72,10 @@ class VentaArticuloService
             
             if (!$updated) {
                 throw new \Exception("No hay suficientes cantidades en la venta para descontar.");
-            }
+            }          
 
             $venta_articulo->delete();
+            $venta->actualizarTotalReal();
         });
     }
 

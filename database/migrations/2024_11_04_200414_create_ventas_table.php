@@ -14,7 +14,8 @@ return new class extends Migration
     {
         Schema::create('ventas', function (Blueprint $table) {
             $table->id();
-            $table->decimal('total', 8, 2); 
+            $table->decimal('total', 8, 2);
+            $table->decimal('total_real', 8, 2)->default(0);  
             $table->decimal('porcentaje', 8, 2);
             $table->decimal('enganche', 8, 2);
             $table->decimal('comision',8,2 );
