@@ -55,6 +55,7 @@ class UserController extends Controller
         //
     }
 
+
     /**
      * Update the specified resource in storage.
      */
@@ -68,6 +69,13 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $usuario = User::findOrFail($id);
+        $usuario->delete();
+
+    }
+
+    public function cambiarPassword(Request $request, string $id)
+    {
+        $this->userService->cambiarPassword($request,$id);
     }
 }

@@ -85,7 +85,7 @@ class TraspasoService
         DB::transaction(function() use ($traspaso_id) {
             $traspaso = Traspaso::findOrFail($traspaso_id);
 
-            if (!$traspaso->estaEnCaptura() && !traspaso->estaRechazado()) {
+            if (!$traspaso->estaEnCaptura() && !$traspaso->estaRechazado()) {
                 throw ValidationException::withMessages([
                     'estado' => 'El traspaso no puede ser solicitado en este momento',
                 ]);

@@ -90,7 +90,8 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/', [UserController::class, 'store'])->name('users.store');
         Route::get('/{id}', [UserController::class, 'show'])->name('users.show');
         Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
-        Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+        Route::put('/{id}/password', [UserController::class, 'cambiarPassword'])->name('users.pasword');
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.delete');
     });
 
     // Traspasos
