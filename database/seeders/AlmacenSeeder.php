@@ -18,9 +18,10 @@ class AlmacenSeeder extends Seeder
             ['nombre' => 'Dakota verde'],
             ['nombre' => 'Ranger Roja'],
             ['nombre' => 'Ranger 4 cilindros'],
-            ['nombre' => 'Ranger Camper'],
+            ['nombre' => 'Ranger Blanca Camper'],
             ['nombre' => 'Ranger Redilas'],
             ['nombre' => 'Dakota Azul'],
+            ['nombre' => 'Ranger Cafe'],
 
         ];
 
