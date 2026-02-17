@@ -14,8 +14,13 @@ class AlmacenSeeder extends Seeder
     public function run(): void
     {
         $almacenes = [
-            ['nombre' => 'Ranger'],
-            ['nombre' => 'Dakota'],
+            ['nombre' => 'Ranger 4x4'],
+            ['nombre' => 'Dakota verde'],
+            ['nombre' => 'Ranger Roja'],
+            ['nombre' => 'Ranger 4 cilindros'],
+            ['nombre' => 'Ranger Camper'],
+            ['nombre' => 'Ranger Redilas'],
+            ['nombre' => 'Dakota Azul'],
 
         ];
 
