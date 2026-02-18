@@ -27,7 +27,7 @@ $tipos = TipoArticulo::all();
             if (!$existe) {
                 Articulo::create([
                     'codigo' => Str::upper(Str::random(10)), // código aleatorio
-                    'nombre' => 'GENERICO',
+                    'nombre' => '*',
                     'tipo_articulo_id' => $tipo->id,
                     'cantidad' => 0,
                     'cantidad_defectuosos' => 0,

@@ -8,44 +8,72 @@ use Illuminate\Auth\Access\Response;
 
 class VentaPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
+
+    public function validar(User $user, Venta $venta)
+    {
+        return $user->esAdmin()? Response::allow()
+        : Response::deny('Solo el administrador puede validar la venta');
+    }
+
+    public function rechazar(User $user, Venta $venta)
+    {
+        return $user->esAdmin()? Response::allow()
+        : Response::deny('Solo el administrador puede rechazar la venta');
+    }
+
+
+    public function solicitar(User $user, Venta $venta)
+    {   
+        if ($user->esAdmin()) {
+            return Response::allow();
+        }
+
+        if ($carga->almacen->user_responsable_id === $user->id) {
+            return Response::allow();
+        }
+        return Response::deny('Solo el administrador o el responsable puede rechazar la venta');
+    }
+
     public function viewAny(User $user): bool
     {
         //
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
     public function view(User $user, Venta $venta): bool
     {
         //
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
     public function create(User $user): bool
     {
-        //
+         if ($user->esAdmin()) {
+            return Response::allow();
+        }
+
+        if ($carga->almacen->user_responsable_id === $user->id) {
+            return Response::allow();
+        }
+
+        return Response::deny('Solo el administrador o el responsable puede capturar la venta');   
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
     public function update(User $user, Venta $venta): bool
     {
-        //
+     
+        
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
     public function delete(User $user, Venta $venta): bool
     {
-        //
+        if ($user->esAdmin()) {
+            return Response::allow();
+        }
+
+        if ($venta->user_vendedor_id === $user->id) {
+            return Response::allow();
+        }
+
+        return Response::deny('Solo el administrador o el responsable puede eliminar la venta');
     }
 
     /**

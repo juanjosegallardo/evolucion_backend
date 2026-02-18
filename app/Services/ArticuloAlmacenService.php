@@ -9,19 +9,34 @@ use Illuminate\Support\Facades\DB;
 
 class ArticuloAlmacenService
 {
+
+    public function ajustarId(string $id)
+    {
+        $articulo = Articulo::findOrFail($id);
+
+        $primerArticuloDelMismoTipo = Articulo::where('tipo_articulo_id', $articulo->tipo_articulo_id)
+            ->orderBy('id', 'asc')
+            ->first();
+
+        return $primerArticuloDelMismoTipo->id;
+    }
     /**
      * Agrega stock al almacén
      */
     public function agregar(
-        int $articuloId,
+        int $articuloIdOriginal,
         int $almacenId,
         int $cantidad,
         int $cantidadDefectuosos = 0
     ): void {
-
+        
+        $articuloId = $this->ajustarId($articuloIdOriginal);
         if ($cantidad < 0 || $cantidadDefectuosos < 0) {
             throw new \Exception("Las cantidades no pueden ser negativas");
         }
+
+
+
 
         $registro = AlmacenArticulo::where('articulo_id', $articuloId)
             ->where('almacen_id', $almacenId)
@@ -71,11 +86,13 @@ class ArticuloAlmacenService
      */
     
     public function descontar(
-    int $articuloId,
+    int $articuloIdOriginal,
     int $almacenId,
     int $cantidad = 0,
     int $cantidadDefectuosos = 0
 ): void {
+
+        $articuloId = $this->ajustarId($articuloIdOriginal);
 
         if ($cantidad < 0 || $cantidadDefectuosos < 0) {
             throw new \Exception("Las cantidades no pueden ser negativas");

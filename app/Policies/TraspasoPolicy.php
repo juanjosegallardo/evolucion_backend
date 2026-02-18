@@ -8,50 +8,77 @@ use Illuminate\Auth\Access\Response;
 
 class TraspasoPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
+    public function validar(User $user, Traspaso $traspaso)
+    {
+        return $user->esAdmin()? Response::allow()
+        : Response::deny('Solo el administrador puede validar el traspaso');
+    }
+
+    public function rechazar(User $user, Traspaso $traspaso)
+    {
+        return $user->esAdmin()? Response::allow()
+        : Response::deny('Solo el administrador puede rechazar el traspaso');
+    }
+
+
+    public function solicitar(User $user, Traspaso $traspaso)
+    {   
+        if ($user->esAdmin()) {
+            return Response::allow();
+        }
+
+        if ($carga->almacenDestino->user_responsable_id === $user->id) {
+            return Response::allow();
+        }
+        return Response::deny('Solo el administrador o el responsable puede solicitar el traspaso');
+    }
+
     public function viewAny(User $user): bool
     {
         //
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
     public function view(User $user, Traspaso $traspaso): bool
     {
         //
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
     public function create(User $user): bool
     {
-        //
+         if ($user->esAdmin()) {
+            return Response::allow();
+        }
+
+        if ($carga->almacenDestino->user_responsable_id === $user->id) {
+            return Response::allow();
+        }
+
+        return Response::deny('Solo el administrador o el responsable puede capturar el traspaso');   
     }
 
-    /**
-     * Determine whether the user can update the model.
-     */
     public function update(User $user, Traspaso $traspaso): bool
     {
-        //
+     
+        
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
     public function delete(User $user, Traspaso $traspaso): bool
     {
-        //
+        if ($user->esAdmin()) {
+            return Response::allow();
+        }
+
+        if ($carga->almacenDestino->user_responsable_id === $user->id) {
+            return Response::allow();
+        }
+
+        return Response::deny('Solo el administrador o el responsable puede eliminar el traspaso');
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Traspaso $traspaso): bool
+    public function restore(User $user, Traspaso $traspasoa): bool
     {
         //
     }
@@ -63,4 +90,5 @@ class TraspasoPolicy
     {
         //
     }
+
 }
