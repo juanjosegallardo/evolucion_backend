@@ -51,7 +51,7 @@ class TipoArticuloSeeder extends Seeder
             ["id"=>35, "nombre"=>"HORNO FREIDOR", "precio_credito"=>2500, "precio_contado"=>0],
             ["id"=>36, "nombre"=>"HORNO MICROONDAS", "precio_credito"=>4500, "precio_contado"=>0],
             ["id"=>37, "nombre"=>"LICUADORA", "precio_credito"=>2300, "precio_contado"=>0],
-            ["id"=>38, "nombre"=>"bahvbjm,ñ.{8106+0", "precio_credito"=>3200, "precio_contado"=>0],
+            ["id"=>38, "nombre"=>"MESA", "precio_credito"=>3200, "precio_contado"=>0],
             ["id"=>39, "nombre"=>"NUTRIBULLET", "precio_credito"=>2700, "precio_contado"=>0],
             ["id"=>40, "nombre"=>"OLLA 11", "precio_credito"=>2400, "precio_contado"=>0],
             ["id"=>41, "nombre"=>"OLLA 13", "precio_credito"=>2400, "precio_contado"=>0],
