@@ -8,10 +8,13 @@ use App\Http\Requests\UpdateTraspasoRequest;
 use Illuminate\Http\Request;
 use App\Services\TraspasoService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 
 class TraspasoController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Display a listing of the resource.
      */
@@ -41,6 +44,7 @@ class TraspasoController extends Controller
     public function store(Request $request)
     {
         $traspaso = new Traspaso();
+        $this->authorize("create",$traspaso); 
         $traspaso->almacen_origen_id = $request->almacen_origen_id;
         $traspaso->almacen_destino_id = $request->almacen_destino_id;
         $traspaso->notas = $request->notas;
@@ -79,24 +83,32 @@ class TraspasoController extends Controller
      */
     public function destroy($id)
     {
-        $this->ventaService->eliminar($id);
+        $traspaso = Traspaso::findOrFail($id);
+        $this->authorize("destroy",$traspaso);
+        $this->traspasoService->eliminar($id);
     }
 
     
     public function solicitarValidacion($id)
     {
+        $traspaso = Traspaso::findOrFail($id);
+        $this->authorize("solicitar",$traspaso);
         $this->traspasoService->solicitar($id);
         return Traspaso::with("origen")->with("destino")->find($id);
     }   
 
     public function validar($id)
     {
+        $traspaso = Traspaso::findOrFail($id); 
+        $this->authorize("validar",$traspaso);
         $this->traspasoService->validar($id);
         return Traspaso::with("origen")->with("destino")->find($id);
     }
 
     public function rechazar($id)
     {
+        $traspaso = Traspaso::findOrFail($id);
+        $this->authorize("rechazar",$traspaso);
         $this->traspasoService->rechazar($id);
         return Traspaso::with("origen")->with("destino")->find($id);
     }

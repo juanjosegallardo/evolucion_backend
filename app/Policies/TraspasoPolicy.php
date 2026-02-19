@@ -43,7 +43,7 @@ class TraspasoPolicy
         //
     }
 
-    public function create(User $user): bool
+    public function create(User $user)
     {
          if ($user->esAdmin()) {
             return Response::allow();
@@ -62,7 +62,7 @@ class TraspasoPolicy
         
     }
 
-    public function delete(User $user, Traspaso $traspaso): bool
+    public function delete(User $user, Traspaso $traspaso)
     {
         if ($user->esAdmin()) {
             return Response::allow();

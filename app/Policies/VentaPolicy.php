@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Models\Venta;
 use Illuminate\Auth\Access\Response;
 
+
+
 class VentaPolicy
 {
 
@@ -28,7 +30,7 @@ class VentaPolicy
             return Response::allow();
         }
 
-        if ($carga->almacen->user_responsable_id === $user->id) {
+        if ($venta->almacen->user_responsable_id === $user->id) {
             return Response::allow();
         }
         return Response::deny('Solo el administrador o el responsable puede rechazar la venta');
@@ -50,7 +52,7 @@ class VentaPolicy
             return Response::allow();
         }
 
-        if ($carga->almacen->user_responsable_id === $user->id) {
+        if ($venta->almacen->user_responsable_id === $user->id) {
             return Response::allow();
         }
 
