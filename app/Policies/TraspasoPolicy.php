@@ -27,7 +27,7 @@ class TraspasoPolicy
             return Response::allow();
         }
 
-        if ($carga->almacenDestino->user_responsable_id === $user->id) {
+        if ($traspaso->almacenDestino->user_responsable_id === $user->id) {
             return Response::allow();
         }
         return Response::deny('Solo el administrador o el responsable puede solicitar el traspaso');
@@ -62,13 +62,13 @@ class TraspasoPolicy
         
     }
 
-    public function delete(User $user, Traspaso $traspaso)
+    public function delete(User $user, Traspaso $traspaso): bool
     {
         if ($user->esAdmin()) {
             return Response::allow();
         }
 
-        if ($carga->almacenDestino->user_responsable_id === $user->id) {
+        if ($traspaso->almacenDestino->user_responsable_id === $user->id) {
             return Response::allow();
         }
 
