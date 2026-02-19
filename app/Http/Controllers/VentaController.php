@@ -47,6 +47,7 @@ class VentaController extends Controller
         $venta->tipo = $request->tipo;
         $venta->fecha = $request->fecha;
         $venta->notas= $request->notas;
+        $venta->nombre_cliente = $request->nombre_cliente;
         $venta->calcularComision();
         $venta->save();
 
