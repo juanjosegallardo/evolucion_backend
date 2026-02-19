@@ -49,7 +49,7 @@ class TraspasoPolicy
             return Response::allow();
         }
 
-        if ($carga->almacenDestino->user_responsable_id === $user->id) {
+        if ($traspaso->almacenDestino->user_responsable_id === $user->id) {
             return Response::allow();
         }
 
@@ -62,7 +62,7 @@ class TraspasoPolicy
         
     }
 
-    public function delete(User $user, Traspaso $traspaso): bool
+    public function destroy(User $user, Traspaso $traspaso)
     {
         if ($user->esAdmin()) {
             return Response::allow();

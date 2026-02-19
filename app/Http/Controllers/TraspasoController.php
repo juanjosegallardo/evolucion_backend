@@ -44,10 +44,10 @@ class TraspasoController extends Controller
     public function store(Request $request)
     {
         $traspaso = new Traspaso();
-        $this->authorize("create",$traspaso); 
         $traspaso->almacen_origen_id = $request->almacen_origen_id;
         $traspaso->almacen_destino_id = $request->almacen_destino_id;
         $traspaso->notas = $request->notas;
+        $this->authorize("create",$traspaso);
         $traspaso->save();
         return Traspaso::with("origen")->with("destino")->find($traspaso->id);
     }
