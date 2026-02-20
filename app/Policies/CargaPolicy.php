@@ -17,6 +17,12 @@ class CargaPolicy
         : Response::deny('Solo el administrador puede validar la carga');
     }
 
+    public function cancelar(User $user, Carga $carga)
+    {
+        return $user->esAdmin()? Response::allow()
+        : Response::deny('Solo el administrador puede cancelar la carga');
+    }
+
     public function rechazar(User $user, Carga $carga)
     {
         return $user->esAdmin()? Response::allow()

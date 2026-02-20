@@ -102,6 +102,14 @@ class CargaController extends Controller
         return Carga::with("almacen")->find($id);
     }
 
+    public function cancelar($id)
+    {
+        $carga = Carga::findOrFail($id);
+        $this->authorize("cancelar",$carga);
+        $this->cargaService->cancelar($id);
+        return Carga::with("almacen")->find($id);
+    }
+
     public function rechazar($id)
     {
         $carga = Carga::findOrFail($id);

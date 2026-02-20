@@ -25,7 +25,8 @@ return new class extends Migration
                 'EN_CAPTURA',     // en proceso de creación
                 'SOLICITADO',     // creado, pendiente de aprobación
                 'VALIDADO',       // aprobado
-                'RECHAZADO'
+                'RECHAZADO',
+                'CANCELADO'
             ])->default('EN_CAPTURA');
             $table->softDeletes();
             $table->timestamps();

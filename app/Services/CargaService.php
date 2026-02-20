@@ -61,6 +61,28 @@ class CargaService
         });
     }
 
+    public function cancelar($carga_id)
+    {
+        DB::transaction(function() use ($carga_id) {
+
+            $carga = Carga::findOrFail($carga_id);
+            
+            if (!$carga->estaValidado()) {
+                throw ValidationException::withMessages([
+                    'estado' => 'La carga no está validada y no puede ser cancelada.',
+                ]);
+            }
+            
+            $carga->estado = EstadoMovimientoAlmacen::CANCELADO->value;
+            $carga->save();
+            $carga_articulos = CargaArticulo::where("carga_id", $carga_id)->get();
+
+            foreach($carga_articulos as $carga_articulo){
+                $this->articuloAlmacenService->descontar($carga_articulo->articulo_id, $carga->almacen_id, $carga_articulo->cantidad, $carga_articulo->cantidad_defectuosos);
+            }
+        });
+    }
+
     public function rechazar($carga_id)
     {
         $carga = Carga::findOrFail($carga_id);

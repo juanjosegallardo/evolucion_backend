@@ -25,5 +25,10 @@ trait EstadoMovimientoAlmacenTrait
         return $this->estado === EstadoMovimientoAlmacen::SOLICITADO->value ;
     }
 
+        public function estaCancelado(): bool
+    {
+        return $this->estado === EstadoMovimientoAlmacen::CANCELADO->value ;
+    }
+
     
 }

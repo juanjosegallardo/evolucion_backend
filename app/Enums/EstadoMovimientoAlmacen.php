@@ -8,4 +8,5 @@ enum EstadoMovimientoAlmacen:string
     case SOLICITADO = 'SOLICITADO';
     case VALIDADO = 'VALIDADO';
     case RECHAZADO = 'RECHAZADO';
+    case CANCELADO = 'CANCELADO';
 }

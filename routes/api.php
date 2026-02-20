@@ -28,6 +28,7 @@ Route::middleware('auth:api')->group(function () {
         Route::delete('/{id}', [CargaController::class, 'destroy'])->name('cargas.destroy');
         Route::post('/{id}/solicitar-validacion', [CargaController::class, 'solicitarValidacion'])->name('cargas.solicitar_validacion');   
         Route::post('/{id}/validar', [CargaController::class, 'validar'])->name('cargas.validar');
+        Route::post('/{id}/cancelar', [CargaController::class, 'cancelar'])->name('cargas.cancelar');
         Route::post('/{id}/rechazar', [CargaController::class, 'rechazar'])->name('cargas.rechazar');
     });
 
