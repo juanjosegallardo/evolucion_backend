@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Almacen;
 use App\Models\Articulo;
 use App\Traits\EstadoMovimientoAlmacenTrait;
+use App\Traits\InteractuaConInventarioTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Contracts\GeneraMovimientoAlmacen;
 
-class Carga extends Model
+class Carga extends Model implements GeneraMovimientoAlmacen
 {
     use EstadoMovimientoAlmacenTrait;
+    use InteractuaConInventarioTrait;
     use SoftDeletes;
     protected $attributes = ["cantidad"=>0];
 
@@ -34,4 +37,5 @@ class Carga extends Model
             $q->where('user_responsable_id', $user->id);
         });
     }
+
 }

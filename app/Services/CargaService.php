@@ -50,13 +50,14 @@ class CargaService
                     'estado' => 'La carga no está solicitada y no puede ser validada.',
                 ]);
             }
-            
+
+
             $carga->estado = EstadoMovimientoAlmacen::VALIDADO->value;
             $carga->save();
             $carga_articulos = CargaArticulo::where("carga_id", $carga_id)->get();
 
             foreach($carga_articulos as $carga_articulo){
-                $this->articuloAlmacenService->agregar($carga_articulo->articulo_id, $carga->almacen_id, $carga_articulo->cantidad, $carga_articulo->cantidad_defectuosos);
+                $this->articuloAlmacenService->agregar($carga_articulo->articulo_id, $carga->almacen_id, $carga_articulo->cantidad, $carga_articulo->cantidad_defectuosos,$carga);
             }
         });
     }
@@ -72,13 +73,13 @@ class CargaService
                     'estado' => 'La carga no está validada y no puede ser cancelada.',
                 ]);
             }
-            
+
             $carga->estado = EstadoMovimientoAlmacen::CANCELADO->value;
             $carga->save();
             $carga_articulos = CargaArticulo::where("carga_id", $carga_id)->get();
 
             foreach($carga_articulos as $carga_articulo){
-                $this->articuloAlmacenService->descontar($carga_articulo->articulo_id, $carga->almacen_id, $carga_articulo->cantidad, $carga_articulo->cantidad_defectuosos);
+                $this->articuloAlmacenService->descontar($carga_articulo->articulo_id, $carga->almacen_id, $carga_articulo->cantidad, $carga_articulo->cantidad_defectuosos, $carga);
             }
         });
     }

@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Almacen;
 use App\Traits\EstadoMovimientoAlmacenTrait;
+use App\Traits\InteractuaConInventarioTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class Venta extends Model
 {
     use EstadoMovimientoAlmacenTrait;
+    use InteractuaConInventarioTrait;
 
     protected $attributes = ["cantidad"=>0];
     protected $dates = ["fecha"];
@@ -88,4 +90,6 @@ class Venta extends Model
             $q->where('user_responsable_id', $user->id);
         });
     }
+
+
 }

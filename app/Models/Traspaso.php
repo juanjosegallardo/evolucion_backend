@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\EstadoMovimientoAlmacenTrait;
+use App\Traits\InteractuaConInventarioTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Traspaso extends Model
 {
     use EstadoMovimientoAlmacenTrait;
+    use InteractuaConInventarioTrait;
+
     use SoftDeletes;
     protected $attributes = ["cantidad"=>0];
     public function origen()
@@ -37,4 +40,5 @@ class Traspaso extends Model
             $q->where('user_responsable_id', $user->id);
         });
     }
+
 }

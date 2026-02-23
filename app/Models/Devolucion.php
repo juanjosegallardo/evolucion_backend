@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\EstadoMovimientoAlmacenTrait;
+use App\Traits\InteractuaConInventarioTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Devolucion extends Model
 {
     use EstadoMovimientoAlmacenTrait;
+    use InteractuaConInventarioTrait;
+    
     use SoftDeletes;
 
     protected $attributes = ["cantidad"=>0];

@@ -6,6 +6,7 @@ use App\Models\Articulo;
 use App\Models\TipoArticulo;
 use App\Models\Almacen;
 use Illuminate\Support\Facades\DB;
+use App\Contracts\GeneraMovimientoAlmacen;
 
 class ArticuloAlmacenService
 {
@@ -27,7 +28,8 @@ class ArticuloAlmacenService
         int $articuloIdOriginal,
         int $almacenId,
         int $cantidad,
-        int $cantidadDefectuosos = 0
+        int $cantidadDefectuosos = 0,
+        GeneraMovimientoAlmacen $documento
     ): void {
         
         $articuloId = $this->ajustarId($articuloIdOriginal);
@@ -79,7 +81,20 @@ class ArticuloAlmacenService
                 'cantidad_defectuosos' => $cantidadDefectuosos,
             ]);
         }
-    }
+
+        $almacenArticulo = AlmacenArticulo::where('articulo_id', $articuloId)
+            ->where('almacen_id', $almacenId)
+            ->first();
+        $documento->movimientos()->create([
+            "articulo_id" => $articulo->id,
+            "almacen_id" => $almacen->id,
+            "user_id" => auth()->id(),
+            "cantidad" => $cantidad,
+            "cantidad_defectuosos" => $cantidadDefectuosos,
+            "total_actual" => $almacenArticulo->cantidad,
+            "total_actual_defectuosos" => $almacenArticulo->cantidad_defectuosos   
+        ]);
+}
 
     /**
      * Descuenta stock (buenos y/o defectuosos) de forma atómica
@@ -89,7 +104,8 @@ class ArticuloAlmacenService
     int $articuloIdOriginal,
     int $almacenId,
     int $cantidad = 0,
-    int $cantidadDefectuosos = 0
+    int $cantidadDefectuosos = 0,
+    GeneraMovimientoAlmacen $documento
 ): void {
 
         $articuloId = $this->ajustarId($articuloIdOriginal);
@@ -153,7 +169,7 @@ class ArticuloAlmacenService
         }
 
         if (!$tipoArticuloUpdated) {
-     $articulo =  Articulo::find($articuloId)->with("tipoArticulo")->first();
+             $articulo =  Articulo::find($articuloId)->with("tipoArticulo")->first();
 
             throw new \Exception("Stock global del tipo de artículo insuficiente".  $articulo->codigo);
         }
@@ -171,6 +187,18 @@ class ArticuloAlmacenService
             throw new \Exception("Stock total del almacén insuficiente");
         }
 
+        $almacenArticulo = AlmacenArticulo::where('articulo_id', $articuloId)
+            ->where('almacen_id', $almacenId)
+            ->first();
+        $documento->movimientos()->create([
+            "articulo_id" => $articulo->id,
+            "almacen_id" => $almacen->id,
+            "user_id" => auth()->id(),
+            "cantidad" => -$cantidad,
+            "cantidad_defectuosos" => -$cantidadDefectuosos,
+            "total_actual" => $almacenArticulo->cantidad,
+            "total_actual_defectuosos" => $almacenArticulo->cantidad_defectuosos   
+        ]);
 
     }
 }
