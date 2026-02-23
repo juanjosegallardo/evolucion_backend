@@ -54,10 +54,33 @@ class VentaService
             $venta_articulos = VentaArticulo::where("venta_id", $venta_id)->get();
 
             foreach($venta_articulos as $venta_articulo){
-                $this->articuloAlmacenService->descontar($venta_articulo->articulo_id, $venta->almacen_id, $venta_articulo->cantidad, $venta_articulo->cantidad_defectuosos);
+                $this->articuloAlmacenService->descontar($venta_articulo->articulo_id, $venta->almacen_id, $venta_articulo->cantidad, $venta_articulo->cantidad_defectuosos,$venta);
             }
 
             $venta->estado = EstadoMovimientoAlmacen::VALIDADO->value;
+            $venta->save();
+        });
+     
+    }   
+
+    
+    public function cancelar(int $venta_id): void
+    {
+        DB::transaction(function() use ($venta_id) {
+            $venta = Venta::findOrFail($venta_id);
+            if (!$venta->estaValidado()) {
+                throw ValidationException::withMessages([
+                    'estado' => 'La venta no está validada y no puede ser cancelada.'
+                ]);
+            }
+            
+            $venta_articulos = VentaArticulo::where("venta_id", $venta_id)->get();
+
+            foreach($venta_articulos as $venta_articulo){
+                $this->articuloAlmacenService->agregar($venta_articulo->articulo_id, $venta->almacen_id, $venta_articulo->cantidad, $venta_articulo->cantidad_defectuosos,$venta);
+            }
+
+            $venta->estado = EstadoMovimientoAlmacen::CANCELADO->value;
             $venta->save();
         });
      

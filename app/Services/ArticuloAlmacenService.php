@@ -92,7 +92,8 @@ class ArticuloAlmacenService
             "cantidad" => $cantidad,
             "cantidad_defectuosos" => $cantidadDefectuosos,
             "total_actual" => $almacenArticulo->cantidad,
-            "total_actual_defectuosos" => $almacenArticulo->cantidad_defectuosos   
+            "total_actual_defectuosos" => $almacenArticulo->cantidad_defectuosos,
+            "estado" => $documento->estadoMovimiento()
         ]);
 }
 
@@ -192,12 +193,13 @@ class ArticuloAlmacenService
             ->first();
         $documento->movimientos()->create([
             "articulo_id" => $articulo->id,
-            "almacen_id" => $almacen->id,
+            "almacen_id" => $almacenId,
             "user_id" => auth()->id(),
             "cantidad" => -$cantidad,
             "cantidad_defectuosos" => -$cantidadDefectuosos,
             "total_actual" => $almacenArticulo->cantidad,
-            "total_actual_defectuosos" => $almacenArticulo->cantidad_defectuosos   
+            "total_actual_defectuosos" => $almacenArticulo->cantidad_defectuosos,
+            "estado" => $documento->estadoMovimiento()
         ]);
 
     }

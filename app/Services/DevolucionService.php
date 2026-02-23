@@ -40,10 +40,34 @@ class DevolucionService
             $devolucion_articulos = DevolucionArticulo::where("devolucion_id", $devolucion_id)->get();
 
             foreach($devolucion_articulos as $da){
-                $this->articuloAlmacenService->agregar($da->articulo_id, $devolucion->almacen_id, $da->cantidad, $da->cantidad_defectuosos);
+                $this->articuloAlmacenService->agregar($da->articulo_id, $devolucion->almacen_id, $da->cantidad, $da->cantidad_defectuosos, $devolucion);
             }
         });
     }
+
+    public function cancelar($devolucion_id)
+    {
+        DB::transaction(function() use ($devolucion_id) {
+
+            $devolucion = Devolucion::findOrFail($devolucion_id);
+            
+            if (!$devolucion->estaValidado()) {
+                throw ValidationException::withMessages([
+                    'estado' => 'La devolución no está validada y no puede ser cancelada.',
+                ]);
+            }
+            
+            $devolucion->estado = EstadoMovimientoAlmacen::CANCELADO->value;
+            $devolucion->save();
+            $devolucion_articulos = DevolucionArticulo::where("devolucion_id", $devolucion_id)->get();
+
+            foreach($devolucion_articulos as $da){
+                $this->articuloAlmacenService->descontar($da->articulo_id, $devolucion->almacen_id, $da->cantidad, $da->cantidad_defectuosos, $devolucion);
+            }
+        });
+    }
+
+
 
     public function rechazar($devolucion_id)
     {

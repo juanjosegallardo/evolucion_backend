@@ -30,5 +30,9 @@ trait EstadoMovimientoAlmacenTrait
         return $this->estado === EstadoMovimientoAlmacen::CANCELADO->value ;
     }
 
+    public function estadoMovimiento(): string
+    {
+        return $this->estado;
+    }
     
 }

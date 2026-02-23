@@ -58,8 +58,33 @@ class TraspasoService
             $traspaso_articulos = TraspasoArticulo::where("traspaso_id", $traspaso_id)->get();
 
             foreach($traspaso_articulos as $traspaso_articulo){
-                $this->articuloAlmacenService->agregar($traspaso_articulo->articulo_id, $traspaso->almacen_destino_id, $traspaso_articulo->cantidad, $traspaso_articulo->cantidad_defectuosos);
-                $this->articuloAlmacenService->descontar($traspaso_articulo->articulo_id, $traspaso->almacen_origen_id, $traspaso_articulo->cantidad, $traspaso_articulo->cantidad_defectuosos);
+                $this->articuloAlmacenService->agregar($traspaso_articulo->articulo_id, $traspaso->almacen_destino_id, $traspaso_articulo->cantidad, $traspaso_articulo->cantidad_defectuosos, $traspaso);
+                $this->articuloAlmacenService->descontar($traspaso_articulo->articulo_id, $traspaso->almacen_origen_id, $traspaso_articulo->cantidad, $traspaso_articulo->cantidad_defectuosos, $traspaso);
+            }
+        });
+    }
+
+
+    
+    public function cancelar($traspaso_id)
+    {
+        DB::transaction(function() use ($traspaso_id) {
+
+            $traspaso = Traspaso::findOrFail($traspaso_id);
+            
+            if (!$traspaso->estaValidado()) {
+                throw ValidationException::withMessages([
+                    'estado' => 'El traspaso no está validado y no puede ser cancelado.',
+                ]);
+            }
+            
+            $traspaso->estado = EstadoMovimientoAlmacen::CANCELADO->value;
+            $traspaso->save();
+            $traspaso_articulos = TraspasoArticulo::where("traspaso_id", $traspaso_id)->get();
+
+            foreach($traspaso_articulos as $traspaso_articulo){
+                $this->articuloAlmacenService->agregar($traspaso_articulo->articulo_id, $traspaso->almacen_origen_id, $traspaso_articulo->cantidad, $traspaso_articulo->cantidad_defectuosos, $traspaso);
+                $this->articuloAlmacenService->descontar($traspaso_articulo->articulo_id, $traspaso->almacen_destino_id, $traspaso_articulo->cantidad, $traspaso_articulo->cantidad_defectuosos, $traspaso);
             }
         });
     }

@@ -14,6 +14,7 @@ class Movimiento extends Model
         "cantidad_defectuosos",
         "total_actual",
         "total_actual_defectuosos",
+        "estado",
     ];
     
     public function movible()

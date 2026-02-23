@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(Articulo::class)->constrained();
             $table->foreignIdFor(Almacen::class)->constrained();
             $table->foreignIdFor(User::class)->constrained();
-            //$table->enum('tipo', ['entrada', 'salida']);
+            $table->string("estado");
             $table->integer("cantidad");
             $table->integer("cantidad_defectuosos");
             $table->unsignedBigInteger("total_actual");

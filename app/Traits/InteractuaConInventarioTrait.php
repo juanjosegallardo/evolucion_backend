@@ -15,5 +15,6 @@ trait InteractuaConInventarioTrait
     {
         return $this->movimientos()->create($data);
     }
+    
 
 }
