@@ -12,7 +12,7 @@ use App\Http\Controllers\TipoArticuloController;
 use App\Http\Controllers\VentaArticuloController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ReporteLibretaController;
+use App\Http\Controllers\ReporteVentasController;
 use App\Http\Controllers\DevolucionController;
 use App\Http\Controllers\AuthController;
 
@@ -68,7 +68,7 @@ Route::middleware('auth:api')->group(function () {
         Route::delete('/{articuloId}', [VentaArticuloController::class, 'destroy'])->name('ventas.articulos.destroy');
     });
     // Reportes
-    Route::get('reportes/vendedores/{id}/libreta', [ReporteLibretaController::class, 'reporteVendedores'])
+    Route::get('reportes/vendedores/{id}/libreta', [ReporteVentasController::class, 'reporteVendedores'])
         ->name('reportes.vendedores.libreta');
 
     // Almacenes
