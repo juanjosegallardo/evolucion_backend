@@ -69,14 +69,15 @@ class VentaService
                 ]);
             }
             
+            $venta->estado = EstadoMovimientoAlmacen::VALIDADO->value;
+            $venta->save();
             $venta_articulos = VentaArticulo::where("venta_id", $venta_id)->get();
 
             foreach($venta_articulos as $venta_articulo){
                 $this->articuloAlmacenService->descontar($venta_articulo->articulo_id, $venta->almacen_id, $venta_articulo->cantidad, $venta_articulo->cantidad_defectuosos,$venta);
             }
 
-            $venta->estado = EstadoMovimientoAlmacen::VALIDADO->value;
-            $venta->save();
+     
         });
      
     }   
