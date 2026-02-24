@@ -5,11 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\EstadoMovimientoAlmacenTrait;
 use App\Traits\InteractuaConInventarioTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Contracts\GeneraMovimientoAlmacen;
 
-class Reclasificacion extends Model
+
+class Reclasificacion extends Model implements GeneraMovimientoAlmacen
 {
     use EstadoMovimientoAlmacenTrait;
     use InteractuaConInventarioTrait;
+    use SoftDeletes;
     protected $table = "reclasificaciones";
 
     public function almacen()

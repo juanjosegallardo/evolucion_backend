@@ -6,6 +6,7 @@ use App\Models\Carga;
 use App\Models\User;
 use App\Models\Almacen;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Http\Request;
 
 
 class CargaPolicy
@@ -52,15 +53,16 @@ class CargaPolicy
         //
     }
 
-    public function create(User $user): bool
+    public function create(User $user,$request)
     {
          if ($user->esAdmin()) {
             return Response::allow();
         }
 
-        if ($carga->almacen->user_responsable_id === $user->id) {
+        if ($user->almacenes->pluck("id")->contains($request->almacen_id)) {
             return Response::allow();
         }
+
 
         return Response::deny('Solo el administrador o el responsable puede capturar la carga');   
     }
@@ -71,13 +73,13 @@ class CargaPolicy
         
     }
 
-    public function delete(User $user, Carga $carga): bool
+    public function delete(User $user, Carga $carga)
     {
         if ($user->esAdmin()) {
             return Response::allow();
         }
 
-        if ($carga->almacen->user_responsable_id === $user->id) {
+        if ($user->almacenes->pluck("id")->contains($carga->almacen_id)) {
             return Response::allow();
         }
 

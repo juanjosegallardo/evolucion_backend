@@ -23,6 +23,17 @@ class CargaService
         $this->articuloAlmacenService = $articuloAlmacenService;
     }   
 
+    public function crear($request)
+    {
+        return DB::transaction(function() use ($request) {
+            $carga = new Carga();
+            $carga->almacen_id = $request->almacen_id;
+            $carga->notas = $request->notas;
+            $carga->save();
+            return $carga;
+        });
+    }
+
     public function eliminar($carga_id)
     {
         DB::transaction(function() use ($carga_id) {

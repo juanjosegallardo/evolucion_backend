@@ -8,10 +8,12 @@ use App\Http\Requests\UpdateVentaRequest;
 use App\Services\VentaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class VentaController extends Controller
 {
     protected $ventaService;
+    use AuthorizesRequests;
 
     public function __construct(VentaService $ventaService)
     {
@@ -39,19 +41,10 @@ class VentaController extends Controller
      */
     public function store(Request $request)
     {
-        $venta = new Venta();
-        $venta->almacen_id = $request->almacen_id;
-        $venta->user_vendedor_id =$request->user_vendedor_id;
-        $venta->total = $request->total;
-        $venta->enganche = $request->enganche;
-        $venta->tipo = $request->tipo;
-        $venta->fecha = $request->fecha;
-        $venta->notas= $request->notas;
-        $venta->nombre_cliente = $request->nombre_cliente;
-        $venta->calcularComision();
-        $venta->save();
 
-        return $venta->with("almacen")->with("vendedor")->find($venta->id);
+        $this->authorize("create",[Venta::class, $request]);
+        $venta = $this->ventaService->crear($request);
+        return Venta::with("almacen")->with("vendedor")->find($venta->id);
     }
 
     /**
@@ -87,23 +80,31 @@ class VentaController extends Controller
      */
     public function destroy($id)
     {
+        $venta = Venta::find($id);
+        $this->authorize("destroy",$venta);
         $this->ventaService->eliminar($id);
     }
 
     public function solicitarValidacion($id)
     {
+        $venta = Venta::find($id);
+        $this->authorize("solicitar",$venta);
         $this->ventaService->solicitar($id);
         return Venta::with("vendedor")->with("almacen")->find($id);
     }   
 
     public function validar($id)
     {
+        $venta = Venta::find($id);
+        $this->authorize("validar",$venta);
         $this->ventaService->validar($id);   
         return Venta::with("vendedor")->with("almacen")->find($id);
     }
 
     public function rechazar($id)
     {
+        $venta = Venta::find($id);
+        $this->authorize("rechazar",$venta);
         $this->ventaService->rechazar($id);
         return Venta::with("vendedor")->with("almacen")->find($id);
     }

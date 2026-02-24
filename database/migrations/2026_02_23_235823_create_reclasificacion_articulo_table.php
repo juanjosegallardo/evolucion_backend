@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('reclasificacion_articulo', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('reclasificacion_id')->constrained('reclasificaciones')->onDelete('cascade');
+            $table->foreignId('articulo_id')->constrained('articulos')->onDelete('cascade');
+            $table->integer('cantidad');
+            $table->integer('cantidad_defectuosos');
             $table->timestamps();
         });
     }

@@ -41,10 +41,8 @@ class CargaController extends Controller
      */
     public function store(Request $request)
     {
-        $carga = new Carga();
-        $carga->almacen_id = $request->almacen_id;
-        $carga->notas = $request->notas;
-        $carga->save();
+        $this->authorize("create",[Carga::class, $request]);
+        $carga = $this->cargaService->crear($request);
         return Carga::with("almacen")->find($carga->id);//hay que regresar with articulos
 
     }
@@ -81,7 +79,7 @@ class CargaController extends Controller
     public function destroy($id)
     {
         $carga = Carga::findOrFail($id);
-        $this->authorize("destroy",$carga); 
+        $this->authorize("delete",$carga); 
         $this->cargaService->eliminar($id);
     }
 

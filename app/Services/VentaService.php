@@ -24,6 +24,24 @@ class VentaService
     } 
 
 
+
+    public function crear($request)
+    {
+        return DB::transaction(function() use ($request) {
+            $venta = new Venta();
+            $venta->almacen_id = $request->almacen_id;
+            $venta->user_vendedor_id =$request->user_vendedor_id;
+            $venta->total = $request->total;
+            $venta->enganche = $request->enganche;
+            $venta->tipo = $request->tipo;
+            $venta->fecha = $request->fecha;
+            $venta->notas= $request->notas;
+            $venta->nombre_cliente = $request->nombre_cliente;
+            $venta->calcularComision();
+            $venta->save();
+            return $venta;
+        });
+    }
     public function eliminar($venta_id)
     {
         DB::transaction(function() use ($venta_id) {

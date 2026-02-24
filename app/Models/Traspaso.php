@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\EstadoMovimientoAlmacenTrait;
 use App\Traits\InteractuaConInventarioTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Contracts\GeneraMovimientoAlmacen;
 
-class Traspaso extends Model
+class Traspaso extends Model implements GeneraMovimientoAlmacen
 {
     use EstadoMovimientoAlmacenTrait;
     use InteractuaConInventarioTrait;

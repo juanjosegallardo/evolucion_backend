@@ -8,6 +8,7 @@ use App\Models\Venta;
 use App\Models\Carga;
 use App\Models\Devolucion;
 use App\Models\Reclasificacion;
+use App\Models\Traspaso;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -28,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
             'venta' => Venta::class,
             'carga' => Carga::class,
             'devolucion' => Devolucion::class,
+            'traspaso' => Traspaso::class,
             'reclasificacion' => Reclasificacion::class,
         ]);
 

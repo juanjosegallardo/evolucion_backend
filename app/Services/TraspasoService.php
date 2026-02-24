@@ -8,7 +8,7 @@ use App\Models\Traspaso;
 use App\Models\TraspasoArticulo;
 use App\Enums\EstadoMovimientoAlmacen;
 use Illuminate\Validation\ValidationException;
-
+use Illuminate\Http\Request;
 
 class TraspasoService
 {
@@ -18,6 +18,19 @@ class TraspasoService
 
     protected $articuloAlmacenService;
     
+
+    public function create (Request $request)
+    {
+        return DB::transaction(function() use ($request) {
+            $traspaso = new Traspaso();
+            $traspaso->almacen_origen_id = $request->almacen_origen_id;
+            $traspaso->almacen_destino_id = $request->almacen_destino_id;
+            $traspaso->notas = $request->notas;
+            $traspaso->save();
+            return $traspaso;
+        });
+    }
+
     public function __construct(ArticuloAlmacenService $articuloAlmacenService)
     {
         $this->articuloAlmacenService = $articuloAlmacenService;

@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Traspaso;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Http\Request;
 
 class TraspasoPolicy
 {
@@ -27,7 +28,7 @@ class TraspasoPolicy
             return Response::allow();
         }
 
-        if ($traspaso->almacenDestino->user_responsable_id === $user->id) {
+        if ($user->almacenes->pluck("id")->contains($traspaso->almacen_destino_id)) {
             return Response::allow();
         }
         return Response::deny('Solo el administrador o el responsable puede solicitar el traspaso');
@@ -43,13 +44,13 @@ class TraspasoPolicy
         //
     }
 
-    public function create(User $user)
+    public function create(User $user, $request) 
     {
-         if ($user->esAdmin()) {
+        if ($user->esAdmin()) {
             return Response::allow();
         }
 
-        if ($traspaso->almacenDestino->user_responsable_id === $user->id) {
+        if ($user->almacenes->pluck("id")->contains($request->almacen_destino_id)) {
             return Response::allow();
         }
 
@@ -68,7 +69,7 @@ class TraspasoPolicy
             return Response::allow();
         }
 
-        if ($traspaso->almacenDestino->user_responsable_id === $user->id) {
+        if ($user->almacenes->pluck("id")->contains($traspaso->almacen_destino_id)) {
             return Response::allow();
         }
 

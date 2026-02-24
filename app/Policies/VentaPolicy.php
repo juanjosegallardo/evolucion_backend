@@ -5,8 +5,7 @@ namespace App\Policies;
 use App\Models\User;
 use App\Models\Venta;
 use Illuminate\Auth\Access\Response;
-
-
+use Illuminate\Http\Request;
 
 class VentaPolicy
 {
@@ -46,13 +45,13 @@ class VentaPolicy
         //
     }
 
-    public function create(User $user): bool
+    public function create(User $user, $request)
     {
          if ($user->esAdmin()) {
             return Response::allow();
         }
 
-        if ($venta->almacen->user_responsable_id === $user->id) {
+        if ($request->user_vendedor_id === $user->id && $user->almacenes->pluck("id")->contains($request->almacen_id)) {
             return Response::allow();
         }
 
