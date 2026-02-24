@@ -40,6 +40,9 @@
                         Fecha
                     </th>
                     <th>
+                        Cliente
+                    </th>
+                    <th>
                         Articulos
                     </th>
                     
@@ -67,6 +70,8 @@
                     {{$venta["fecha"]}}
                 </td>
                 <td>
+                    {{$venta["nombre_cliente"]}}
+                <td>
                     @foreach($venta["articulos"] as $articulo)
                         {{$articulo["pivot"]["cantidad"]}} {{$articulo["tipoArticulo"]["nombre"]}} <br>
                     @endforeach
@@ -89,7 +94,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="7">
+                <td colspan="8">
                     <hr>
                 </td>
             </tr>
@@ -103,6 +108,7 @@
             @endphp
         @endforeach
             <tr>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td  align="right">${{ number_format($total_precio, 2, '.', ',') }}</td>
