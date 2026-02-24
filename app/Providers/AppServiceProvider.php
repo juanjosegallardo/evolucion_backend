@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use App\Models\Venta;
 use App\Models\Carga;
 use App\Models\Devolucion;
+use App\Models\Reclasificacion;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -27,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
             'venta' => Venta::class,
             'carga' => Carga::class,
             'devolucion' => Devolucion::class,
+            'reclasificacion' => Reclasificacion::class,
         ]);
 
     }

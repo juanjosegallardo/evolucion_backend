@@ -5,22 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\EstadoMovimientoAlmacenTrait;
 use App\Traits\InteractuaConInventarioTrait;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Devolucion extends Model
+class Reclasificacion extends Model
 {
     use EstadoMovimientoAlmacenTrait;
     use InteractuaConInventarioTrait;
-    
-    use SoftDeletes;
-
-    protected $attributes = ["cantidad"=>0];
-    protected $table = "devoluciones";
-
-    public function vendedor()
-    {
-        return $this->belongsTo(User::class, 'usuario_vendedor_id');
-    }
+    protected $table = "reclasificaciones";
 
     public function almacen()
     {
@@ -29,7 +19,7 @@ class Devolucion extends Model
 
     public function articulos()
     {
-        return $this->belongsToMany(Articulo::class, 'venta_articulo');
+        return $this->belongsToMany(Articulo::class, 'reclasificacion_articulo');
     }
 
     public function scopeVisiblePara($query, User $user)
@@ -42,5 +32,4 @@ class Devolucion extends Model
             $q->where('user_responsable_id', $user->id);
         });
     }
-
 }
