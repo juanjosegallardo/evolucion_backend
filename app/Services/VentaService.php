@@ -65,7 +65,7 @@ class VentaService
             $venta = Venta::findOrFail($venta_id);
             if (!$venta->estaSolicitado()) {
                 throw ValidationException::withMessages([
-                    'estado' => 'La venta no está solicitada y no puede ser validada.',
+                    'estado' => 'La venta no puede ser validada  en el estado actual.',
                 ]);
             }
             
@@ -89,7 +89,7 @@ class VentaService
             $venta = Venta::findOrFail($venta_id);
             if (!$venta->estaValidado()) {
                 throw ValidationException::withMessages([
-                    'estado' => 'La venta no está validada y no puede ser cancelada.'
+                    'estado' => 'La venta  no puede ser cancelada en el estado actual.'
                 ]);
             }
             
@@ -112,7 +112,7 @@ class VentaService
 
             if (!$venta->estaSolicitado()) {
                 throw ValidationException::withMessages([
-                    'estado' => 'La venta no está solicitada y no puede ser rechazada.',
+                    'estado' => 'La venta no puede ser rechazada en el estado actual.',
                 ]);
             }
             $venta->estado = EstadoMovimientoAlmacen::RECHAZADO->value;
@@ -125,9 +125,9 @@ class VentaService
         DB::transaction(function() use ($venta_id) {
             $venta = Venta::findOrFail($venta_id);
 
-            if (!$venta->estaEnCaptura()) {
+            if (!$venta->estaEnCaptura() && !$venta->estaRechazado()) {
                 throw ValidationException::withMessages([
-                    'estado' => 'La venta no está en captura y no puede ser solicitada.',
+                    'estado' => 'La venta no puede ser solicitada en el estado actual.',
                 ]);
             }
             $venta->estado = EstadoMovimientoAlmacen::SOLICITADO->value;
