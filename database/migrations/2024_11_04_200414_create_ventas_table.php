@@ -33,6 +33,11 @@ return new class extends Migration
                 'RECHAZADO',
                 'CANCELADO'
             ])->default('EN_CAPTURA');
+            $table->enum('sistema', [
+                'penjamo',    
+                'juventino',    
+                'martin',    
+            ])->default('penjamo');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -35,8 +35,8 @@ class VentaService
             $venta->enganche = $request->enganche;
             $venta->tipo = $request->tipo;
             $venta->fecha = $request->fecha;
-            $venta->notas= $request->notas;
             $venta->nombre_cliente = $request->nombre_cliente;
+            $venta->sistema = $request->sistema;
             $venta->calcularComision();
             $venta->save();
             return $venta;

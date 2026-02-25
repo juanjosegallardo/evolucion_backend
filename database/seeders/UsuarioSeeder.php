@@ -22,7 +22,7 @@ class UsuarioSeeder extends Seeder
             ["id"=>6, "nombre"=>"Camilo Gonzalez", "usuario"=>"camilo", "password"=>bcrypt("camilo78978"), "role"=>"user"],
             ["id"=>7, "nombre"=>"Ramon Santiago", "usuario"=>"ramon", "password"=>bcrypt("ramon324235"), "role"=>"user"],
             ["id"=>8, "nombre"=>"Candelario Menchaca", "usuario"=>"candelario", "password"=>bcrypt("cande885274"), "role"=>"user"],
-        
+            ["id"=>9, "nombre"=>"Martin Vega Bravo", "usuario"=>"admin", "password"=>bcrypt("19851990im"), "role"=>"admin"],
 
         ];
 

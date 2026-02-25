@@ -28,7 +28,6 @@ class CargaService
         return DB::transaction(function() use ($request) {
             $carga = new Carga();
             $carga->almacen_id = $request->almacen_id;
-            $carga->notas = $request->notas;
             $carga->save();
             return $carga;
         });
