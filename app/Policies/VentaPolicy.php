@@ -45,13 +45,13 @@ class VentaPolicy
         //
     }
 
-    public function create(User $user, $request)
+    public function create(User $user, array $data)
     {
          if ($user->esAdmin()) {
             return Response::allow();
         }
-
-        if ($request->user_vendedor_id === $user->id && $user->almacenes->pluck("id")->contains($request->almacen_id)) {
+        //que el usuario sea el vendedor y que el almacen este entre los almacenes del usuario
+        if ($data['user_vendedor_id'] === $user->id && $user->almacenes->pluck("id")->contains($data['almacen_id'])) {
             return Response::allow();
         }
 
@@ -64,7 +64,7 @@ class VentaPolicy
         
     }
 
-    public function delete(User $user, Venta $venta): bool
+    public function delete(User $user, Venta $venta)
     {
         if ($user->esAdmin()) {
             return Response::allow();

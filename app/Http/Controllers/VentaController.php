@@ -39,11 +39,9 @@ class VentaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreVentaRequest $request)
     {
-
-        $this->authorize("create",[Venta::class, $request]);
-        $venta = $this->ventaService->crear($request);
+        $venta = $this->ventaService->crear($request->validated());
         return Venta::with("almacen")->with("vendedor")->find($venta->id);
     }
 
@@ -81,7 +79,7 @@ class VentaController extends Controller
     public function destroy($id)
     {
         $venta = Venta::find($id);
-        $this->authorize("destroy",$venta);
+        $this->authorize("delete",$venta);
         $this->ventaService->eliminar($id);
     }
 

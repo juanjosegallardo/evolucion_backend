@@ -9,15 +9,17 @@ use App\Traits\EstadoMovimientoAlmacenTrait;
 use App\Traits\InteractuaConInventarioTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Contracts\GeneraMovimientoAlmacen;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Venta extends Model implements GeneraMovimientoAlmacen
 {
     use EstadoMovimientoAlmacenTrait;
     use InteractuaConInventarioTrait;
 
-    protected $attributes = ["cantidad"=>0];
+    protected $attributes = ["enganche"=>0, "porcentaje"=>0, "comision"=>0, "a_pagar"=>0];
     protected $dates = ["fecha"];
-    protected $fillable = ["total_real"];
+    protected $casts = ['fecha' => 'datetime'];
+    protected $fillable = ["tipo", "fecha", "enganche", "total", "sistema", "almacen_id", "user_vendedor_id", "nombre_cliente"];
     use SoftDeletes;
 
     public function actualizarTotalReal()
@@ -93,5 +95,11 @@ class Venta extends Model implements GeneraMovimientoAlmacen
         });
     }
 
+    protected function nombreCliente(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => $value ? mb_strtoupper($value) : null,
+        );
+    }
 
 }

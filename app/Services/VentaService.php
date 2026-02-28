@@ -25,23 +25,39 @@ class VentaService
 
 
 
-    public function crear($request)
+    public function crear(array $data)
     {
-        return DB::transaction(function() use ($request) {
+        return DB::transaction(function() use ($data) {
             $venta = new Venta();
-            $venta->almacen_id = $request->almacen_id;
-            $venta->user_vendedor_id =$request->user_vendedor_id;
-            $venta->total = $request->total;
-            $venta->enganche = $request->enganche;
-            $venta->tipo = $request->tipo;
-            $venta->fecha = $request->fecha;
-            $venta->nombre_cliente = $request->nombre_cliente;
-            $venta->sistema = $request->sistema;
+            $venta->fill($data);
+
             $venta->calcularComision();
+
+            if($venta['tipo'] === 'CREDITO' && $venta->enganche < 0){
+                throw ValidationException::withMessages([
+                    'enganche' => 'El enganche debe ser mayor o igual a 0 para ventas a crédito.',
+                ]);
+            }
+            
+            if($venta['tipo'] === 'CREDITO' && $venta["nombre_cliente"] == ""){
+                throw ValidationException::withMessages([
+                    'nombre_cliente' => 'El nombre del cliente es obligatorio para ventas a crédito.',
+                ]);
+            }
+            
+                    
+            if($venta['fecha']->isWeekend() || $venta['fecha']->isBefore(now()->subWeek())){
+                throw ValidationException::withMessages([
+                    'fecha' => 'La fecha tiene que estar entre lunes y viernes y no debe ser anterior una semana a la fecha actual.',
+                ]);
+            }
+            
+            
             $venta->save();
             return $venta;
         });
     }
+
     public function eliminar($venta_id)
     {
         DB::transaction(function() use ($venta_id) {
