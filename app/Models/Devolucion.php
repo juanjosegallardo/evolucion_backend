@@ -18,6 +18,7 @@ class Devolucion extends Model implements GeneraMovimientoAlmacen
 
     protected $attributes = ["cantidad"=>0];
     protected $table = "devoluciones";
+    protected $dates = ["fecha"];
 
     public function vendedor()
     {

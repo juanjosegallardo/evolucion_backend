@@ -16,6 +16,7 @@ class Carga extends Model implements GeneraMovimientoAlmacen
     use InteractuaConInventarioTrait;
     use SoftDeletes;
     protected $attributes = ["cantidad"=>0];
+    protected $dates = ["fecha"];
 
     public function almacen()
     {

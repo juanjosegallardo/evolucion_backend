@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait InteractuaConInventarioTrait
 {
+
     public function movimientos(): MorphMany
     {
         return $this->morphMany(Movimiento::class, 'movible');

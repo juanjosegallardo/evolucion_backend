@@ -12,7 +12,7 @@ class Traspaso extends Model implements GeneraMovimientoAlmacen
 {
     use EstadoMovimientoAlmacenTrait;
     use InteractuaConInventarioTrait;
-
+    protected $dates = ["fecha"];
     use SoftDeletes;
     protected $attributes = ["cantidad"=>0];
     public function origen()

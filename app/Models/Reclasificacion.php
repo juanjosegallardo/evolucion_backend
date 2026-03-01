@@ -14,6 +14,7 @@ class Reclasificacion extends Model implements GeneraMovimientoAlmacen
     use EstadoMovimientoAlmacenTrait;
     use InteractuaConInventarioTrait;
     use SoftDeletes;
+    protected $dates = ["fecha"];
     protected $table = "reclasificaciones";
 
     public function almacen()
