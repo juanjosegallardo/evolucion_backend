@@ -16,5 +16,9 @@ trait InteractuaConInventarioTrait
         return $this->movimientos()->create($data);
     }
     
+    public static function morph(): string
+    {
+        return (new static)->getMorphClass();
+    }
 
 }

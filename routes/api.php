@@ -13,6 +13,7 @@ use App\Http\Controllers\VentaArticuloController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReporteVentasController;
+use App\Http\Controllers\ReporteInventarioController;
 use App\Http\Controllers\DevolucionController;
 use App\Http\Controllers\AuthController;
 
@@ -70,6 +71,9 @@ Route::middleware('auth:api')->group(function () {
     // Reportes
     Route::get('reportes/vendedores/{id}/libreta', [ReporteVentasController::class, 'reporteVendedores'])
         ->name('reportes.vendedores.libreta');
+
+    Route::get('reportes/almacenes/{id}/inventario', [ReporteInventarioController::class, 'reporteInventario'])
+        ->name('reportes.almacenes.inventario');
 
     // Almacenes
     Route::prefix('almacenes')->group(function () {

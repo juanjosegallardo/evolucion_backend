@@ -13,4 +13,14 @@ class AlmacenArticulo extends Model
         "cantidad_defectuosos"
     ];
     protected $table = "almacen_articulo";
+
+    public function articulo()
+    {
+        return $this->belongsTo(Articulo::class);
+    }   
+
+    public function almacen()
+    {
+        return $this->belongsTo(Almacen::class);
+    }
 }
