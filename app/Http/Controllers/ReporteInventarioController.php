@@ -53,9 +53,11 @@ class ReporteInventarioController extends Controller
        
         $fecha_fin = Carbon::parse($request->fecha_fin)->endOfDay();
         $fecha_inicio = $fecha_fin->copy()->subDays(6)->startOfDay();
-
+        
+        $data["fecha"] = "{$fecha_inicio} - {$fecha_fin}";
         $data["articulos"] = AlmacenArticulo::with([
-            "articulo.tipoArticulo"
+        
+        "articulo.tipoArticulo"
         ])
         ->where("almacen_id",$id)
         ->get()
@@ -68,6 +70,7 @@ class ReporteInventarioController extends Controller
             'total_actual',
             'total_actual_defectuosos'
         ])
+    
         ->whereIn('id',
             Movimiento::query()
                 ->selectRaw('MAX(id)')

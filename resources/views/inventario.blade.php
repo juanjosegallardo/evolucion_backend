@@ -11,6 +11,14 @@
             border-collapse: collapse;
         }
 
+        h1
+        {
+            font-size: 14px;
+        }
+        h2
+        {
+            font-size: 12px;
+        }
         th, td{
             text-align: center;
             vertical-align: middle;
@@ -57,7 +65,7 @@
 
 <body>
 
-<h1>{{$almacen->nombre}}</h1><br>
+<h1>{{$almacen->nombre}} {{$fecha}}</h1>
 <h2>  {{ $almacen->responsable->nombre ?? '' }}</h2>
 
 <table width="100%" border="1" cellspacing="0" cellpadding="0">
