@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use PDF;
 use App\Models\AlmacenArticulo;
 use App\Models\Movimiento;
+use Carbon\Carbon;
 use App\Models\Venta;
 use App\Models\Carga;
-use Carbon\Carbon;
 use App\Models\Reclasificacion;
 use App\Models\Traspaso;
 use App\Models\Devolucion;
@@ -63,20 +63,16 @@ class ReporteInventarioController extends Controller
         ->values();
 
         $data["almacen"]=AlmacenArticulo::with(["almacen.responsable"])->where("almacen_id",$id)->first()->almacen;
-        
-        $data[Venta::table()] =
-            $this->agregarMovimiento(Venta::class, $fecha_inicio, $fecha_fin, $id);
+        foreach (Movimiento::movibles() as $modelo) {
+            $data[$modelo::table()] =
+                $this->agregarMovimiento(
+                    $modelo,
+                    $fecha_inicio,
+                    $fecha_fin,
+                    $id
+                );
+        }
 
-        $data[Carga::table()] =
-            $this->agregarMovimiento(Carga::class, $fecha_inicio, $fecha_fin, $id);
-
-        $data[Reclasificacion::table()] =
-            $this->agregarMovimiento(Reclasificacion::class, $fecha_inicio, $fecha_fin, $id);
-
-        $data[Traspaso::table()] =
-            $this->agregarMovimiento(Traspaso::class, $fecha_inicio, $fecha_fin, $id);
-
-    
         $pdf = PDF::loadView("inventario", $data)->setPaper('letter', 'landscape');;
         return $pdf->stream("inventario.pdf");
     }

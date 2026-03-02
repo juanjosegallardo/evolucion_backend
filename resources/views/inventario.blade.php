@@ -33,9 +33,14 @@
         }
         .dia
         {
-            width: 23px;
+            width: 20px;
             white-space: nowrap;
         }
+
+        @page {
+            margin: 5mm;
+        }
+     
     </style>
 </head>
 
@@ -103,8 +108,19 @@
 @endfor
 
 {{-- ================= DEVOLUCIONES ================= --}}
-<td colspan="5"></td>
 
+@for($d=2;$d<=6;$d++)
+<td  class="dia">
+@if(isset($devoluciones[$articulo->articulo_id][$d]))
+    <span class="bueno">
+        {{$devoluciones[$articulo->articulo_id][$d]["cantidad"]}}
+    </span>
+    <span class="defectuoso">
+        {{$devoluciones[$articulo->articulo_id][$d]["cantidad_defectuosos"]}}
+    </span>
+@endif
+</td>
+@endfor
 {{-- ================= TRASPASOS ================= --}}
 @for($d=2;$d<=6;$d++)
 <td  class="dia">
@@ -120,7 +136,18 @@
 @endfor
 
 {{-- ================= AJUSTES ================= --}}
-<td colspan="5"></td>
+@for($d=2;$d<=6;$d++)
+<td  class="dia">
+@if(isset($ajustes[$articulo->articulo_id][$d]))
+    <span class="bueno">
+        {{$ajustes[$articulo->articulo_id][$d]["cantidad"]}}
+    </span>
+    <span class="defectuoso">
+        {{$ajustes[$articulo->articulo_id][$d]["cantidad_defectuosos"]}}
+    </span>
+@endif
+</td>
+@endfor
 
 {{-- ================= RECLASIFICACIONES ================= --}}
 @for($d=2;$d<=6;$d++)

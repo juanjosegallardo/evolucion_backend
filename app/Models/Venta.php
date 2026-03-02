@@ -11,12 +11,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Contracts\GeneraMovimientoAlmacen;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use App\Traits\MetadatosClaseTrait;
+use App\Traits\RegistraMovimientoInventarioTrait;
 
 class Venta extends Model implements GeneraMovimientoAlmacen
 {
     use EstadoMovimientoAlmacenTrait;
     use InteractuaConInventarioTrait;
+    use RegistraMovimientoInventarioTrait;
     use MetadatosClaseTrait;
+
     protected $attributes = ["enganche"=>0, "porcentaje"=>0, "comision"=>0, "a_pagar"=>0];
     protected $dates = ["fecha"];
     protected $casts = ['fecha' => 'date:Y-m-d'];
