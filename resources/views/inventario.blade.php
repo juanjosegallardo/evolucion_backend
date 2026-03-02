@@ -22,6 +22,17 @@
             font-weight:bold;
         }
 
+        .gris
+        {
+            background-color: #cccccc;
+
+        }
+    
+        .blanco
+        {
+            background-color: #FFFFFF;
+        }
+
         .defectuoso{
             color:#38761d;
             font-weight:bold;
@@ -46,7 +57,8 @@
 
 <body>
 
-<h1>{{$almacen->nombre}} - {{$almacen->responsable->nombre}}</h1>
+<h1>{{$almacen->nombre}}</h1><br>
+<h2>  {{ $almacen->responsable->nombre ?? '' }}</h2>
 
 <table width="100%" border="1" cellspacing="0" cellpadding="0">
 
@@ -69,9 +81,11 @@
     <th>L</th><th>M</th><th>X</th><th>J</th><th>V</th>
 @endfor
 </tr>
+@php($i=0)
 
 @foreach ($articulos as $articulo)
-<tr>
+@php($i++)
+<tr class="{{($i%2==0)?'blanco':'gris' }}">
 
 <td class="articulo">
     {{$articulo->articulo->tipoArticulo->nombre}}
