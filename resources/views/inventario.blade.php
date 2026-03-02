@@ -14,7 +14,7 @@
         th, td{
             text-align: center;
             vertical-align: middle;
-            padding: 2px;
+            padding: 1px;
         }
 
         .bueno{
@@ -163,7 +163,17 @@
 </td>
 @endfor
 
-<td></td>
+<td>
+
+    @if(isset($final[$articulo->articulo_id]))
+        <span class="bueno">
+            {{$final[$articulo->articulo_id]["total_actual"]}}
+        </span>
+        <span class="defectuoso">
+            {{$final[$articulo->articulo_id]["total_actual_defectuosos"]}}
+        </span>
+    @endif
+</td>
 
 </tr>
 @endforeach

@@ -62,6 +62,23 @@ class ReporteInventarioController extends Controller
         ->sortBy('articulo.tipoArticulo.nombre')
         ->values();
 
+       $data["final"] = Movimiento::query()
+        ->select([
+            'articulo_id',
+            'total_actual',
+            'total_actual_defectuosos'
+        ])
+        ->whereIn('id',
+            Movimiento::query()
+                ->selectRaw('MAX(id)')
+                ->where('almacen_id', $id)
+                ->where('created_at', '<=', $fecha_fin)
+                ->groupBy('articulo_id')
+        )
+        ->get()
+        ->keyBy('articulo_id')
+        ->toArray();;
+
         $data["almacen"]=AlmacenArticulo::with(["almacen.responsable"])->where("almacen_id",$id)->first()->almacen;
         foreach (Movimiento::movibles() as $modelo) {
             $data[$modelo::table()] =
@@ -72,6 +89,7 @@ class ReporteInventarioController extends Controller
                     $id
                 );
         }
+
 
         $pdf = PDF::loadView("inventario", $data)->setPaper('letter', 'landscape');;
         return $pdf->stream("inventario.pdf");
