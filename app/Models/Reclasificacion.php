@@ -7,12 +7,14 @@ use App\Traits\EstadoMovimientoAlmacenTrait;
 use App\Traits\InteractuaConInventarioTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Contracts\GeneraMovimientoAlmacen;
+use App\Traits\MetadatosClaseTrait;
 
 
 class Reclasificacion extends Model implements GeneraMovimientoAlmacen
 {
     use EstadoMovimientoAlmacenTrait;
     use InteractuaConInventarioTrait;
+    use MetadatosClaseTrait;
     use SoftDeletes;
     protected $dates = ["fecha"];
     protected $table = "reclasificaciones";

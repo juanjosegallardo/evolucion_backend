@@ -10,6 +10,7 @@ use App\Models\ReclasificacionArticulo;
 use App\Enums\EstadoMovimientoAlmacen;
 use Illuminate\Validation\ValidationException;
 
+
 class ReclasificacionService
 {
     /**
@@ -67,20 +68,20 @@ class ReclasificacionService
 
             $reclasificacion->estado = EstadoMovimientoAlmacen::VALIDADO->value;
             $reclasificacion->save();
-            $carga_articulos = CargaArticulo::where("carga_id", $reclasificacion->carga_id)->get();
+            $reclasificacion_articulos = ReclasificacionArticulo::where("reclasificacion_id", $reclasificacion->id)->get();
 
-            foreach($carga_articulos as $carga_articulo)
+            foreach($reclasificacion_articulos as $reclasificacion_articulo)
             {
-                if($carga_articulo->cantidad > 0)
+                if($reclasificacion_articulo->cantidad > 0)
                 {
-                    $this->articuloAlmacenService->descontar($carga_articulo->articulo_id, $reclasificacion->almacen_id, 0,  $carga_articulo->cantidad,$reclasificacion);
-                    $this->articuloAlmacenService->agregar($carga_articulo->articulo_id, $reclasificacion->almacen_id, $carga_articulo->cantidad, 0, $reclasificacion);
+                    $this->articuloAlmacenService->descontar($reclasificacion_articulo->articulo_id, $reclasificacion->almacen_id, 0,  $reclasificacion_articulo->cantidad,$reclasificacion);
+                    $this->articuloAlmacenService->agregar($reclasificacion_articulo->articulo_id, $reclasificacion->almacen_id, $reclasificacion_articulo->cantidad, 0, $reclasificacion);
                 }
 
-                if($carga_articulo->cantidad_defectuosos > 0)
+                if($reclasificacion_articulo->cantidad_defectuosos > 0)
                 {
-                    $this->articuloAlmacenService->descontar($carga_articulo->articulo_id, $reclasificacion->almacen_id, $carga_articulo->cantidad_defectuosos, 0,$reclasificacion);
-                    $this->articuloAlmacenService->agregar($carga_articulo->articulo_id, $reclasificacion->almacen_id, 0, $carga_articulo->cantidad_defectuosos, $reclasificacion);
+                    $this->articuloAlmacenService->descontar($reclasificacion_articulo->articulo_id, $reclasificacion->almacen_id, $reclasificacion_articulo->cantidad_defectuosos, 0,$reclasificacion);
+                    $this->articuloAlmacenService->agregar($reclasificacion_articulo->articulo_id, $reclasificacion->almacen_id, 0, $reclasificacion_articulo->cantidad_defectuosos, $reclasificacion);
                 }
             }
         });

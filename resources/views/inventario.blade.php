@@ -1,160 +1,147 @@
+```html
 <html>
-    <head>
-        <style>
-            body, *{
+<head>
+    <style>
+        body, *{
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 10px;
+        }
 
-                font-family: Arial, Helvetica, sans-serif;
-                font-size: 10px;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>{{$almacen->nombre}} - {{$almacen->responsable->nombre}}</h1>
-        <table width="100%" border="1" cellspacing="0" cellpadding="0">
-            <tr>
-                <th rowspan="2">
-                    Articulo
-                </th>
-                <th rowspan="2">
-                    Inicial
-                </th>
-                <th colspan="5">
-                    Cargas
-                </th>
-                <th colspan="5">
-                    Ventas
-                </th>
-                <th colspan="5">
-                    Devoluciones
-                </th>
-                <th colspan="5">
-                    Traspasos
-                </th>
-                <th colspan="5">
-                    Ajustes
-                </th>
-                <th colspan="5">
-                    Reclasificaciones
-                </th>
-                <th rowspan="2">
-                    Total
-                </th>
-            </tr>
-            <tr>
-                <th>L</th>
-                <th>M</th>
-                <th>X</th>
-                <th>J</th>
-                <th>V</th>
-                <th>L</th>
-                <th>M</th>
-                <th>X</th>
-                <th>J</th>
-                <th>V</th>
-                <th>L</th>
-                <th>M</th>
-                <th>X</th>
-                <th>J</th>
-                <th>V</th>
-                <th>L</th>
-                <th>M</th>
-                <th>X</th>
-                <th>J</th>
-                <th>V</th>
-                <th>L</th>
-                <th>M</th>
-                <th>X</th>
-                <th>J</th>
-                <th>V</th>
-                <th>L</th>
-                <th>M</th>
-                <th>X</th>
-                <th>J</th>
-                <th>V</th>
-            </tr>
-            @foreach ($articulos as $articulo)
-            <tr>
-                <td>
-                     {{$articulo->articulo->tipoArticulo->nombre}}
-                </td>
-                <td>
-                  
-                </td>
-                <!-- Cargas -->
-                <td>
-                    {{$cargas[$articulo->articulo_id]["2"]["cantidad"] ?? ""}}
-                    &nbsp;
-                    {{$cargas[$articulo->articulo_id]["2"]["cantidad_defectuosos"] ?? ""}}
-                </td>
+        table{
+            border-collapse: collapse;
+        }
 
-                <td>
-                    {{$cargas[$articulo->articulo_id]["3"]["cantidad"] ?? ""}}
-                    &nbsp;
-                    {{$cargas[$articulo->articulo_id]["3"]["cantidad_defectuosos"] ?? ""}}
-                </td>
+        th, td{
+            text-align: center;
+            vertical-align: middle;
+            padding: 2px;
+        }
 
-                <td>
-                    {{$cargas[$articulo->articulo_id]["4"]["cantidad"] ?? ""}}
-                    &nbsp;
-                    {{$cargas[$articulo->articulo_id]["4"]["cantidad_defectuosos"] ?? ""}}
-                </td>
+        .bueno{
+            color:#0b5394;
+            font-weight:bold;
+        }
 
-                <td>
-                    {{$cargas[$articulo->articulo_id]["5"]["cantidad"] ?? ""}}
-                    &nbsp;
-                    {{$cargas[$articulo->articulo_id]["5"]["cantidad_defectuosos"] ?? ""}}
-                </td>
+        .defectuoso{
+            color:#38761d;
+            font-weight:bold;
+        }
 
-                <td>
-                    {{$cargas[$articulo->articulo_id]["6"]["cantidad"] ?? ""}}
-                    &nbsp;
-                    {{$cargas[$articulo->articulo_id]["6"]["cantidad_defectuosos"] ?? ""}}
-                </td>
-                <!-- Ventas -->
+        .articulo{
+            text-align:left;
+            padding-left:5px;
+        }
+        .dia
+        {
+            width: 23px;
+            white-space: nowrap;
+        }
+    </style>
+</head>
 
-                 <td>
-                    {{$ventas[$articulo->articulo_id]["2"]["cantidad"] ?? ""}}
-                    &nbsp;
-                    {{$ventas[$articulo->articulo_id]["2"]["cantidad_defectuosos"] ?? ""}}
-                </td>
+<body>
 
-                <td>
-                    {{$ventas[$articulo->articulo_id]["3"]["cantidad"] ?? ""}}
-                    &nbsp;
-                    {{$ventas[$articulo->articulo_id]["3"]["cantidad_defectuosos"] ?? ""}}
-                </td>
+<h1>{{$almacen->nombre}} - {{$almacen->responsable->nombre}}</h1>
 
-                <td>
-                    {{$ventas[$articulo->articulo_id]["4"]["cantidad"] ?? ""}}
-                    &nbsp;
-                    {{$ventas[$articulo->articulo_id]["4"]["cantidad_defectuosos"] ?? ""}}
-                </td>
+<table width="100%" border="1" cellspacing="0" cellpadding="0">
 
-                <td>
-                    {{$ventas[$articulo->articulo_id]["5"]["cantidad"] ?? ""}}
-                    &nbsp;
-                    {{$ventas[$articulo->articulo_id]["5"]["cantidad_defectuosos"] ?? ""}}
-                </td>
+<tr>
+    <th rowspan="2">Articulo</th>
+    <th rowspan="2">Inicial</th>
 
-                <td>
-                    {{$ventas[$articulo->articulo_id]["6"]["cantidad"] ?? ""}}
-                    &nbsp;
-                    {{$ventas[$articulo->articulo_id]["6"]["cantidad_defectuosos"] ?? ""}}
-                </td>
-                <td colspan="20">
+    <th colspan="5">Cargas</th>
+    <th colspan="5">Ventas</th>
+    <th colspan="5">Devoluciones</th>
+    <th colspan="5">Traspasos</th>
+    <th colspan="5">Ajustes</th>
+    <th colspan="5">Reclasificaciones</th>
 
-                </td>
-                <td>
+    <th rowspan="2">Total</th>
+</tr>
 
-                </td>
-            </tr>
-            @endforeach
-            
-         
-            
+<tr>
+@for($i=0;$i<6;$i++)
+    <th>L</th><th>M</th><th>X</th><th>J</th><th>V</th>
+@endfor
+</tr>
 
+@foreach ($articulos as $articulo)
+<tr>
 
+<td class="articulo">
+    {{$articulo->articulo->tipoArticulo->nombre}}
+</td>
 
-        </table>
-    </body>
+<td></td>
+
+{{-- ================= CARGAS ================= --}}
+@for($d=2;$d<=6;$d++)
+<td class="dia">
+@if(isset($cargas[$articulo->articulo_id][$d]))
+    <span class="bueno">
+        {{$cargas[$articulo->articulo_id][$d]["cantidad"]}}
+    </span>
+    <span class="defectuoso">
+        {{$cargas[$articulo->articulo_id][$d]["cantidad_defectuosos"]}}
+    </span>
+@endif
+</td>
+@endfor
+
+{{-- ================= VENTAS ================= --}}
+@for($d=2;$d<=6;$d++)
+<td  class="dia">
+@if(isset($ventas[$articulo->articulo_id][$d]))
+    <span class="bueno">
+        {{$ventas[$articulo->articulo_id][$d]["cantidad"]}}
+    </span>
+    <span class="defectuoso">
+        {{$ventas[$articulo->articulo_id][$d]["cantidad_defectuosos"]}}
+    </span>
+@endif
+</td>
+@endfor
+
+{{-- ================= DEVOLUCIONES ================= --}}
+<td colspan="5"></td>
+
+{{-- ================= TRASPASOS ================= --}}
+@for($d=2;$d<=6;$d++)
+<td  class="dia">
+@if(isset($traspasos[$articulo->articulo_id][$d]))
+    <span class="bueno">
+        {{$traspasos[$articulo->articulo_id][$d]["cantidad"]}}
+    </span>
+    <span class="defectuoso">
+        {{$traspasos[$articulo->articulo_id][$d]["cantidad_defectuosos"]}}
+    </span>
+@endif
+</td>
+@endfor
+
+{{-- ================= AJUSTES ================= --}}
+<td colspan="5"></td>
+
+{{-- ================= RECLASIFICACIONES ================= --}}
+@for($d=2;$d<=6;$d++)
+<td  class="dia">
+@if(isset($reclasificaciones[$articulo->articulo_id][$d]))
+    <span class="bueno">
+        {{$reclasificaciones[$articulo->articulo_id][$d]["cantidad"]}}
+    </span>
+    <span class="defectuoso">
+        {{$reclasificaciones[$articulo->articulo_id][$d]["cantidad_defectuosos"]}}
+    </span>
+@endif
+</td>
+@endfor
+
+<td></td>
+
+</tr>
+@endforeach
+
+</table>
+
+</body>
 </html>

@@ -7,11 +7,13 @@ use App\Traits\EstadoMovimientoAlmacenTrait;
 use App\Traits\InteractuaConInventarioTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Contracts\GeneraMovimientoAlmacen;
+use App\Traits\MetadatosClaseTrait;
 
 class Traspaso extends Model implements GeneraMovimientoAlmacen
 {
     use EstadoMovimientoAlmacenTrait;
     use InteractuaConInventarioTrait;
+    use MetadatosClaseTrait;
     protected $dates = ["fecha"];
     use SoftDeletes;
     protected $attributes = ["cantidad"=>0];

@@ -50,7 +50,7 @@ class ReclasificacionPolicy
         //
     }
 
-    public function view(User $user, Carga $carga): bool
+    public function view(User $user, Reclasificacion $reclasificacion): bool
     {
         //
     }
@@ -69,19 +69,19 @@ class ReclasificacionPolicy
         return Response::deny('Solo el administrador o el responsable puede capturar la carga');   
     }
 
-    public function update(User $user, Carga $carga): bool
+    public function update(User $user, Reclasificacion $reclasificacion): bool
     {
      
         
     }
 
-    public function delete(User $user, Carga $carga)
+    public function delete(User $user, Reclasificacion $reclasificacion)
     {
         if ($user->esAdmin()) {
             return Response::allow();
         }
 
-        if ($user->almacenes->pluck("id")->contains($carga->almacen_id)) {
+        if ($user->almacenes->pluck("id")->contains($reclasificacion->almacen_id)) {
             return Response::allow();
         }
 
@@ -91,7 +91,7 @@ class ReclasificacionPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Carga $carga): bool
+    public function restore(User $user, Reclasificacion $reclasificacion): bool
     {
         //
     }
@@ -99,7 +99,7 @@ class ReclasificacionPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Carga $carga): bool
+    public function forceDelete(User $user, Reclasificacion $reclasificacion): bool
     {
         //
     }
