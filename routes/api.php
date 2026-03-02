@@ -16,6 +16,8 @@ use App\Http\Controllers\ReporteVentasController;
 use App\Http\Controllers\ReporteInventarioController;
 use App\Http\Controllers\DevolucionController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ReclasificacionController;
+use App\Http\Controllers\ReclasificacionArticuloController;
 
 Route::middleware('auth:api')->group(function () {
 
@@ -32,6 +34,26 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{id}/cancelar', [CargaController::class, 'cancelar'])->name('cargas.cancelar');
         Route::post('/{id}/rechazar', [CargaController::class, 'rechazar'])->name('cargas.rechazar');
     });
+
+    
+    // Reclasificación Artículos
+    Route::prefix('reclasificaciones')->group(function () {
+        Route::get('/', [ReclasificacionController::class, 'index'])->name('reclasificaciones.index');
+        Route::post('/', [ReclasificacionController::class, 'store'])->name('reclasificaciones.store');
+        Route::get('/{id}', [ReclasificacionController::class, 'show'])->name('reclasificaciones.show');
+        Route::put('/{id}', [ReclasificacionController::class, 'update'])->name('reclasificaciones.update');
+        Route::delete('/{id}', [ReclasificacionController::class, 'destroy'])->name('reclasificaciones.destroy');
+        Route::post('/{id}/solicitar-validacion', [ReclasificacionController::class, 'solicitarValidacion'])->name('reclasificaciones.solicitar_validacion');   
+        Route::post('/{id}/validar', [ReclasificacionController::class, 'validar'])->name('reclasificaciones.validar');
+        Route::post('/{id}/cancelar', [ReclasificacionController::class, 'cancelar'])->name('reclasificaciones.cancelar');
+        Route::post('/{id}/rechazar', [ReclasificacionController::class, 'rechazar'])->name('reclasificaciones.rechazar');
+    });
+
+    Route::prefix('reclasificaciones/{id}/articulos')->group(function () {
+        Route::get('/', [ReclasificacionArticuloController::class, 'index'])->name('reclasificaciones.articulos.index');
+        Route::post('/', [ReclasificacionArticuloController::class, 'store'])->name('reclasificaciones.articulos.store');
+    });
+
 
         // Venta Artículos
     Route::prefix('cargas/{id}/articulos')->group(function () {

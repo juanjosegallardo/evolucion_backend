@@ -25,7 +25,7 @@ class CargaController extends Controller
     
     public function index()
     {
-        return Carga::visiblePara(auth()->user())->with("almacen")->with("articulos")->orderBy("created_at", "desc")->get();
+        return Carga::visiblePara(auth()->user())->with("almacen.responsable")->with("articulos")->orderBy("created_at", "desc")->get();
     }
 
     /**
@@ -43,7 +43,7 @@ class CargaController extends Controller
     {
         $this->authorize("create",[Carga::class, $request]);
         $carga = $this->cargaService->crear($request);
-        return Carga::with("almacen")->find($carga->id);//hay que regresar with articulos
+        return Carga::with("almacen.responsable")->find($carga->id);//hay que regresar with articulos
 
     }
 
@@ -54,7 +54,7 @@ class CargaController extends Controller
     {
         return Carga::with(["articulos"=>function($q){
             $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
-        }])->with("almacen")->find($id);
+        }])->with("almacen.responsable")->find($id);
     }
 
     /**

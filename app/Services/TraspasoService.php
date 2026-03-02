@@ -25,6 +25,7 @@ class TraspasoService
             $traspaso = new Traspaso();
             $traspaso->almacen_origen_id = $request->almacen_origen_id;
             $traspaso->almacen_destino_id = $request->almacen_destino_id;
+            $traspaso->fecha = $request->fecha;
             $traspaso->save();
             return $traspaso;
         });

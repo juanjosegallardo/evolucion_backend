@@ -26,7 +26,7 @@ class TraspasoController extends Controller
 
     public function index()
     {
-        return Traspaso::visiblePara(auth()->user())->with("origen")->with("destino")->with("articulos")->orderBy("created_at", "desc")->get();
+        return Traspaso::visiblePara(auth()->user())->with("origen.responsable")->with("destino.responsable")->with("articulos")->orderBy("created_at", "desc")->get();
     }
 
 
