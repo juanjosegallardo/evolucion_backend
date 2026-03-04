@@ -106,5 +106,13 @@ class VentaController extends Controller
         $this->ventaService->rechazar($id);
         return Venta::with("vendedor")->with("almacen")->find($id);
     }
+
+    public function cancelar($id)
+    {
+        $venta = Venta::findOrFail($id);
+        $this->authorize("cancelar",$venta);
+        $this->ventaService->cancelar($id);
+        return Venta::with("almacen")->find($id);
+    }
 }
 

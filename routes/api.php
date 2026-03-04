@@ -149,6 +149,7 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{id}/solicitar-validacion', [VentaController::class, 'solicitarValidacion'])->name('ventas.solicitar_validacion');
         Route::post('/{id}/validar', [VentaController::class, 'validar'])->name('ventas.validar');
         Route::post('/{id}/rechazar', [VentaController::class, 'rechazar'])->name('ventas.rechazar');
+        Route::post('/{id}/cancelar', [VentaController::class, 'cancelar'])->name('ventas.cacelar');
     });
 
     //Devoluciones

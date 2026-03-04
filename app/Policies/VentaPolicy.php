@@ -77,6 +77,16 @@ class VentaPolicy
         return Response::deny('Solo el administrador o el responsable puede eliminar la venta');
     }
 
+    public function cancelar(User $user, Venta $venta)
+    {
+        if ($user->esAdmin()) {
+            return Response::allow();
+        }
+
+        return Response::deny('Solo el administrador o el responsable puede cancelar la venta');
+    }
+
+
     /**
      * Determine whether the user can restore the model.
      */
