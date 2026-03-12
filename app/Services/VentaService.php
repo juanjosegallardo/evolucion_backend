@@ -88,12 +88,10 @@ class VentaService
             $venta->estado = EstadoMovimientoAlmacen::VALIDADO->value;
             $venta->save();
             $venta_articulos = VentaArticulo::where("venta_id", $venta_id)->get();
-
+            
             foreach($venta_articulos as $venta_articulo){
                 $this->articuloAlmacenService->descontar($venta_articulo->articulo_id, $venta->almacen_id, $venta_articulo->cantidad, $venta_articulo->cantidad_defectuosos,$venta);
             }
-
-     
         });
      
     }   
@@ -140,8 +138,7 @@ class VentaService
     {
         DB::transaction(function() use ($venta_id) {
             $venta = Venta::findOrFail($venta_id);
-
-            if (!$venta->estaEnCaptura() && !$venta->estaRechazado()) {
+            if (!$venta->estaEnCaptura() && !$venta->estaRechazado()  && !$venta->estaSolicitado()) {
                 throw ValidationException::withMessages([
                     'estado' => 'La venta no puede ser solicitada en el estado actual.',
                 ]);
@@ -149,6 +146,16 @@ class VentaService
             $venta->estado = EstadoMovimientoAlmacen::SOLICITADO->value;
             $venta->save();
         });
+
+        $venta = Venta::findOrFail($venta_id);
+        if( $venta->total < $venta->total_real )
+        {
+            throw ValidationException::withMessages([
+                'estado' => 'El total de la venta es mas bajo que el precio de lista',
+            ]);
+        }
+
+        $this->validar($venta_id);
     }
 
 }

@@ -112,7 +112,6 @@ class ReporteInventarioController extends Controller
                 );
         }
 
-
         $pdf = PDF::loadView("inventario", $data)->setPaper('letter', 'landscape');;
         return $pdf->stream("inventario.pdf");
     }
