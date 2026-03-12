@@ -41,4 +41,5 @@ class Ajuste extends Model
             $q->where('user_responsable_id', $user->id);
         });
     }
+
 }

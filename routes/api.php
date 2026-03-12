@@ -21,6 +21,20 @@ use App\Http\Controllers\ReclasificacionArticuloController;
 
 Route::middleware('auth:api')->group(function () {
 
+    Route::prefix('ajustes')->controller(AjusteController::class)->group(function () {
+
+        Route::get('/', 'index')->name('ajustes.index');
+        Route::post('/', 'store')->name('ajustes.store');
+        Route::get('/{id}', 'show')->name('ajustes.show');
+        Route::put('/{id}', 'update')->name('ajustes.update');
+        Route::delete('/{id}', 'destroy')->name('ajustes.destroy');
+
+        Route::post('/{id}/solicitar-validacion', 'solicitarValidacion')->name('ajustes.solicitar_validacion');
+        Route::post('/{id}/validar', 'validar')->name('ajustes.validar');
+        Route::post('/{id}/cancelar', 'cancelar')->name('ajustes.cancelar');
+        Route::post('/{id}/rechazar', 'rechazar')->name('ajustes.rechazar');
+
+    });
 
     // Carga Artículos
     Route::prefix('cargas')->group(function () {
@@ -162,6 +176,18 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/{id}/solicitar-validacion', [DevolucionController::class, 'solicitarValidacion'])->name('devoluciones.solicitar_validacion');
         Route::post('/{id}/validar', [DevolucionController::class, 'validar'])->name('devoluciones.validar');
         Route::post('/{id}/ rechazar', [DevolucionController::class, 'rechazar'])->name('devoluciones.rechazar');
+    });
+
+    //Devoluciones
+    Route::prefix('ajustes')->group(function () {
+        Route::get('/', [AjusteController::class, 'index'])->name('ajustes.index');
+        Route::post('/', [AjusteController::class, 'store'])->name('ajustes.store');
+        Route::get('/{id}', [AjusteController::class, 'show'])->name('ajustes.show');
+        Route::put('/{id}', [AjusteController::class, 'update'])->name('ajustes.update');          
+        Route::delete('/{id}', [AjusteController::class, 'destroy'])->name('ajustes.destroy');
+        Route::post('/{id}/solicitar-validacion', [AjusteController::class, 'solicitarValidacion'])->name('ajustes.solicitar_validacion');
+        Route::post('/{id}/validar', [AjusteController::class, 'validar'])->name('ajustes.validar');
+        Route::post('/{id}/ rechazar', [AjusteController::class, 'rechazar'])->name('ajustes.rechazar');
     });
 
     // Tipos de Artículos
