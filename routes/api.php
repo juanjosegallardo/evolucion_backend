@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\ArticuloController;
+use App\Http\Controllers\AjusteController;
+use App\Http\Controllers\AjusteArticuloController;
 use App\Http\Controllers\CargaController;
 use App\Http\Controllers\CargaArticuloController;
 use App\Http\Controllers\TraspasoController;
@@ -21,18 +23,15 @@ use App\Http\Controllers\ReclasificacionArticuloController;
 
 Route::middleware('auth:api')->group(function () {
 
-    Route::prefix('ajustes')->controller(AjusteController::class)->group(function () {
 
-        Route::get('/', 'index')->name('ajustes.index');
-        Route::post('/', 'store')->name('ajustes.store');
-        Route::get('/{id}', 'show')->name('ajustes.show');
-        Route::put('/{id}', 'update')->name('ajustes.update');
-        Route::delete('/{id}', 'destroy')->name('ajustes.destroy');
 
-        Route::post('/{id}/solicitar-validacion', 'solicitarValidacion')->name('ajustes.solicitar_validacion');
-        Route::post('/{id}/validar', 'validar')->name('ajustes.validar');
-        Route::post('/{id}/cancelar', 'cancelar')->name('ajustes.cancelar');
-        Route::post('/{id}/rechazar', 'rechazar')->name('ajustes.rechazar');
+    Route::prefix('ajustes/{id}/articulos')->group(function () {
+
+        Route::get('/', [AjusteArticuloController::class, 'index'])
+            ->name('ajustes.articulos.index');
+
+        Route::post('/', [AjusteArticuloController::class, 'store'])
+            ->name('ajustes.articulos.store');
 
     });
 
