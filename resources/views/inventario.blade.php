@@ -99,7 +99,17 @@
     {{$articulo->articulo->tipoArticulo->nombre}}
 </td>
 
-<td></td>
+<td>
+    @if(isset($inicial[$articulo->articulo_id]))
+        <span class="bueno">
+            {{$inicial[$articulo->articulo_id]["total_actual"]}}
+        </span>
+        <span class="defectuoso">
+            {{$inicial[$articulo->articulo_id]["total_actual_defectuosos"]}}
+        </span>
+    @endif
+
+</td>
 
 {{-- ================= CARGAS ================= --}}
 @for($d=2;$d<=6;$d++)

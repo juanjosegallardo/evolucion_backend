@@ -64,6 +64,25 @@ class ReporteInventarioController extends Controller
         ->sortBy('articulo.tipoArticulo.nombre')
         ->values();
 
+        $data["inicial"] = Movimiento::query()
+        ->select([
+            'articulo_id',
+            'total_actual',
+            'total_actual_defectuosos'
+        ])
+        ->whereIn(
+            'id',
+            Movimiento::query()
+                ->selectRaw('MAX(id)')
+                ->where('almacen_id', $id)
+                ->where('created_at', '<', $fecha_inicio)
+                ->groupBy('articulo_id')
+        )
+        ->get()
+        ->keyBy('articulo_id')
+        ->toArray();
+        
+
        $data["final"] = Movimiento::query()
         ->select([
             'articulo_id',
