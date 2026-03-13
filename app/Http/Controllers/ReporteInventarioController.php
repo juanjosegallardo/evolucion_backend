@@ -47,10 +47,9 @@ class ReporteInventarioController extends Controller
             ->map(fn ($items) => $items->keyBy('dia_semana'))
             ->toArray();
     }
-    public function reporteInventario($id, Request $request)
-    {
 
-       
+    public function reporteInventario($id, Request $request)
+    {   
         $fecha_fin = Carbon::parse($request->fecha_fin)->endOfDay();
         $fecha_inicio = $fecha_fin->copy()->subDays(6)->startOfDay();
         
@@ -207,7 +206,7 @@ class ReporteInventarioController extends Controller
                     ->on('movibles.movible_type', '=', 'movimientos.movible_type');
             })
             ->where('movimientos.almacen_id', $id)
-            ->whereBetween('movibles.fecha', [$fecha_inicio, $fecha_fin])
+            ->whereBetween('movibles.created_at', [$fecha_inicio, $fecha_fin])
             ->groupBy('movimientos.articulo_id', 'dia_semana')
             ->get();
 
