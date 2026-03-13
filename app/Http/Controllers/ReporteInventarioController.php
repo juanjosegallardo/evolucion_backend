@@ -176,17 +176,17 @@ class ReporteInventarioController extends Controller
 
         $movibles = DB::table(DB::raw("
             (
-                SELECT id as movible_id, 'venta' as movible_type, fecha FROM ventas
+                SELECT id as movible_id, 'venta' as movible_type, fecha, created_at FROM ventas
                 UNION ALL
-                SELECT id, 'carga', fecha FROM cargas
+                SELECT id, 'carga', fecha, created_at FROM cargas
                 UNION ALL
-                SELECT id, 'traspaso', fecha FROM traspasos
+                SELECT id, 'traspaso', fecha, created_at FROM traspasos
                 UNION ALL
-                SELECT id, 'devolucion', fecha FROM devoluciones
+                SELECT id, 'devolucion', fecha, created_at FROM devoluciones
                 UNION ALL
-                SELECT id, 'ajuste', fecha FROM ajustes
+                SELECT id, 'ajuste', fecha, created_at FROM ajustes
                 UNION ALL
-                SELECT id, 'reclasificacion', fecha FROM reclasificaciones
+                SELECT id, 'reclasificacion', fecha, created_at FROM reclasificaciones
             ) as movibles
         "));
 
