@@ -79,26 +79,25 @@
 <h1>{{$almacen->nombre}} {{$fecha}}</h1>
 <h2>  {{ $almacen->responsable->nombre ?? '' }}</h2>
 
+Dia :{{$dia_semana}}
+
 <table width="100%" border="1" cellspacing="0" cellpadding="0">
 
 <tr>
     <th>Articulo</th>
     <th>Inicial</th>
-    <th>M</th>
-    <th>M</th>
-    <th>J</th>
-    <th>V</th>
-    <th>S</th>
-    <th>D</th>
-    <th>L</th>
+    @for($i=0 ;$i<7; $i++)
+
+        <td> {{$dias [ (($i + $dia_semana -1 ) % 7) +1 ]}} </td>
+    @endfor
     <th>Total</th>
 </tr>
 
-@php($i=0)
+@php($renglon=0)
 
 @foreach ($articulos as $articulo)
-@php($i++)
-<tr class="{{($i%2==0)?'blanco':'gris' }}">
+@php($renglon++)
+<tr class="{{($renglon%2==0)?'blanco':'gris' }}">
 
 <td class="articulo">
     {{$articulo->articulo->tipoArticulo->nombre}}
@@ -106,14 +105,15 @@
 <td></td>
 
 
-@for($d=1;$d<=7;$d++)
+@for($i=0;$i<7;$i++)
 <td class="dia">
-@if(isset($movimientos[$articulo->articulo_id][$d]))
+@php(  $d=(($i + $dia_semana ) % 7) )
+@if(isset($movimientos[$articulo->articulo_id][$d ]))
     <span class="entrada">
-        {{$movimientos[$articulo->articulo_id][$d]["entradas"]}}
+        {{$movimientos[$articulo->articulo_id][$d]["entradas"] + $movimientos[$articulo->articulo_id][$d]["defectuosos_entradas"] }}
     </span>
     <span class="salida">
-        {{$movimientos[$articulo->articulo_id][$d]["salidas"]}}
+        {{$movimientos[$articulo->articulo_id][$d]["salidas"] + $movimientos[$articulo->articulo_id][$d]["defectuosos_salidas"]}}
     </span>
 @endif
 </td>
