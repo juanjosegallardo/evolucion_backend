@@ -132,6 +132,41 @@ class ReporteInventarioController extends Controller
         $data["dias"]=[1 =>"D", 2=>"L", 3=>"M", 4=>"M", 5=>"J", 6=>"V" ,7=>"S"]; 
 
 
+        $data["inventario_inicial"] = Movimiento::query()
+        ->select([
+            'articulo_id',
+            'total_actual',
+            'total_actual_defectuosos'
+        ])
+        ->whereIn('id',
+            Movimiento::query()
+                ->selectRaw('MAX(id)')
+                ->where('almacen_id', $id)
+                ->where('created_at', '<', $fecha_inicio)
+                ->groupBy('articulo_id')
+        )
+        ->get()
+        ->keyBy('articulo_id')
+        ->toArray();
+
+
+        $data["inventario_final"] = Movimiento::query()
+        ->select([
+            'articulo_id',
+            'total_actual',
+            'total_actual_defectuosos'
+        ])
+        ->whereIn('id',
+            Movimiento::query()
+                ->selectRaw('MAX(id)')
+                ->where('almacen_id', $id)
+                ->where('created_at', '<=', $fecha_fin)
+                ->groupBy('articulo_id')
+        )
+        ->get()
+        ->keyBy('articulo_id')
+        ->toArray();
+
         $data["articulos"] = AlmacenArticulo::with([
         "articulo.tipoArticulo"
         ])

@@ -4,7 +4,7 @@
     <style>
         body, *{
             font-family: Arial, Helvetica, sans-serif;
-            font-size: 10px;
+            font-size: 12px;
         }
 
         table{
@@ -63,7 +63,6 @@
         }
         .dia
         {
-            width: 20px;
             white-space: nowrap;
         }
 
@@ -79,18 +78,17 @@
 <h1>{{$almacen->nombre}} {{$fecha}}</h1>
 <h2>  {{ $almacen->responsable->nombre ?? '' }}</h2>
 
-Dia :{{$dia_semana}}
-
 <table width="100%" border="1" cellspacing="0" cellpadding="0">
 
 <tr>
-    <th>Articulo</th>
-    <th>Inicial</th>
+    <th width="20%">Articulo</th>
+    <th width="5%">Inicial</th>
     @for($i=0 ;$i<7; $i++)
 
-        <td> {{$dias [ (($i + $dia_semana + 6 ) % 7) +1 ]}} </td>
+        <td width="5%" > {{$dias [ (($i + $dia_semana + 6 ) % 7) +1 ]}} </td>
     @endfor
-    <th>Total</th>
+    <th width="5%"> Total</th>
+    <th width="35%"></th>
 </tr>
 
 @php($renglon=0)
@@ -102,7 +100,18 @@ Dia :{{$dia_semana}}
 <td class="articulo">
     {{$articulo->articulo->tipoArticulo->nombre}}
 </td>
-<td></td>
+<td >
+
+@if(isset($inventario_inicial[$articulo->articulo_id]))
+    <span class="bueno">
+        {{$inventario_inicial[$articulo->articulo_id]["total_actual"] }}
+    </span>
+    <span class="defectuoso">
+        {{$inventario_inicial[$articulo->articulo_id]["total_actual_defectuosos"] }}
+    </span>
+@endif
+
+</td>
 
 
 @for($i=0;$i<7;$i++)
@@ -119,8 +128,20 @@ Dia :{{$dia_semana}}
 </td>
 @endfor
 
-<td></td>
+<td>
 
+    
+@if(isset($inventario_final[$articulo->articulo_id]))
+    <span class="bueno">
+        {{$inventario_final[$articulo->articulo_id]["total_actual"] }}
+    </span>
+    <span class="defectuoso">
+        {{$inventario_final[$articulo->articulo_id]["total_actual_defectuosos"] }}
+    </span>
+@endif
+
+</td>
+<td></td>
 
 
 </tr>
