@@ -88,7 +88,7 @@ Dia :{{$dia_semana}}
     <th>Inicial</th>
     @for($i=0 ;$i<7; $i++)
 
-        <td> {{$dias [ (($i + $dia_semana -1 ) % 7) +1 ]}} </td>
+        <td> {{$dias [ (($i + $dia_semana + 6 ) % 7) +1 ]}} </td>
     @endfor
     <th>Total</th>
 </tr>
