@@ -206,7 +206,7 @@ class ReporteInventarioController extends Controller
                     ->on('movibles.movible_type', '=', 'movimientos.movible_type');
             })
             ->where('movimientos.almacen_id', $id)
-            ->whereBetween('movibles.created_at', [$fecha_inicio, $fecha_fin])
+            ->whereBetween('movimientos.created_at', [$fecha_inicio, $fecha_fin])
             ->groupBy('movimientos.articulo_id', 'dia_semana')
             ->get();
 
