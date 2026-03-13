@@ -107,7 +107,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('reportes/vendedores/{id}/libreta', [ReporteVentasController::class, 'reporteVendedores'])
         ->name('reportes.vendedores.libreta');
 
-    Route::get('reportes/almacenes/{id}/inventario', [ReporteInventarioController::class, 'reporteInventario'])
+    Route::get('reportes/almacenes/{id}/inventario', [ReporteInventarioController::class, 'reporteInventarioOriginal'])
         ->name('reportes.almacenes.inventario');
 
     // Almacenes
