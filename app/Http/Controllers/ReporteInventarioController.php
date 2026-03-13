@@ -128,7 +128,7 @@ class ReporteInventarioController extends Controller
         $data["almacen"]=AlmacenArticulo::with(["almacen.responsable"])->where("almacen_id",$id)->first()->almacen;
         
         $data["fecha"] = "{$fecha_inicio} - {$fecha_fin}";
-        $data["dia_semana"]=   ($fecha_fin->dayOfWeekIso % 7) + 1;
+        $data["dia_semana"]=   (($fecha_fin->dayOfWeekIso+1) % 7) + 1;
         $data["dias"]=[1 =>"D", 2=>"L", 3=>"M", 4=>"M", 5=>"J", 6=>"V" ,7=>"S"]; 
 
 
