@@ -160,7 +160,7 @@ Route::middleware('auth:api')->group(function () {
         Route::put('/{id}', [VentaController::class, 'update'])->name('ventas.update');
         Route::delete('/{id}', [VentaController::class, 'destroy'])->name('ventas.destroy');
         Route::post('/{id}/solicitar-validacion', [VentaController::class, 'solicitarValidacion'])->name('ventas.solicitar_validacion');
-        Route::post('/{id}/forzar-validacion', [VentaController::class, 'forzarValidacion'])->name('ventas.forzar_validacion');
+        //Route::post('/{id}/forzar-validacion', [VentaController::class, 'forzarValidacion'])->name('ventas.forzar_validacion');
         Route::get('/{id}/errores', [VentaController::class, 'obtenerErrores'])->name('ventas.obtener_errores');
         Route::post('/{id}/validar', [VentaController::class, 'validar'])->name('ventas.validar');
         Route::post('/{id}/rechazar', [VentaController::class, 'rechazar'])->name('ventas.rechazar');

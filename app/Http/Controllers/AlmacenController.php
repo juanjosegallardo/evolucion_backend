@@ -45,12 +45,22 @@ class AlmacenController extends Controller
     public function show($id)
     {
 
-   
-        return Almacen::with(["articulos"=>function($q){
-            $q->select("articulos.*")->leftJoin("tipo_articulos","articulos.tipo_articulo_id","=", "tipo_articulos.id")->withPivot(["id","cantidad", "cantidad_defectuosos"])->with(["tipoArticulo" => function($q) {
-                $q->orderBy('tipo_articulos.nombre', 'desc'); 
-            }]);
-        }])->with("responsable")->find($id);
+        return Almacen::with([
+            "articulos" => function($q) {
+                $q->select("articulos.*")
+                ->withPivot(["id","cantidad","cantidad_defectuosos"])
+                ->with("tipoArticulo")
+                ->leftJoin("tipo_articulos","articulos.tipo_articulo_id","=","tipo_articulos.id")
+                ->orderBy("tipo_articulos.nombre");
+            }
+        ])->with("responsable")->find($id);  
+
+        
+    }
+
+    public function stock()
+    {
+
     }
 
     /**

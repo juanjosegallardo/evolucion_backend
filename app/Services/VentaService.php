@@ -45,8 +45,8 @@ class VentaService
                 ]);
             }
             
-                    
-            if($venta['fecha']->isWeekend() || $venta['fecha']->isBefore(now()->subWeek())){
+            //no debed ser anterior al dia de corte        
+            if($venta['fecha']->isBefore(now()->subWeek())){
                 throw ValidationException::withMessages([
                     'fecha' => 'La fecha tiene que estar entre lunes y viernes y no debe ser anterior una semana a la fecha actual.',
                 ]);
@@ -104,14 +104,16 @@ class VentaService
                     $venta
                 );
 
-                $venta_articulo->entregado_at = now();
+
+                //Solo descontar si esta el campo entregado_at
+                //$venta_articulo->entregado_at = now();
                 $venta_articulo->save();
             }
 
         });
     }
 
-
+/*
     public function forzarValidacion(int $venta_id): void
     {
         DB::transaction(function() use ($venta_id) {
@@ -155,7 +157,7 @@ class VentaService
 
         });
     }
-
+*/
 
     public function obtenerErrores(int $venta_id)
     {
@@ -204,9 +206,14 @@ class VentaService
         //return $faltantes;
         foreach($faltantes as $faltante)
         {
+            $error="En {$faltante->articulo_nombre} se tienen un stock de  {$faltante->stock} buenos y {$faltante->stock_defectuosos} defectuosos, se requieren";
+            $error.=($faltante->venta_cantidad>0)?" {$faltante->venta_cantidad} buenos":"";
+            $error.=($faltante->venta_defectuosos>0)?" {$faltante->venta_defectuosos} defectuosos":"";
+
+        
             $errores[]=[
                 "id"=>$i++,
-                "error"=>"En {$faltante->articulo_nombre} se tienen un stock de  {$faltante->stock} buenos y {$faltante->stock_defectuosos} defectuosos, se requieren {$faltante->venta_cantidad} buenos y  {$faltante->venta_defectuosos} defectuosos"
+                "error"=>$error
             ];
         }
 
