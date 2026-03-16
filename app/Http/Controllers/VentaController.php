@@ -42,7 +42,7 @@ class VentaController extends Controller
     public function store(StoreVentaRequest $request)
     {
         $venta = $this->ventaService->crear($request->validated());
-        return $this->show($id);
+        return $this->show($venta->id);
     }
 
     /**
