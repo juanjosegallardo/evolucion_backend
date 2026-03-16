@@ -42,7 +42,7 @@ class VentaController extends Controller
     public function store(StoreVentaRequest $request)
     {
         $venta = $this->ventaService->crear($request->validated());
-        return Venta::with("almacen")->with("vendedor")->find($venta->id);
+        return $this->show($id);
     }
 
     /**
@@ -88,7 +88,15 @@ class VentaController extends Controller
         $venta = Venta::find($id);
         $this->authorize("solicitar",$venta);
         $this->ventaService->solicitar($id);
-        return Venta::with("vendedor")->with("almacen")->find($id);
+        return $this->show($id);
+    }   
+
+
+    public function obtenerErrores($id)
+    {
+      
+        return $this->ventaService->obtenerErrores($id);
+        
     }   
 
     public function validar($id)
@@ -96,7 +104,7 @@ class VentaController extends Controller
         $venta = Venta::find($id);
         $this->authorize("validar",$venta);
         $this->ventaService->validar($id);   
-        return Venta::with("vendedor")->with("almacen")->find($id);
+        return $this->show($id);
     }
 
     public function rechazar($id)
@@ -104,7 +112,7 @@ class VentaController extends Controller
         $venta = Venta::find($id);
         $this->authorize("rechazar",$venta);
         $this->ventaService->rechazar($id);
-        return Venta::with("vendedor")->with("almacen")->find($id);
+        return $this->show($id);
     }
 
     public function cancelar($id)
@@ -112,7 +120,7 @@ class VentaController extends Controller
         $venta = Venta::findOrFail($id);
         $this->authorize("cancelar",$venta);
         $this->ventaService->cancelar($id);
-        return Venta::with("almacen")->find($id);
+        return $this->show($id);
     }
 }
 

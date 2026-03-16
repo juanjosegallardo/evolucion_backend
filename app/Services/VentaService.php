@@ -78,46 +78,181 @@ class VentaService
     public function validar(int $venta_id): void
     {
         DB::transaction(function() use ($venta_id) {
-            $venta = Venta::findOrFail($venta_id);
+
+            $venta = Venta::where('id', $venta_id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
             if (!$venta->estaSolicitado()) {
                 throw ValidationException::withMessages([
-                    'estado' => 'La venta no puede ser validada  en el estado actual.',
+                    'estado' => 'La venta no puede ser validada en el estado actual.',
                 ]);
             }
-            
+
             $venta->estado = EstadoMovimientoAlmacen::VALIDADO->value;
             $venta->save();
+
             $venta_articulos = VentaArticulo::where("venta_id", $venta_id)->get();
-            
-            foreach($venta_articulos as $venta_articulo){
-                $this->articuloAlmacenService->descontar($venta_articulo->articulo_id, $venta->almacen_id, $venta_articulo->cantidad, $venta_articulo->cantidad_defectuosos,$venta);
+
+            foreach ($venta_articulos as $venta_articulo) {
+
+                $this->articuloAlmacenService->descontar(
+                    $venta_articulo->articulo_id,
+                    $venta->almacen_id,
+                    $venta_articulo->cantidad,
+                    $venta_articulo->cantidad_defectuosos,
+                    $venta
+                );
+
+                $venta_articulo->entregado_at = now();
+                $venta_articulo->save();
             }
+
         });
-     
-    }   
+    }
+
+
+    public function forzarValidacion(int $venta_id): void
+    {
+        DB::transaction(function() use ($venta_id) {
+
+            $venta = Venta::where('id', $venta_id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            if (!$venta->estaSolicitado()) {
+                throw ValidationException::withMessages([
+                    'estado' => 'La venta no puede ser validada en el estado actual.',
+                ]);
+            }
+
+            $venta->estado = EstadoMovimientoAlmacen::VALIDADO->value;
+            $venta->save();
+
+            $venta_articulos = VentaArticulo::where("venta_id", $venta_id)->get();
+
+            foreach ($venta_articulos as $venta_articulo) {
+
+                try {
+
+                    $this->articuloAlmacenService->descontar(
+                        $venta_articulo->articulo_id,
+                        $venta->almacen_id,
+                        $venta_articulo->cantidad,
+                        $venta_articulo->cantidad_defectuosos,
+                        $venta
+                    );
+
+                    // solo si se pudo descontar inventario
+                    $venta_articulo->entregado_at = now();
+                    $venta_articulo->save();
+
+                } catch (\Throwable $e) {
+                    // si no hay inventario simplemente no lo marcamos como entregado
+                    // opcionalmente podrías registrar el error
+                }
+            }
+
+        });
+    }
+
+
+    public function obtenerErrores(int $venta_id)
+    {
+        $errores = [];
+        $i=0;
+
+        $venta = Venta::where('id', $venta_id)
+            ->firstOrFail();
+        
+        if( $venta->total < $venta->total_real ){
+            $errores[]=[ "id"=>$i++,
+             "error"=>"El precio de venta es menor que el precio de lista"
+            ];
+        }
+
+        $articulos = DB::table('venta_articulo as va')
+            ->join('ventas as v', 'v.id', '=', 'va.venta_id')
+            
+            ->join('articulos as a', 'a.id', '=', 'va.articulo_id')
+            ->join('tipo_articulos as ta', 'ta.id', '=', 'a.tipo_articulo_id')
+
+            ->join('almacen_articulo as aa', function ($join) {
+                $join->on('aa.articulo_id', '=', 'va.articulo_id')
+                    ->on('aa.almacen_id', '=', 'v.almacen_id');
+            })
+
+            ->select(
+                'va.articulo_id',
+                'ta.nombre as articulo_nombre',
+
+                'va.cantidad as venta_cantidad',
+                'va.cantidad_defectuosos as venta_defectuosos',
+
+                'aa.cantidad as stock',
+                'aa.cantidad_defectuosos as stock_defectuosos'
+            )
+
+            ->where('va.venta_id', $venta_id)
+            ->get();
+
+        $faltantes = $articulos->filter(function ($a) {
+            return $a->venta_cantidad > $a->stock ||
+                $a->venta_defectuosos > $a->stock_defectuosos;
+        });
+
+        //return $faltantes;
+        foreach($faltantes as $faltante)
+        {
+            $errores[]=[
+                "id"=>$i++,
+                "error"=>"En {$faltante->articulo_nombre} se tienen un stock de  {$faltante->stock} buenos y {$faltante->stock_defectuosos} defectuosos, se requieren {$faltante->venta_cantidad} buenos y  {$faltante->venta_defectuosos} defectuosos"
+            ];
+        }
+
+        return response()->json($errores);
+
+    }
 
     
     public function cancelar(int $venta_id): void
     {
-        DB::transaction(function() use ($venta_id) {
-            $venta = Venta::findOrFail($venta_id);
+        DB::transaction(function () use ($venta_id) {
+
+            $venta = Venta::where('id', $venta_id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
             if (!$venta->estaValidado()) {
                 throw ValidationException::withMessages([
-                    'estado' => 'La venta  no puede ser cancelada en el estado actual.'
+                    'estado' => 'La venta no puede ser cancelada en el estado actual.'
                 ]);
             }
-            
-            $venta_articulos = VentaArticulo::where("venta_id", $venta_id)->get();
 
-            foreach($venta_articulos as $venta_articulo){
-                $this->articuloAlmacenService->agregar($venta_articulo->articulo_id, $venta->almacen_id, $venta_articulo->cantidad, $venta_articulo->cantidad_defectuosos,$venta);
+            $venta_articulos = VentaArticulo::where("venta_id", $venta_id)
+                ->whereNotNull("entregado_at")
+                ->get();
+
+            foreach ($venta_articulos as $venta_articulo) {
+
+                $this->articuloAlmacenService->agregar(
+                    $venta_articulo->articulo_id,
+                    $venta->almacen_id,
+                    $venta_articulo->cantidad,
+                    $venta_articulo->cantidad_defectuosos,
+                    $venta
+                );
+
+                // limpiar marca de entrega
+                $venta_articulo->entregado_at = null;
+                $venta_articulo->save();
             }
 
             $venta->estado = EstadoMovimientoAlmacen::CANCELADO->value;
             $venta->save();
+
         });
-     
-    }   
+    }
 
     public function rechazar(int $venta_id): void
     {
