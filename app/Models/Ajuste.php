@@ -10,7 +10,7 @@ use App\Contracts\GeneraMovimientoAlmacen;
 use App\Traits\MetadatosClaseTrait;
 use App\Traits\RegistraMovimientoInventarioTrait;
 
-class Ajuste extends Model
+class Ajuste extends Model implements GeneraMovimientoAlmacen
 {
     use EstadoMovimientoAlmacenTrait;
     use InteractuaConInventarioTrait;
