@@ -20,6 +20,7 @@ class Ajuste extends Model
 
     protected $attributes = ["cantidad"=>0];
     protected $dates = ["fecha"];
+    protected $fillable = ["cantidad", "cantidad_defectuosos"];
 
     public function almacen()
     {
@@ -28,7 +29,7 @@ class Ajuste extends Model
 
     public function articulos()
     {
-        return $this->belongsToMany(Articulo::class, 'reclasificacion_articulo');
+        return $this->belongsToMany(Articulo::class, 'ajuste_articulo');
     }
 
     public function scopeVisiblePara($query, User $user)

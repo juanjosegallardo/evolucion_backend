@@ -33,7 +33,12 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/', [AjusteArticuloController::class, 'store'])
             ->name('ajustes.articulos.store');
 
+
+
     });
+
+    Route::put('ajuste_articulo/{id}', [AjusteArticuloController::class, 'update'])
+        ->name('ajustes.articulos.put');
 
     // Carga Artículos
     Route::prefix('cargas')->group(function () {

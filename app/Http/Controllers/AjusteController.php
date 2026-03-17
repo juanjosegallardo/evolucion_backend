@@ -6,7 +6,7 @@ use App\Models\Ajuste;
 use App\Http\Requests\StoreAjusteRequest;
 use App\Http\Requests\UpdateAjusteRequest;
 use Illuminate\Http\Request;
-use App\Services\CargaService;
+use App\Services\AjusteService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class AjusteController extends Controller
@@ -15,7 +15,7 @@ class AjusteController extends Controller
 
     protected $ajusteService;
 
-    public function __construct(CargaService $ajusteService)
+    public function __construct(AjusteService $ajusteService)
     {
         $this->ajusteService = $ajusteService;
     }
@@ -40,9 +40,8 @@ class AjusteController extends Controller
         $this->authorize("create", [Ajuste::class, $request]);
 
         $ajuste = $this->ajusteService->crear($request);
+        return $this->show($ajuste->id);
 
-        return Ajuste::with(["almacen.responsable", "articulos"])
-            ->find($ajuste->id);
     }
 
     /**

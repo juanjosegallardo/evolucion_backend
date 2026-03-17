@@ -9,8 +9,9 @@ use App\Models\Ajuste;
 use App\Models\AjusteArticulo;
 use App\Enums\EstadoMovimientoAlmacen;
 use Illuminate\Validation\ValidationException;
+use App\Models\AlmacenArticulo;
 
-class CargaService
+class AjusteService
 {
     /**
      * Create a new class instance.
@@ -26,9 +27,45 @@ class CargaService
     public function crear($request)
     {
         return DB::transaction(function() use ($request) {
+
             $ajuste = new Ajuste();
             $ajuste->almacen_id = $request->almacen_id;
             $ajuste->fecha = $request->fecha;
+            $ajuste->save();
+
+            // Obtener artículos con stock (excluyendo eliminados)
+            $articulos = DB::table('articulos')
+                ->leftJoin('almacen_articulo', function($join) use ($request) {
+                    $join->on('articulos.id', '=', 'almacen_articulo.articulo_id')
+                        ->where('almacen_articulo.almacen_id', $request->almacen_id);
+                })
+                ->whereNull('articulos.deleted_at') // 👈 clave
+                ->select(
+                    'articulos.id',
+                    DB::raw('COALESCE(almacen_articulo.cantidad, 0) as cantidad'),
+                    DB::raw('COALESCE(almacen_articulo.cantidad_defectuosos, 0) as cantidad_defectuosos')
+                )
+                ->get();
+
+            // Preparar datos para la tabla pivote
+            $syncData = [];
+
+            $total_stock =0;
+            $total_defectuosos =0;
+            
+            foreach ($articulos as $articulo) {
+                $total_stock += $articulo->cantidad;
+                $total_defectuosos += $articulo->cantidad_defectuosos;
+                $syncData[$articulo->id] = [
+                    'cantidad' => $articulo->cantidad,
+                    'cantidad_defectuosos' => $articulo->cantidad_defectuosos
+                ];
+            }
+
+            // Insertar en la relación
+            $ajuste->articulos()->sync($syncData);
+            $ajuste->cantidad =$total_stock;
+            $ajuste->cantidad_defectuosos = $total_defectuosos;
             $ajuste->save();
             return $ajuste;
         });
@@ -55,7 +92,7 @@ class CargaService
     {
         DB::transaction(function () use ($ajuste_id) {
 
-            $ajuste = Carga::findOrFail($ajuste_id);
+            $ajuste = Ajuste::findOrFail($ajuste_id);
 
             if (!$ajuste->estaSolicitado()) {
                 throw ValidationException::withMessages([
@@ -114,7 +151,7 @@ class CargaService
             
             if (!$ajuste->estaValidado()) {
                 throw ValidationException::withMessages([
-                    'estado' => 'La carga no está validada y no puede ser cancelada.',
+                    'estado' => 'El ajuste no está validado y no puede ser cancelado.',
                 ]);
             }
 
@@ -165,13 +202,13 @@ class CargaService
             ]);
         }
         
-        $carga->estado = EstadoMovimientoAlmacen::RECHAZADO->value;
-        $carga->save();
+        $ajuste->estado = EstadoMovimientoAlmacen::RECHAZADO->value;
+        $ajuste->save();
     }
 
     public function solicitar($ajuste_id)
     {
-        $ajuste = Carga::findOrFail($ajuste);
+        $ajuste = Ajuste::findOrFail($ajuste_id);
 
         if (!$ajuste->estaEnCaptura()&& !$ajuste->estaRechazado() ) {
             throw ValidationException::withMessages([
