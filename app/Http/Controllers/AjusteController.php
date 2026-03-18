@@ -49,17 +49,7 @@ class AjusteController extends Controller
      */
     public function show($id)
     {
-        return Ajuste::with([
-            'articulos' => function ($q) {
-                $q->select('articulos.*')
-                ->withPivot(['id', 'cantidad', 'cantidad_defectuosos'])
-                ->with('tipoArticulo')
-                ->join('tipo_articulos', 'tipo_articulos.id', '=', 'articulos.tipo_articulo_id')
-                ->orderBy('tipo_articulos.nombre', 'asc');
-            }
-        ])
-        ->with('almacen.responsable')
-        ->findOrFail($id);
+        return $this->ajusteService->show($id);
     }
 
     /**
