@@ -5,26 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Almacen;
-use App\Traits\EstadoMovimientoAlmacenTrait;
-use App\Traits\InteractuaConInventarioTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Contracts\GeneraMovimientoAlmacen;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use App\Traits\MetadatosClaseTrait;
-use App\Traits\RegistraMovimientoInventarioTrait;
 
-class Venta extends Model implements GeneraMovimientoAlmacen
+
+use App\Models\ModelMovimientoAlmacen;
+
+class Venta extends ModelMovimientoAlmacen implements GeneraMovimientoAlmacen
 {
-    use EstadoMovimientoAlmacenTrait;
-    use InteractuaConInventarioTrait;
-    use RegistraMovimientoInventarioTrait;
-    use MetadatosClaseTrait;
-
     protected $attributes = ["enganche"=>0, "porcentaje"=>0, "comision"=>0, "a_pagar"=>0];
     protected $dates = ["fecha"];
     protected $casts = ['fecha' => 'date:Y-m-d'];
     protected $fillable = ["tipo", "fecha", "enganche", "total", "sistema", "almacen_id", "user_vendedor_id", "nombre_cliente", "total_real"];
-    use SoftDeletes;
 
     public function actualizarTotalReal()
     {

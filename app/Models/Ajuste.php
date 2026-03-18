@@ -3,20 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\EstadoMovimientoAlmacenTrait;
-use App\Traits\InteractuaConInventarioTrait;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Contracts\GeneraMovimientoAlmacen;
-use App\Traits\MetadatosClaseTrait;
-use App\Traits\RegistraMovimientoInventarioTrait;
+use App\Models\ModelMovimientoAlmacen;
 
-class Ajuste extends Model implements GeneraMovimientoAlmacen
+
+class Ajuste extends ModelMovimientoAlmacen implements GeneraMovimientoAlmacen
 {
-    use EstadoMovimientoAlmacenTrait;
-    use InteractuaConInventarioTrait;
-    use RegistraMovimientoInventarioTrait;
-    use MetadatosClaseTrait;
-    use SoftDeletes;
 
     protected $attributes = ["cantidad"=>0];
     protected $dates = ["fecha"];
