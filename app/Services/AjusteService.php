@@ -88,7 +88,7 @@ class AjusteService
     }
 
 
-    public function validar($ajuste_id)
+   public function validar($ajuste_id)
     {
         DB::transaction(function () use ($ajuste_id) {
 
@@ -112,27 +112,36 @@ class AjusteService
                     ->first();
 
                 $cantidadActual = $almacen_articulo?->cantidad ?? 0;
+                $cantidadActualDefectuosos = $almacen_articulo?->cantidad_defectuosos ?? 0;
+
                 $cantidadAjuste = $ajuste_articulo->cantidad;
+                $cantidadAjusteDefectuosos = $ajuste_articulo->cantidad_defectuosos;
 
+                // 🔥 Diferencias reales
                 $diferencia = $cantidadAjuste - $cantidadActual;
+                $diferenciaDefectuosos = $cantidadAjusteDefectuosos - $cantidadActualDefectuosos;
 
-                if ($diferencia > 0) {
+                // 👉 SUMAR
+                if ($diferencia > 0 || $diferenciaDefectuosos > 0) {
 
                     $this->articuloAlmacenService->agregar(
                         $ajuste_articulo->articulo_id,
                         $ajuste->almacen_id,
-                        $diferencia,
-                        $ajuste_articulo->cantidad_defectuosos,
+                        max($diferencia, 0),
+                        max($diferenciaDefectuosos, 0),
                         $ajuste
                     );
 
-                } elseif ($diferencia < 0) {
+                }
+
+                // 👉 RESTAR
+                if ($diferencia < 0 || $diferenciaDefectuosos < 0) {
 
                     $this->articuloAlmacenService->descontar(
                         $ajuste_articulo->articulo_id,
                         $ajuste->almacen_id,
-                        abs($diferencia),
-                        $ajuste_articulo->cantidad_defectuosos,
+                        abs(min($diferencia, 0)),
+                        abs(min($diferenciaDefectuosos, 0)),
                         $ajuste
                     );
 

@@ -17,6 +17,7 @@ class ReporteVentasController extends Controller
         }])
         ->where("user_vendedor_id","=",$id)
         ->where("estado","=","VALIDADO")
+        ->sistema($request->sistema)
         ->whereBetween("fecha", [$request->fecha_inicio, $request->fecha_fin])
         ->orderBy("fecha","asc")->get();
 

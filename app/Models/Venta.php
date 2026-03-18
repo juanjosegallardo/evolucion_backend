@@ -106,4 +106,11 @@ class Venta extends Model implements GeneraMovimientoAlmacen
         );
     }
 
+    public function scopeSistema($query, $sistema)
+    {
+        if (!empty($sistema)) {
+            $query->where('sistema', $sistema);
+        }
+    }
+
 }
