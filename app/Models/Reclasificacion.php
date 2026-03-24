@@ -11,13 +11,13 @@ use App\Traits\MetadatosClaseTrait;
 use App\Traits\RegistraMovimientoInventarioTrait;
 
 
-class Reclasificacion extends Model implements GeneraMovimientoAlmacen
+class Reclasificacion extends ModelMovimientoAlmacen implements GeneraMovimientoAlmacen
 {
 
     protected $attributes = ["cantidad"=>0];
     protected $dates = ["fecha"];
     protected $fillable = ["cantidad", "cantidad_defectuosos"];
-
+    protected $table= "reclasificaciones";
     public function almacen()
     {
         return $this->belongsTo(Almacen::class);
