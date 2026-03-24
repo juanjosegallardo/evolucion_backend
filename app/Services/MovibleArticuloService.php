@@ -76,14 +76,14 @@ class MovibleArticuloService
             }
 
             $movible_articulo->delete();
-            $this-> recalcularTotales($pivotClass, $movible, $foreignKey);
+            $this-> recalcularTotales($movibleClass , $pivotClass, $movible, $foreignKey);
 
             return $this->obtenerArticulos($movibleClass, $movible->id);
         });
     }
 
 
-    private function recalcularTotales($pivotClass, $movible, $foreignKey)
+    private function recalcularTotales($movibleClass ,$pivotClass, $movible, $foreignKey)
     {
 
         $totales = $pivotClass::where($foreignKey, $movible->id)
@@ -97,6 +97,10 @@ class MovibleArticuloService
             'cantidad' => $totales->cantidad,
             'cantidad_defectuosos' => $totales->cantidad_defectuosos
         ]);
+
+        if (method_exists($movible, 'actualizarTotalReal')) {
+            $movible->actualizarTotalReal();
+        }
     }
 
 
@@ -117,7 +121,7 @@ class MovibleArticuloService
                 'cantidad_defectuosos' => $request->pivot["cantidad_defectuosos"] ?? 0
             ]);
 
-            $this-> recalcularTotales($pivotClass, $movible, $foreignKey);
+            $this-> recalcularTotales($movibleClass ,$pivotClass, $movible, $foreignKey);
             
             return $this->obtenerArticulos($movibleClass, $movible->id);
 
