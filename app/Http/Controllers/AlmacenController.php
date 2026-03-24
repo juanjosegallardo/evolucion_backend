@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Almacen;
+
+use App\Models\Articulo;
+
 use App\Http\Requests\StoreAlmacenRequest;
 use App\Http\Requests\UpdateAlmacenRequest;
 use Illuminate\Http\Request;
