@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Almacen;
 
 use App\Models\Articulo;
+use Illuminate\Support\Facades\DB;
+
 
 use App\Http\Requests\StoreAlmacenRequest;
 use App\Http\Requests\UpdateAlmacenRequest;
