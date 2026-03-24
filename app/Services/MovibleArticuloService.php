@@ -95,8 +95,7 @@ class MovibleArticuloService
 
         $movible->update([
             'cantidad' => $totales->cantidad,
-            'cantidad
-            _defectuosos' => $totales->cantidad_defectuosos
+            'cantidad_defectuosos' => $totales->cantidad_defectuosos
         ]);
     }
 

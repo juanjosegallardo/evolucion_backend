@@ -21,7 +21,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReclasificacionController;
 use App\Http\Controllers\ReclasificacionArticuloController;
 use App\Http\Controllers\MovibleArticuloController;
-
+use App\Http\Controllers\MovimientoController;
 Route::middleware('auth:api')->group(function () {
 
 
@@ -112,6 +112,9 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{id}', [AlmacenController::class, 'show'])->name('almacenes.show');
         Route::put('/{id}', [AlmacenController::class, 'update'])->name('almacenes.update');
         Route::delete('/{id}', [AlmacenController::class, 'destroy'])->name('almacenes.destroy');
+            
+        Route::get('/{almacen_id}/articulos/{articulo_id}/kardex', [MovimientoController::class, 'kardex'])->name('movimiento.kardex');
+
     });
 
     // Artículos
