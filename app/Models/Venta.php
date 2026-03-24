@@ -17,7 +17,7 @@ class Venta extends ModelMovimientoAlmacen implements GeneraMovimientoAlmacen
     protected $attributes = ["enganche"=>0, "porcentaje"=>0, "comision"=>0, "a_pagar"=>0];
     protected $dates = ["fecha"];
     protected $casts = ['fecha' => 'date:Y-m-d'];
-    protected $fillable = ["tipo", "fecha", "enganche", "total", "sistema", "almacen_id", "user_vendedor_id", "nombre_cliente", "total_real"];
+    protected $fillable = ["cantidad", "cantidad_defectuosos", "tipo", "fecha", "enganche", "total", "sistema", "almacen_id", "user_vendedor_id", "nombre_cliente", "total_real"];
 
     public function actualizarTotalReal()
     {

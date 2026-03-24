@@ -13,13 +13,10 @@ use App\Traits\RegistraMovimientoInventarioTrait;
 
 class Reclasificacion extends Model implements GeneraMovimientoAlmacen
 {
-    use EstadoMovimientoAlmacenTrait;
-    use InteractuaConInventarioTrait;
-    use MetadatosClaseTrait;
-    use RegistraMovimientoInventarioTrait;
-    use SoftDeletes;
+
+    protected $attributes = ["cantidad"=>0];
     protected $dates = ["fecha"];
-    protected $table = "reclasificaciones";
+    protected $fillable = ["cantidad", "cantidad_defectuosos"];
 
     public function almacen()
     {

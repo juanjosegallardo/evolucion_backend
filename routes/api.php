@@ -20,11 +20,25 @@ use App\Http\Controllers\DevolucionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReclasificacionController;
 use App\Http\Controllers\ReclasificacionArticuloController;
+use App\Http\Controllers\MovibleArticuloController;
 
 Route::middleware('auth:api')->group(function () {
 
 
+    Route::prefix('movibles')->group(function () {
+        Route::post('{tipo}/{id}/articulos', [MovibleArticuloController::class, 'store'])
+            ->name('movibles.articulos.store');
 
+        Route::put('{tipo}/{id}/articulos', [MovibleArticuloController::class, 'update'])
+            ->name('movibles.articulos.update');
+
+        Route::delete('{tipo}/articulos/{id}', [MovibleArticuloController::class, 'destroy'])
+            ->name('movibles.articulos.destroy');
+        
+        Route::delete('{tipo}/{id}/articulos', [MovibleArticuloController::class, 'index'])
+            ->name('movibles.articulos.index');
+    });
+    
     Route::prefix('ajustes/{id}/articulos')->group(function () {
 
         Route::get('/', [AjusteArticuloController::class, 'index'])
@@ -36,9 +50,6 @@ Route::middleware('auth:api')->group(function () {
 
 
     });
-
-    Route::put('ajuste_articulo/{id}', [AjusteArticuloController::class, 'update'])
-        ->name('ajustes.articulos.put');
 
     // Carga Artículos
     Route::prefix('cargas')->group(function () {

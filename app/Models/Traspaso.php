@@ -9,8 +9,10 @@ use App\Models\ModelMovimientoAlmacen;
 
 class Traspaso extends ModelMovimientoAlmacen implements GeneraMovimientoAlmacen
 {
-    protected $dates = ["fecha"];
     protected $attributes = ["cantidad"=>0];
+    protected $dates = ["fecha"];
+    protected $fillable = ["cantidad", "cantidad_defectuosos"];
+    
     public function origen()
     {
         return $this->belongsTo(Almacen::class, "almacen_origen_id");

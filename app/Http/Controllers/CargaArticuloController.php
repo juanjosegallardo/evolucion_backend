@@ -14,27 +14,38 @@ use App\Services\CargaArticuloService;
 class CargaArticuloController extends Controller
 {
 
-    public function __construct(CargaArticuloService $cargaArticuloService)
+    public function __construct(MovibleArticuloService $movibleArticulo)
     {
-        $this->cargaArticuloService = $cargaArticuloService;
+        $this->movibleArticulo = $movibleArticulo;
     }
 
 
-    public function store(Request $request, $id)
+    public function store($movibleClass, $id, $request)
     {
-        $this->cargaArticuloService->guardar($request, $id);
-        
-        return Carga::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
-        }])->find($id);
+        $this->service->guardar($movibleClass, $id, $request);
+        return  $this->movibleArticulo->obtenerArticulos($movibleClass, $id);
     }
+
 
     public function destroy( $id)
     {   
         $carga_articulo = CargaArticulo::find($id);
-        $this->cargaArticuloService->eliminar($id);
-        return Carga::with(["articulos"=>function($q){
-            $q->withPivot(["id","cantidad", "cantidad_defectuosos"])->with("tipoArticulo")->orderByPivot("id","desc");
-        }])->find($carga_articulo->carga_id);
+        $this->cargaArticuloService->eliminar(
+            CargaArticulo::class,
+            $id
+        );
+        return $this->movibleArticulo->obtenerArticulos(Carga::class, $id); 
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->cargaArticuloService->editar(
+            CargaArticulo::class,
+            Carga::class,
+            $request,
+            $id
+        );
+
+        return   $this->movibleArticulo->obtenerArticulos(Carga::class, $id);
     }
 }

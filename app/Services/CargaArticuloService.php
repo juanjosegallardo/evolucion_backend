@@ -36,14 +36,11 @@ class CargaArticuloService
                 throw new \Exception("No se encontró un artículo con el código proporcionado.");
             }
 
-            if($request->defectuosos){
-                $carga->increment("cantidad_defectuosos", $request->cantidad);
-                $carga->articulos()->attach($articulo->id, ["cantidad"=>0, "cantidad_defectuosos"=>$request->cantidad]);
-          
-            } else {
-                $carga->increment("cantidad", $request->cantidad);
-                $carga->articulos()->attach($articulo->id, ["cantidad"=>$request->cantidad, "cantidad_defectuosos"=>0]);
-            }
+            $carga->increment("cantidad_defectuosos", $request->cantidad_defectuosos);
+            $carga->increment("cantidad", $request->cantidad);
+
+            $carga->articulos()->attach($articulo->id, ["cantidad"=>$request->cantidad, "cantidad_defectuosos"=>$request->cantidad_defectuosos]);
+
 
         });
     }   

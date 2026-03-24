@@ -9,8 +9,8 @@ use App\Models\ModelMovimientoAlmacen;
 class Devolucion extends ModelMovimientoAlmacen implements GeneraMovimientoAlmacen
 {
     protected $attributes = ["cantidad"=>0];
-    protected $table = "devoluciones";
     protected $dates = ["fecha"];
+    protected $fillable = ["cantidad", "cantidad_defectuosos"];
 
     public function vendedor()
     {
