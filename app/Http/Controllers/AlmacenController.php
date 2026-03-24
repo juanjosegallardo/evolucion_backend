@@ -3,11 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Almacen;
-
-use App\Models\Articulo;
-use Illuminate\Support\Facades\DB;
-
-
 use App\Http\Requests\StoreAlmacenRequest;
 use App\Http\Requests\UpdateAlmacenRequest;
 use Illuminate\Http\Request;
@@ -50,20 +45,20 @@ class AlmacenController extends Controller
     public function show($id)
     {
 
-$articulos = Articulo::query()
-    ->select(
-        'articulos.*',
-        DB::raw('COALESCE(pivot.cantidad, 0) as cantidad'),
-        DB::raw('COALESCE(pivot.cantidad_defectuosos, 0) as cantidad_defectuosos')
-    )
-    ->leftJoin('almacen_articulo as pivot', function ($join) use ($id) {
-        $join->on('articulos.id', '=', 'pivot.articulo_id')
-             ->where('pivot.almacen_id', $id);
-    })
-    ->with('tipoArticulo')
-    ->orderBy(
-        DB::raw('(SELECT nombre FROM tipo_articulos WHERE tipo_articulos.id = articulos.tipo_articulo_id)')
-    )
+        $articulos = Articulo::query()
+            ->select(
+                'articulos.*',
+                DB::raw('COALESCE(pivot.cantidad, 0) as cantidad'),
+                DB::raw('COALESCE(pivot.cantidad_defectuosos, 0) as cantidad_defectuosos')
+            )
+            ->leftJoin('almacen_articulo as pivot', function ($join) use ($id) {
+                $join->on('articulos.id', '=', 'pivot.articulo_id')
+                    ->where('pivot.almacen_id', $id);
+            })
+            ->with('tipoArticulo')
+            ->orderBy(
+                DB::raw('(SELECT nombre FROM tipo_articulos WHERE tipo_articulos.id = articulos.tipo_articulo_id)')
+            )
     ->get();
         
     }
