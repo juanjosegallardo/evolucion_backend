@@ -17,6 +17,7 @@ class Almacen extends Model
         return $this->belongsToMany(Articulo::class, 'almacen_articulo');
     }
 
+    
     public function scopeVisiblePara($query, User $user)
     {
         if ($user->esAdmin()) {
