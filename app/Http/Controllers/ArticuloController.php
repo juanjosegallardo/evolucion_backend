@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 class ArticuloController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
@@ -63,7 +64,8 @@ class ArticuloController extends Controller
      */
     public function update(Request $request,  $id)
     {
-
+        $articuloService->actualizarPrecio($request , $id);
+        
     }
 
     /**

@@ -35,8 +35,6 @@ class AjusteArticuloService
                 "cantidad" => $request->cantidad ?? 0,
                 "cantidad_defectuosos" => $request->cantidad_defectuosos ?? 0
             ]);
-
-            // 🔥 recalcular totales
             $this->recalcularTotales($ajuste);
 
         });

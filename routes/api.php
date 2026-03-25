@@ -25,6 +25,7 @@ use App\Http\Controllers\MovimientoController;
 Route::middleware('auth:api')->group(function () {
 
 
+
     Route::prefix('movibles')->group(function () {
         Route::post('{tipo}/{id}/articulos', [MovibleArticuloController::class, 'store'])
             ->name('movibles.articulos.store');
@@ -189,7 +190,7 @@ Route::middleware('auth:api')->group(function () {
     });
 
     // Tipos de Artículos
-    Route::prefix('tipos_articulos')->group(function () {
+    Route::prefix('tipos_articulo')->group(function () {
         Route::get('/', [TipoArticuloController::class, 'index'])->name('tipos_articulos.index');
         Route::post('/', [TipoArticuloController::class, 'store'])->name('tipos_articulos.store');
         Route::get('/{id}', [TipoArticuloController::class, 'show'])->name('tipos_articulos.show');
