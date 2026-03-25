@@ -46,24 +46,15 @@ class AlmacenController extends Controller
      */
     public function show($id)
     {
-        $articulos = Articulo::query()
-            ->select(
-                'articulos.*',
-                DB::raw('COALESCE(pivot.cantidad, 0) as cantidad'),
-                DB::raw('COALESCE(pivot.cantidad_defectuosos, 0) as cantidad_defectuosos')
-            )
-            ->leftJoin('almacen_articulo as pivot', function ($join) use ($id) {
-                $join->on('articulos.id', '=', 'pivot.articulo_id')
-                    ->where('pivot.almacen_id', $id);
-            })
-            ->with('tipoArticulo')
-            ->orderBy(
-                DB::raw('(SELECT nombre FROM tipo_articulos WHERE tipo_articulos.id = articulos.tipo_articulo_id)')
-            )
-            ->get();
-
         $almacen =  Almacen::with("responsable")->find($id);
+        $articulos = Articulo::query()
+            ->conExistenciaEn($id)
+            ->with("tipoArticulo")
+            ->leftJoin("tipo_articulos","articulos.tipo_articulo_id","=","tipo_articulos.id")
+            ->orderBy("tipo_articulos.nombre")
+            ->get();
         $almacen->articulos = $articulos;
+        return $almacen;
 
         
     }
