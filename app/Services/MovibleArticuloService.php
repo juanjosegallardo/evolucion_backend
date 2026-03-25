@@ -48,7 +48,7 @@ class MovibleArticuloService
 
             $foreignKey = $movibleClass::morph()."_id";
 
-            $this-> recalcularTotales($movibleClass , $pivotClass, $movible, foreignKey);
+            $this-> recalcularTotales($movibleClass , $pivotClass, $movible, $foreignKey);
             return $this->obtenerArticulos($movibleClass, $movible->id);
         });
     }
