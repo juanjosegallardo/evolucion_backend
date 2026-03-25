@@ -46,17 +46,18 @@ class AlmacenController extends Controller
      */
     public function show($id)
     {
-        $almacen =  Almacen::with("responsable")->find($id);
+        $almacen = Almacen::with("responsable")->findOrFail($id);
+
         $articulos = Articulo::query()
             ->conExistenciaEn($id)
             ->with("tipoArticulo")
-            ->leftJoin("tipo_articulos","articulos.tipo_articulo_id","=","tipo_articulos.id")
-            ->orderBy("tipo_articulos.nombre")
-            ->get();
-        $almacen->articulos = $articulos;
-        return $almacen;
+            ->get()
+            ->sortBy(fn($a) => $a->tipoArticulo->nombre ?? '')
+            ->values();
 
-        
+        $almacen->articulos = $articulos;
+
+        return $almacen;
     }
 
     public function stock()
