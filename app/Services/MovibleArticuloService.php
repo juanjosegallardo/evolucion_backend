@@ -46,7 +46,7 @@ class MovibleArticuloService
                 "cantidad_defectuosos" => $request->cantidad_defectuosos
             ]);
 
-            $this-> recalcularTotales($movibleClass , $pivotClass, $movible, $foreignKey);
+            $this-> recalcularTotales($movibleClass , $pivotClass, $movible, $movible->id);
             return $this->obtenerArticulos($movibleClass, $movible->id);
         });
     }
