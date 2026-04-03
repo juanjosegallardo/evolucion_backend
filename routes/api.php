@@ -190,7 +190,7 @@ Route::middleware('auth:api')->group(function () {
     });
 
     // Tipos de Artículos
-    Route::prefix('tipos_articulo')->group(function () {
+    Route::prefix('tipo_articulos')->group(function () {
         Route::get('/', [TipoArticuloController::class, 'index'])->name('tipos_articulos.index');
         Route::post('/', [TipoArticuloController::class, 'store'])->name('tipos_articulos.store');
         Route::get('/{id}', [TipoArticuloController::class, 'show'])->name('tipos_articulos.show');
