@@ -7,5 +7,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class TipoArticulo extends Model
 {
     use SoftDeletes;
+    protected $fillable = [
+        'nombre',
+        'precio_contado',
+        'precio_credito'
+    ];
     protected $table="tipo_articulos";
 }

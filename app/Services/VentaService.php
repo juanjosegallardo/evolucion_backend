@@ -64,7 +64,7 @@ class VentaService
 
             $venta = Venta::findOrFail($venta_id);
             
-            if (!$venta->estaEnCaptura() && !$venta->estaRechazado() ) {
+            if (!$venta->estaEnCaptura() && !$venta->estaRechazado() && !$venta->estaCancelado() ) {
                 throw ValidationException::withMessages([
                     'estado' => 'La venta no puede ser eliminada en el estado actual.',
                 ]);
@@ -175,11 +175,10 @@ class VentaService
 
         $articulos = DB::table('venta_articulo as va')
             ->join('ventas as v', 'v.id', '=', 'va.venta_id')
-            
             ->join('articulos as a', 'a.id', '=', 'va.articulo_id')
             ->join('tipo_articulos as ta', 'ta.id', '=', 'a.tipo_articulo_id')
 
-            ->join('almacen_articulo as aa', function ($join) {
+            ->leftJoin('almacen_articulo as aa', function ($join) {
                 $join->on('aa.articulo_id', '=', 'va.articulo_id')
                     ->on('aa.almacen_id', '=', 'v.almacen_id');
             })
@@ -191,8 +190,8 @@ class VentaService
                 'va.cantidad as venta_cantidad',
                 'va.cantidad_defectuosos as venta_defectuosos',
 
-                'aa.cantidad as stock',
-                'aa.cantidad_defectuosos as stock_defectuosos'
+                DB::raw('COALESCE(aa.cantidad, 0) as stock'),
+                DB::raw('COALESCE(aa.cantidad_defectuosos, 0) as stock_defectuosos')
             )
 
             ->where('va.venta_id', $venta_id)
@@ -203,7 +202,6 @@ class VentaService
                 $a->venta_defectuosos > $a->stock_defectuosos;
         });
 
-        //return $faltantes;
         foreach($faltantes as $faltante)
         {
             $error="En {$faltante->articulo_nombre} se tienen un stock de  {$faltante->stock} buenos y {$faltante->stock_defectuosos} defectuosos, se requieren";
@@ -214,6 +212,14 @@ class VentaService
             $errores[]=[
                 "id"=>$i++,
                 "error"=>$error
+            ];
+
+        }
+        
+        if(count($errores)==0 && $venta->estaEnCaptura()){
+                $errores[]=[
+            "id"=>1,
+            "error"=>"La venta no tiene errores, pero aún está en captura, por favor solicítala para validarla"
             ];
         }
 
@@ -283,6 +289,12 @@ class VentaService
             if (!$venta->estaEnCaptura() && !$venta->estaRechazado()  && !$venta->estaSolicitado()) {
                 throw ValidationException::withMessages([
                     'estado' => 'La venta no puede ser solicitada en el estado actual.',
+                ]);
+            }
+
+            if ($venta->cantidad + $venta->cantidad_defectuosos <= 0) {
+                throw ValidationException::withMessages([
+                    'estado' => 'La venta debe tener al menos un artículo.',
                 ]);
             }
             $venta->estado = EstadoMovimientoAlmacen::SOLICITADO->value;

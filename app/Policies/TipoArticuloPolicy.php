@@ -27,17 +27,25 @@ class TipoArticuloPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user)
     {
-        //
+        if ($user->esAdmin()) {
+            return Response::allow();
+        }
+
+        return Response::deny('Solo el administrador puede crear articulos');   
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, TipoArticulo $tipoArticulo): bool
+    public function update(User $user, TipoArticulo $tipoArticulo)
     {
-        //
+         if ($user->esAdmin()) {
+            return Response::allow();
+        }
+
+        return Response::deny('Solo el administrador puede modificar articulos');
     }
 
     /**

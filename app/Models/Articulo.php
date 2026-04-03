@@ -17,7 +17,7 @@ class Articulo extends Model
         return $this->belongsTo(TipoArticulo::class);
     }
 
-    public function scopeConExistenciaEn(\Illuminate\Database\Eloquent\Builder $query, $almacenId)
+    public function scopeConExistenciaEn($query, $almacenId)
     {
         return $query
             ->select(
@@ -30,4 +30,5 @@ class Articulo extends Model
                     ->where('pivot.almacen_id', $almacenId);
             });
     }
+
 }

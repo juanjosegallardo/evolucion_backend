@@ -49,6 +49,7 @@ class AlmacenController extends Controller
         $almacen = Almacen::with("responsable")->findOrFail($id);
 
         $articulos = Articulo::query()
+            
             ->conExistenciaEn($id)
             ->with("tipoArticulo")
             ->get()

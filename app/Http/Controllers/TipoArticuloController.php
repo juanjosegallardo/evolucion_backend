@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\TipoArticulo;
 use App\Http\Requests\StoreTipoArticuloRequest;
 use App\Http\Requests\UpdateTipoArticuloRequest;
+use App\Services\TipoArticuloService;
+use Illuminate\Http\Request;
 
 class TipoArticuloController extends Controller
 {
+
+    public function __construct(TipoArticuloService $service)
+    {
+        $this->service = $service;
+    }   
     /**
      * Display a listing of the resource.
      */
@@ -29,7 +36,8 @@ class TipoArticuloController extends Controller
      */
     public function store(StoreTipoArticuloRequest $request)
     {
-        //
+     
+        return $this->service->guardar($request->validated());
     }
 
     /**
@@ -43,17 +51,18 @@ class TipoArticuloController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TipoArticulo $tipoArticulo)
+    public function edit(EditTipoArticuloRequest $request, TipoArticulo $tipoArticulo)
     {
-        //
+        
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTipoArticuloRequest $request, TipoArticulo $tipoArticulo)
+    public function update(UpdateTipoArticuloRequest $request, $id)
     {
-        //
+     
+        return $this->service->actualizar($request->validated(), $id);
     }
 
     /**
