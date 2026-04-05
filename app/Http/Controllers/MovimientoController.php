@@ -12,6 +12,7 @@ class MovimientoController extends Controller
             ->where("articulo_id",$articulo_id)
             ->latest()
             ->take(50)
+            ->orderBy('created_at', 'desc')
             ->get();
     }
 }
