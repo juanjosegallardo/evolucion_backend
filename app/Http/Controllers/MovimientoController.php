@@ -11,8 +11,8 @@ class MovimientoController extends Controller
         return Movimiento::where('almacen_id', $almacen_id)
             ->where("articulo_id",$articulo_id)
             ->latest()
-            ->take(50)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
+            ->limit(50)
             ->get();
     }
 }
