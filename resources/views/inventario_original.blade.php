@@ -108,23 +108,23 @@
             </td>
             <td></td>
         </tr>
-    </thead>
 
 
 
-<tr>
-    <th width="5%"></th>
-    <th width="20%">Articulo</th>
-    <th width="4%">INI</th>|
-    <th width="4%">DF</th>
-    @for($i=0 ;$i<7; $i++)
 
-        <th width="4%" > {{$dias [ (($i + $dia_semana + 6 ) % 7) +1 ]}} </th>
-    @endfor
-    <th width="4%"> Total</th>
-    <th width="35%"></th>
-</tr>
+    <tr>
+        <th width="5%"></th>
+        <th width="20%">Articulo</th>
+        <th width="4%">INI</th>|
+        <th width="4%">DF</th>
+        @for($i=0 ;$i<7; $i++)
 
+            <th width="4%" > {{$dias [ (($i + $dia_semana + 6 ) % 7) +1 ]}} </th>
+        @endfor
+        <th width="4%"> Total</th>
+        <th width="35%"></th>
+    </tr>
+</thead>
 @php($renglon=0)
 @php($suma_inicial=0)
 @php($suma_inicial_defectuosos=0)
