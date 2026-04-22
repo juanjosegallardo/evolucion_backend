@@ -137,7 +137,7 @@
 
         @if(isset($inventario_inicial[$articulo->id])&& $inventario_inicial[$articulo->id]["total_actual"] > 0)
             <span class="bueno">
-                {{$inventario_inicial[$articulo->id]["total_actual"] }}7
+                {{$inventario_inicial[$articulo->id]["total_actual"] }}
                 @php($suma_inicial += $inventario_inicial[$articulo->id]["total_actual"])
             </span>
         @endif
