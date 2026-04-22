@@ -33,7 +33,6 @@ class Movimiento extends Model
             Devolucion::class,
             Venta::class,
             Reclasificacion::class
-
         ];
     }
 

@@ -14,6 +14,8 @@ use App\Models\Traspaso;
 use App\Models\Devolucion;
 use App\Models\Ajuste;
 use Illuminate\Support\Facades\DB;
+use App\Models\TipoArticulo;
+use App\Models\Articulo;
 
 class ReporteInventarioController extends Controller
 {
@@ -126,9 +128,10 @@ class ReporteInventarioController extends Controller
         
         $data["almacen"]=AlmacenArticulo::with(["almacen.responsable"])->where("almacen_id",$id)->first()->almacen;
         
-        $data["fecha"] = "{$fecha_inicio} - {$fecha_fin}";
+        $data["fecha_inicio"] = $fecha_inicio;
+        $data["fecha_fin"] = $fecha_fin;
         $data["dia_semana"]=   (($fecha_fin->dayOfWeekIso+1) % 7) + 1;
-        $data["dias"]=[1 =>"D", 2=>"L", 3=>"M", 4=>"M", 5=>"J", 6=>"V" ,7=>"S"]; 
+        $data["dias"]=[1 =>"DOM", 2=>"LUN", 3=>"MAR", 4=>"MIE", 5=>"JUE", 6=>"VIE" ,7=>"SAB"]; 
 
 
         $data["inventario_inicial"] = Movimiento::query()
@@ -166,13 +169,12 @@ class ReporteInventarioController extends Controller
         ->keyBy('articulo_id')
         ->toArray();
 
-        $data["articulos"] = AlmacenArticulo::with([
-        "articulo.tipoArticulo"
-        ])
-        ->where("almacen_id",$id)
-        ->get()
-        ->sortBy('articulo.tipoArticulo.nombre')
-        ->values();
+
+        $data["articulos"] = Articulo::with('tipoArticulo')
+            ->get()
+            ->sortBy('tipoArticulo.nombre')
+            ->values();
+
 
         $movibles = DB::table(DB::raw("
             (
@@ -220,4 +222,6 @@ class ReporteInventarioController extends Controller
         $pdf = PDF::loadView("inventario_original", $data)->setPaper('letter', 'portrait');;
         return $pdf->stream("inventario.pdf");
     }
+
+    
 }

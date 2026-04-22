@@ -5,6 +5,7 @@ use App\Models\TipoArticulo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\Models\AlmacenArticulo;
 class Articulo extends Model
 {
     use SoftDeletes;
@@ -31,4 +32,8 @@ class Articulo extends Model
             });
     }
 
+    public function almacenArticulos()
+    {
+        return $this->hasMany(AlmacenArticulo::class);
+    }
 }

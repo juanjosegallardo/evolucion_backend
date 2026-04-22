@@ -85,6 +85,7 @@ class ArticuloAlmacenService
         $almacenArticulo = AlmacenArticulo::where('articulo_id', $articuloId)
             ->where('almacen_id', $almacenId)
             ->first();
+
         $documento->movimientos()->create([
             "articulo_id" => $articulo->id,
             "almacen_id" => $almacen->id,

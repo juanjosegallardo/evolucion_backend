@@ -25,4 +25,9 @@ class TipoArticulo extends Model
             }
         });
     }
+
+    public function articulos()
+    {
+        return $this->hasMany(Articulo::class, 'tipo_articulo_id');
+    }
 }

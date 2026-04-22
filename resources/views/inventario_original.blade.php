@@ -1,12 +1,20 @@
 ```html
 <html>
 <head>
+
     <style>
         body, *{
             font-family: Arial, Helvetica, sans-serif;
             font-size: 12px;
         }
 
+        thead {
+            display: table-header-group;
+        }
+
+        tfoot {
+            display: table-footer-group;
+        }
         table{
             border-collapse: collapse;
         }
@@ -19,10 +27,11 @@
         {
             font-size: 12px;
         }
-        th, td{
+        th{
             text-align: center;
             vertical-align: middle;
             padding: 1px;
+            font-weight: bold;
         }
 
         .bueno{
@@ -34,6 +43,11 @@
         {
             background-color: #cccccc;
 
+        }
+
+        tr
+        {
+            text-align: left!important;
         }
     
         .blanco
@@ -75,78 +89,110 @@
 
 <body>
 
-<h1>{{$almacen->nombre}} {{$fecha}}</h1>
-<h2>  {{ $almacen->responsable->nombre ?? '' }}</h2>
-
+<h1></h1>
+ 
+@php($i=1)
 <table width="100%" border="1" cellspacing="0" cellpadding="0">
+    <thead>
+        <tr>
+            <th colspan="12" >NOMBRE: {{ $almacen->responsable->nombre ?? '' }} {{$almacen->nombre}} </th>
+            <th></th>
+        </tr>
+        <tr>
+            <th colspan="12">    FECHA: {{ $fecha_inicio->format('d-m-Y') }} -
+            {{ $fecha_fin->format('d-m-Y') }}
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+
 
 <tr>
+    <th width="5%"></th>
     <th width="20%">Articulo</th>
-    <th width="5%">Inicial</th>
+    <th width="5%">INI</th>
+    <th width="5%">DF</th>
     @for($i=0 ;$i<7; $i++)
 
-        <td width="5%" > {{$dias [ (($i + $dia_semana + 6 ) % 7) +1 ]}} </td>
+        <th width="5%" > {{$dias [ (($i + $dia_semana + 6 ) % 7) +1 ]}} </th>
     @endfor
     <th width="5%"> Total</th>
-    <th width="35%"></th>
+    <th width="25%"></th>
 </tr>
 
 @php($renglon=0)
 
 @foreach ($articulos as $articulo)
 @php($renglon++)
-<tr class="{{($renglon%2==0)?'blanco':'gris' }}">
+<tr class="{{($renglon%2==0)?'blanco':'blanco' }}">
+        
+    <td align="center">{{$renglon}}</td>
+    <td class="articulo">
+        {{$articulo->tipoArticulo->nombre}}
+    </td>
+    <td >
 
-<td class="articulo">
-    {{$articulo->articulo->tipoArticulo->nombre}}
-</td>
-<td >
+        @if(isset($inventario_inicial[$articulo->id])&& $inventario_inicial[$articulo->id]["total_actual"] > 0)
+            <span class="bueno">
+                {{$inventario_inicial[$articulo->id]["total_actual"] }}
+            </span>
+        @endif
+    
 
-@if(isset($inventario_inicial[$articulo->articulo_id]))
-    <span class="bueno">
-        {{$inventario_inicial[$articulo->articulo_id]["total_actual"] }}
-    </span>
-    <span class="defectuoso">
-        {{$inventario_inicial[$articulo->articulo_id]["total_actual_defectuosos"] }}
-    </span>
-@endif
-
-</td>
-
-
-@for($i=0;$i<7;$i++)
-<td class="dia">
-@php(  $d=(($i + $dia_semana ) % 7) )
-@if(isset($movimientos[$articulo->articulo_id][$d ]))
-    <span class="entrada">
-        {{$movimientos[$articulo->articulo_id][$d]["entradas"] + $movimientos[$articulo->articulo_id][$d]["defectuosos_entradas"] }}
-    </span>
-    <span class="salida">
-        {{$movimientos[$articulo->articulo_id][$d]["salidas"] + $movimientos[$articulo->articulo_id][$d]["defectuosos_salidas"]}}
-    </span>
-@endif
-</td>
-@endfor
-
-<td>
+    </td>
+    <td>
+        @if(isset($inventario_inicial[$articulo->id])&& $inventario_inicial[$articulo->id]["total_actual_defectuosos"] > 0)
+            <span class="defectuoso">
+                {{$inventario_inicial[$articulo->id]["total_actual_defectuosos"] }}
+            </span>
+        @endif
+    </td>
 
     
-@if(isset($inventario_final[$articulo->articulo_id]))
-    <span class="bueno">
-        {{$inventario_final[$articulo->articulo_id]["total_actual"] }}
-    </span>
-    <span class="defectuoso">
-        {{$inventario_final[$articulo->articulo_id]["total_actual_defectuosos"] }}
-    </span>
-@endif
 
-</td>
-<td></td>
 
+    @for($i=0;$i<7;$i++)
+    <td class="dia">
+    @php(  $d=(($i + $dia_semana ) % 7) )
+    @if(isset($movimientos[$articulo->id][$d ]))
+        <span class="entrada">
+            {{$movimientos[$articulo->id][$d]["entradas"] + $movimientos[$articulo->id][$d]["defectuosos_entradas"] }}
+        </span>
+        <span class="salida">
+            {{$movimientos[$articulo->id][$d]["salidas"] + $movimientos[$articulo->id][$d]["defectuosos_salidas"]}}
+        </span>
+    @endif
+    </td>
+    @endfor
+
+    <td>
+
+        
+
+    </td>
+    <td>
+        
+    </td>
 
 </tr>
-@endforeach
 
+@endforeach
+<tr>
+    <td align="center">{{$renglon}}</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
 </table>
 
 </body>
