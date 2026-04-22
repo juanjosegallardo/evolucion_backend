@@ -121,14 +121,12 @@ class ReporteInventarioController extends Controller
     {
 
        
-        $fecha_fin = Carbon::parse($request->fecha_fin, 'America/Mexico_City')
-            ->endOfDay()
-            ->utc();
+        $fecha_fin = Carbon::parse($request->fecha_fin, 'America/Mexico_City')->endOfDay();
+        $fecha_inicio = $fecha_fin->copy()->subDays(6)->startOfDay();
 
-        $fecha_inicio = $fecha_fin->copy()
-            ->subDays(6)
-            ->startOfDay()
-            ->utc();
+        // Convertir SOLO para el query
+        $fecha_fin_utc = $fecha_fin->copy()->utc();
+        $fecha_inicio_utc = $fecha_inicio->copy()->utc();
 
         
         $data["almacen"]=AlmacenArticulo::with(["almacen.responsable"])->where("almacen_id",$id)->first()->almacen;
@@ -149,7 +147,7 @@ class ReporteInventarioController extends Controller
             Movimiento::query()
                 ->selectRaw('MAX(id)')
                 ->where('almacen_id', $id)
-                ->where('created_at', '<', $fecha_inicio)
+                ->where('created_at', '<', $fecha_inicio_utc)
                 ->groupBy('articulo_id')
         )
         ->get()
@@ -167,7 +165,7 @@ class ReporteInventarioController extends Controller
             Movimiento::query()
                 ->selectRaw('MAX(id)')
                 ->where('almacen_id', $id)
-                ->where('created_at', '<=', $fecha_fin)
+                ->where('created_at', '<=', $fecha_fin_utc)
                 ->groupBy('articulo_id')
         )
         ->get()
@@ -213,7 +211,7 @@ class ReporteInventarioController extends Controller
                     ->on('movibles.movible_type', '=', 'movimientos.movible_type');
             })
             ->where('movimientos.almacen_id', $id)
-            ->whereBetween('movimientos.created_at', [$fecha_inicio, $fecha_fin])
+            ->whereBetween('movimientos.created_at', [$fecha_inicio_utc, $fecha_fin_utc])
             ->groupBy('movimientos.articulo_id', 'dia_semana')
             ->get();
 
