@@ -33,6 +33,10 @@
             padding: 1px;
             font-weight: bold;
         }
+        .titulo{
+            font-size: 12px;
+            font-weight: bold;
+        }
 
         .bueno{
             color:#0b5394;
@@ -95,14 +99,14 @@
 <table width="100%" border="1" cellspacing="0" cellpadding="0">
     <thead>
         <tr>
-            <th colspan="12" >NOMBRE: {{ $almacen->responsable->nombre ?? '' }} {{$almacen->nombre}} </th>
-            <th></th>
+            <td colspan="12" class="titulo" >NOMBRE: {{ $almacen->responsable->nombre ?? '' }} {{$almacen->nombre}} </td>
+            <td></td>
         </tr>
         <tr>
-            <th colspan="12">    FECHA: {{ $fecha_inicio->format('d-m-Y') }} -
+            <td colspan="12" class="titulo">    FECHA: {{ $fecha_inicio->format('d-m-Y') }} -
             {{ $fecha_fin->format('d-m-Y') }}
-            </th>
-            <th></th>
+            </td>
+            <td></td>
         </tr>
     </thead>
 
