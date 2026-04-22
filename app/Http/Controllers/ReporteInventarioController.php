@@ -121,9 +121,14 @@ class ReporteInventarioController extends Controller
     {
 
        
-        $fecha_fin = Carbon::parse($request->fecha_fin)->endOfDay();
-        $fecha_inicio = $fecha_fin->copy()->subDays(6)->startOfDay();
+        $fecha_fin = Carbon::parse($request->fecha_fin, 'America/Mexico_City')
+            ->endOfDay()
+            ->utc();
 
+        $fecha_inicio = $fecha_fin->copy()
+            ->subDays(6)
+            ->startOfDay()
+            ->utc();
 
         
         $data["almacen"]=AlmacenArticulo::with(["almacen.responsable"])->where("almacen_id",$id)->first()->almacen;
