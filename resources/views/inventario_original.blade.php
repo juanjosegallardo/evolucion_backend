@@ -115,14 +115,14 @@
 <tr>
     <th width="5%"></th>
     <th width="20%">Articulo</th>
-    <th width="5%">INI</th>
-    <th width="5%">DF</th>
+    <th width="4%">INI</th>|
+    <th width="4%">DF</th>
     @for($i=0 ;$i<7; $i++)
 
-        <th width="5%" > {{$dias [ (($i + $dia_semana + 6 ) % 7) +1 ]}} </th>
+        <th width="4%" > {{$dias [ (($i + $dia_semana + 6 ) % 7) +1 ]}} </th>
     @endfor
-    <th width="5%"> Total</th>
-    <th width="25%"></th>
+    <th width="4%"> Total</th>
+    <th width="35%"></th>
 </tr>
 
 @php($renglon=0)
