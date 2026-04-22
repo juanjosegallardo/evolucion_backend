@@ -122,6 +122,8 @@
 </tr>
 
 @php($renglon=0)
+@php($suma_inicial=0)
+@php($suma_inicial_defectuosos=0)
 
 @foreach ($articulos as $articulo)
 @php($renglon++)
@@ -135,7 +137,8 @@
 
         @if(isset($inventario_inicial[$articulo->id])&& $inventario_inicial[$articulo->id]["total_actual"] > 0)
             <span class="bueno">
-                {{$inventario_inicial[$articulo->id]["total_actual"] }}
+                {{$inventario_inicial[$articulo->id]["total_actual"] }}7
+                @php($suma_inicial += $inventario_inicial[$articulo->id]["total_actual"])
             </span>
         @endif
     
@@ -145,6 +148,7 @@
         @if(isset($inventario_inicial[$articulo->id])&& $inventario_inicial[$articulo->id]["total_actual_defectuosos"] > 0)
             <span class="defectuoso">
                 {{$inventario_inicial[$articulo->id]["total_actual_defectuosos"] }}
+                @php($suma_inicial_defectuosos += $inventario_inicial[$articulo->id]["total_actual_defectuosos"])
             </span>
         @endif
     </td>
@@ -180,7 +184,9 @@
 @endforeach
 <tr>
     <td align="center">{{$renglon}}</td>
-    <td></td>
+    <td>Total</td>
+    <td>{{$suma_inicial}}</td>
+    <td>{{$suma_inicial_defectuosos}}</td>
     <td></td>
     <td></td>
     <td></td>
