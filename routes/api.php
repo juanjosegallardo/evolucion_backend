@@ -105,6 +105,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('reportes/almacenes/{id}/inventario', [ReporteInventarioController::class, 'reporteInventarioOriginal'])
         ->name('reportes.almacenes.inventario');
 
+    Route::get('reportes/articulos', [ReporteInventarioController::class, 'reporteArticulos'])
+        ->name('reportes.articulos');
     // Almacenes
     Route::prefix('almacenes')->group(function () {
         Route::get('/', [AlmacenController::class, 'index'])->name('almacenes.index');

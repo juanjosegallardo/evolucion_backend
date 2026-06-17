@@ -226,5 +226,16 @@ class ReporteInventarioController extends Controller
         return $pdf->stream("inventario.pdf");
     }
 
+    public function reporteArticulos()
+    {
+
+        $data["articulos"] = Articulo::with('tipoArticulo')
+            ->get()
+            ->sortBy('tipoArticulo.nombre')
+            ->values();
+
+        $pdf = PDF::loadView("articulos", $data)->setPaper('letter', 'portrait');;
+        return $pdf->stream("inventario.pdf");
     
+    }
 }
