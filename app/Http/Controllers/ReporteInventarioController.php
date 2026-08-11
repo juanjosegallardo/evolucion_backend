@@ -13,6 +13,7 @@ use App\Models\Reclasificacion;
 use App\Models\Traspaso;
 use App\Models\Devolucion;
 use App\Models\Ajuste;
+use App\Models\Almacen;
 use Illuminate\Support\Facades\DB;
 use App\Models\TipoArticulo;
 use App\Models\Articulo;
@@ -219,6 +220,49 @@ class ReporteInventarioController extends Controller
             ->groupBy('articulo_id')
             ->map(fn($items) => $items->keyBy('dia_semana'))
             ->toArray();
+
+        
+
+        $pdf = PDF::loadView("inventario_original", $data)->setPaper('letter', 'portrait');;
+        return $pdf->stream("inventario.pdf");
+    }
+
+    public function reporteInventarioVacio(Request $request)
+    {
+
+       
+        $fecha_fin = Carbon::parse($request->fecha_fin, 'America/Mexico_City')->endOfDay();
+        $fecha_inicio = $fecha_fin->copy()->subDays(6)->startOfDay();
+
+        // Convertir SOLO para el query
+        $fecha_fin_utc = $fecha_fin->copy()->utc();
+        $fecha_inicio_utc = $fecha_inicio->copy()->utc();
+
+        
+        $data["almacen"]=new Almacen();
+        
+        
+        $data["fecha_inicio"] = $fecha_inicio;
+        $data["fecha_fin"] = $fecha_fin;
+        $data["dia_semana"]=   (($fecha_fin->dayOfWeekIso+1) % 7) + 1;
+        $data["dias"]=[1 =>"DOM", 2=>"LUN", 3=>"MAR", 4=>"MIE", 5=>"JUE", 6=>"VIE" ,7=>"SAB"]; 
+
+
+        $data["inventario_inicial"] = [];
+
+
+        $data["inventario_final"] = [];
+
+
+        $data["articulos"] = Articulo::with('tipoArticulo')
+            ->get()
+            ->sortBy('tipoArticulo.nombre')
+            ->values();
+
+
+       
+
+        $data["movimientos"] = [];
 
         
 

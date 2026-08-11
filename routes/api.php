@@ -105,7 +105,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('reportes/almacenes/{id}/inventario', [ReporteInventarioController::class, 'reporteInventarioOriginal'])
         ->name('reportes.almacenes.inventario');
 
-
+    Route::get('reportes/articulos', [ReporteInventarioController::class, 'reporteArticulos'])
+        ->name('reportes.articulos');
     // Almacenes
     Route::prefix('almacenes')->group(function () {
         Route::get('/', [AlmacenController::class, 'index'])->name('almacenes.index');
@@ -207,5 +208,6 @@ Route::middleware('auth:api')->group(function () {
 
 Route::post("/login",[AuthController::class, "login"])->name("login");
 Route::post("/refresh",[AuthController::class, "refresh"])->name("refresh");
-Route::get('reportes/articulos', [ReporteInventarioController::class, 'reporteArticulos'])
-    ->name('reportes.articulos');
+
+    Route::get('reportes/almacenes/inventario', [ReporteInventarioController::class, 'reporteInventarioVacio'])
+        ->name('reportes.almacenes.inventario');
