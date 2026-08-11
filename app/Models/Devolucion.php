@@ -8,7 +8,7 @@ use App\Models\ModelMovimientoAlmacen;
 
 class Devolucion extends ModelMovimientoAlmacen implements GeneraMovimientoAlmacen
 {
-    protected $attributes = ["cantidad"=>0];
+    protected $attributes = ["cantidad"=>0, "saldo_restante"=>0];
     protected $dates = ["fecha"];
     protected $fillable = ["cantidad", "cantidad_defectuosos"];
 
