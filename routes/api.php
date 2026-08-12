@@ -210,4 +210,4 @@ Route::post("/login",[AuthController::class, "login"])->name("login");
 Route::post("/refresh",[AuthController::class, "refresh"])->name("refresh");
 
     Route::get('reportes/almacenes/inventario', [ReporteInventarioController::class, 'reporteInventarioVacio'])
-        ->name('reportes.almacenes.inventario');
+        ->name('reportes.inventario');
